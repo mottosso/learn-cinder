@@ -1,6 +1,7 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
+#include "cinder/gl/Shader.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -14,39 +15,38 @@ void BasicApp::draw()
 {
     gl::clear();
 
-	gl::pushModelMatrix();
+	gl::enableDepthRead();
+	gl::enableDepthWrite();
 
-	// move to window center
-	gl::translate(getWindowCenter());
+	CameraPersp cam;
+	cam.lookAt(vec3(3, 4.5, 4.5), vec3(0, 1, 0));
+	gl::setMatrices(cam);
 
-	int numCircles = 32;
-	float radius = getWindowHeight() / 2 - 30;
+	auto lambert = gl::ShaderDef().lambert().color();
+	auto shader = gl::getStockShader(lambert);
+	shader->bind();
 
-	for (int c = 0; c < numCircles; ++c) {
-		float rel = c / (float)numCircles;
-		float angle = rel * M_PI * 2;
-		vec2 offset(cos(angle), sin(angle));
+	int numSpheres = 64;
+	float maxAngle = M_PI * 7;
+	float spiralRadius = 1;
+	float height = 3;
+	float anim = getElapsedFrames() / 30.0f;
 
-		// preserve the Model matrix
+	for (int s = 0; s < numSpheres; ++s)
+	{
+		float rel = s / (float)numSpheres;
+		float angle = rel * maxAngle;
+		float y = fabs(cos(rel * M_PI + anim));
+		float r = rel * spiralRadius;
+		vec3 offset(r * cos(angle), y, r * sin(angle));
+
 		gl::pushModelMatrix();
-
-		// move to the correct position
-		gl::translate(offset * radius);
-		gl::rotate(angle);
-		gl::scale(8, 0.25f);
+		gl::translate(offset);
+		gl::scale(vec3(0.05f, y, 0.05f));
 		gl::color(Color(CM_HSV, rel, 1, 1));
-		gl::drawSolidCircle(vec2(), 20);
-
-		// restore matrix
+		gl::drawCube(vec3(), vec3(1));
 		gl::popModelMatrix();
 	}
-
-	// draw a white circle at window center
-	gl::color(Color(1, 1, 1));
-	gl::drawSolidCircle(vec2(), 15);
-
-	// restory the default Model matrix
-	gl::popModelMatrix();
 }
 
 CINDER_APP( BasicApp, RendererGl )
