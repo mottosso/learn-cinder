@@ -12,68 +12,41 @@ public:
 	void setup() override;
     void draw() override;
 
-	static const int NUM_SLICES = 4;
-
 	CameraPersp mCam;
-	gl::BatchRef mSlices[NUM_SLICES];
+	gl::BatchRef mSphere;
+	gl::TextureRef mTexture;
+	gl::GlslProgRef mGlsl;
 };
 
 void BasicApp::setup()
 {
-	auto lambert = gl::ShaderDef().lambert().color();
-	gl::GlslProgRef shader = gl::getStockShader(lambert);
-	
-	for (int i = 0; i < NUM_SLICES; ++i)
-	{
-		float rel = i / (float)NUM_SLICES;
-		float sliceHeight = 1.0f / NUM_SLICES;
-		auto slice = geom::Cube().size(1, sliceHeight, 1);
-		auto trans = geom::Translate(0, rel, 0);
-		auto color = geom::Constant(
-			geom::COLOR,
-			Color(CM_HSV, rel, 1, 1));
-		mSlices[i] = gl::Batch::create(slice >> trans >> color, shader);
-	}
+	mCam.lookAt(vec3(3, 2, 4), vec3(0));
 
-	mCam.lookAt(vec3(2, 3, 2), vec3(0, 0.5f, 0));
+	auto img = loadImage(loadAsset("checkerboard.png"));
+	mTexture = gl::Texture::create(img);
+	mTexture->bind();
+
+	auto shader = gl::ShaderDef().texture().lambert();
+	mGlsl = gl::getStockShader(shader);
+	auto sphere = geom::Sphere().subdivisions(50);
+	mSphere = gl::Batch::create(sphere, mGlsl);
+
+	gl::enableDepthWrite();
+	gl::enableDepthRead();
 }
 
 void BasicApp::draw()
 {
-    gl::clear();
-
-	gl::enableDepthRead();
-	gl::enableDepthWrite();
-
+    gl::clear(Color(0.2f, 0.2f, 0.2f));
 	gl::setMatrices(mCam);
 
-	const float delay = 0.25f;
-	const float rotationTime = 1.5f;
-	const float rotationOffset = 0.1f;
-	const float totalTime = delay + rotationTime + NUM_SLICES * rotationOffset;
+	mSphere->draw();
 
-	// loop every `totalTime` seconds
-	float time = fmod(getElapsedFrames() / 30.0f, totalTime);
-
-	for (int i = 0; i < NUM_SLICES; ++i)
-	{
-		// animates from 0 to 1
-		float rotation = 0;
-
-		// when does the slice begin rotating
-		float startTime = i * rotationOffset;
-		float endTime = startTime + rotationTime;
-		if (time > startTime && time < endTime)
-		{
-			rotation = (time - startTime) / rotationTime;
-		}
-
-		float angle = easeInOutQuint(rotation) * M_PI / 2.0f;
-
-		gl::ScopedModelMatrix scpModelMtx;
-		gl::rotate(angleAxis(angle, vec3(0, 1, 0)));
-		mSlices[i]->draw();
-	}
+	gl::setMatricesWindow(getWindowSize());
+	Rectf drawRect(0, 0,
+		mTexture->getWidth() / 3,
+		mTexture->getHeight() / 3);
+	gl::draw(mTexture, drawRect);
 }
 
 CINDER_APP( BasicApp, RendererGl )
