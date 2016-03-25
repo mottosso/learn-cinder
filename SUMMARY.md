@@ -18,7 +18,7 @@
        * bindStockShader
        * translate
        * scale
-       * rotate
+       * rotate()
        * pushModelMatrix()
    * geom
        * Circle
