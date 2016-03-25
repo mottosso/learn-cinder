@@ -15,7 +15,7 @@
        * ShaderDef
        * getStockShader
        * GlslProg
-       * bindStockShader
+       * bindStockShader()
        * translate()
        * scale()
        * rotate()
