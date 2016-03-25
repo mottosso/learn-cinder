@@ -179,38 +179,43 @@ A for-loop iterates from 0 to 2 pi radians. Within the loop we preserve the curr
 
 In Cinder 0.9.0 you’ll see a number of classes which begin with gl::Scoped in the name; such as [`gl::ScopedModelMatrix`], [`gl::ScopedColor`], and [`gl::ScopedTextureBind`].
 
-While there are other ways to achieve the same thing, these classes are efficient and easy to use. They are designed around RAII, preserving a given piece of state on instantiation and restoring it on destruction. As an example, let’s rework the previous for-loop to use a gl::ScopedModelMatrix:
+While there are other ways to achieve the same thing, these classes are efficient and easy to use. They are designed around RAII, preserving a given piece of state on instantiation and restoring it on destruction. As an example, let’s rework the previous for-loop to use a [`gl::ScopedModelMatrix`]:
+
+```cpp
+for (float angle = 0; angle < 2 * M_PI; angle += 0.2f) {
+  gl::ScopedModelMatrix scpModelMtx;
+  gl::translate(
+    getWindowCenter() + 200.0f * vec2(sin(angle), cos(angle))
+  );
+  gl::color(
+    Color(CM_HSV, angle / (2 * M_PI), 1, 1)
+  );
+  mCircleBatch->draw();
+}
+```
+
+In this example, creating our variable scpModelMtx  preserves the Model matrix at its point of instantiation. We then manipulate the Model matrix using [`gl::translate()`]. And when the destructor for scpModelMtx  fires at the end of the loop iteration, it will restore the Model matrix to its value when scpModelMtx  was instantiated.
+
+
+Additionally, it’s worth noting that Cinder now caches virtually all state in a class called [`gl::Context`]. This allows Cinder to save and restore state quickly without querying GL for the active values. As a result, it’s safe and fast to use these `gl:: Scoped*`  family of classes for preserving state.
 
 [`gl::ScopedModelMatrix`]: book/cinder__gl__ScopedModelMatrix.md
 [`gl::ScopedColor`]: book/cinder__gl__ScopedColor.md
 [`gl::ScopedTextureBind`]: book/cinder__gl__ScopedTextureBind.md
+[`gl::Context`]: book/cinder__gl__Context.md
 
-```cpp
-  for (float angle = 0; angle < 2 * M_PI; angle += 0.2f) {
-    gl::ScopedModelMatrix scpModelMtx;
-    gl::translate(
-      getWindowCenter() + 200.0f * vec2(sin(angle), cos(angle))
-    );
-    gl::color(
-      Color(CM_HSV, angle / (2 * M_PI), 1, 1)
-    );
-    mCircleBatch->draw();
-  }
-```
+<br>
+<br>
+<br>
 
-In this example, creating our variable scpModelMtx  preserves the Model matrix at its point of instantiation. We then manipulate the Model matrix using gl::translate(). And when the destructor for scpModelMtx  fires at the end of the loop iteration, it will restore the Model matrix to its value when scpModelMtx  was instantiated.
+### Writing Custom Shaders
+
+While [`gl::ShaderDef`] is helpful for basic shaders - in addition to `.color()`, it supports `.texture()` and `.lambert()` - it’s common to write your own GLSL. Let’s look at an example of how to do that.
 
 
-Additionally, it’s worth noting that Cinder now caches virtually all state in a class called gl::Context. This allows Cinder to save and restore state quickly without querying GL for the active values. As a result, it’s safe and fast to use these gl:: Scoped  family of classes for preserving state.
+We’ll keep the same circle example, and write a shader that takes the place of our ShaderDef-created version. For the purposes of this example, we’ll make use of the [`CI_GLSL()`] macro, which allows writing GLSL code inline. Our setup routine looks like this now:
 
-
-Writing Custom Shaders
-
-While gl::ShaderDef is helpful for basic shaders (in addition to color(), it supports texture() and lambert()) it’s common to write your own GLSL. Let’s look at an example of how to do that.
-
-
-We’ll keep the same circle example, and write a shader that takes the place of our ShaderDef-created version. For the purposes of this example, we’ll make use of the CI_GLSL() macro, which allows writing GLSL code inline. Our setup routine looks like this now:
-
+[`CI_GLSL`]: book/cinder__gl__CI_GLSL.md
 
 void MyApp::setup()
 
