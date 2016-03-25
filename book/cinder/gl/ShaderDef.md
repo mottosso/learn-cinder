@@ -4,13 +4,15 @@
 |-----------|
 | [`cinder::gl::ShaderDef`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base.html)
 
-Generate common shaders.
+Generate common [`gl::GlslProg`](GlslProg.md)'s.
 
 <br>
 <br>
 <br>
 
 ### Description
+
+A convenience function for generating common shaders.
 
 <br>
 <br>
@@ -35,9 +37,21 @@ Generate common shaders.
 
 ### Example
 
+![image](https://cloud.githubusercontent.com/assets/2152766/14055677/a8f82880-f2db-11e5-8703-b38393bd5911.png)
+
 ```cpp
 # Draw a solid white circle.
 gl::bindStockShader(gl::ShaderDef().color());
-gl::drawSolidCircle(vec2( 100, 100 ), 50);
+gl::drawSolidCircle(vec2(100, 100), 50);
 ```
+
+Note the [named parameter idiom](https://isocpp.org/wiki/faq/ctors#named-parameter-idiom).
+
+```cpp
+gl::bindStockShader(
+  gl::ShaderDef()
+    .lambert()
+    .color()
+);
+gl::drawSolidCircle(vec2(100, 100), 50);
 ```
