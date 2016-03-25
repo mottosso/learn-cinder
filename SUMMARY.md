@@ -18,6 +18,7 @@
        * bindStockShader
        * translate
        * scale
+       * rotate
    * geom
        * Circle
        * Sphere
