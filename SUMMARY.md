@@ -21,6 +21,7 @@
        * rotate()
        * pushModelMatrix()
        * ScopedModelMatrix
+       * ScopedColor
    * geom
        * Circle
        * Sphere
