@@ -22,4 +22,5 @@
        * Teapot
        * WireCone
        * Source
+   * TriMesh
 
