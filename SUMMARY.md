@@ -17,4 +17,5 @@
        * GlslProg
        * bindStockShader
    * geom
+       * Circle
 
