@@ -62,7 +62,7 @@ gl::drawSolidCircle(vec2( 100, 100 ), 50);
 
 Essentially all GL convenience methods (`gl::drawCube()`, `gl::drawSphere()`, `gl::drawSolidRect()`, etc) still function in 0.9.x, and there are new convenience methods as well. However, using a GL convenience method should always be considered the slow path . They’re fine for initial development or code that is not performance-sensitive, but the techniques we’ll discuss next should always be preferred when speed counts.
 
-[`gl::drawSolidCircle()`]: book/cinder/gl/drawSolidCircle.md
+[`gl::drawSolidCircle()`]: cinder/gl/drawSolidCircle.md
 
 <br>
 <br>
@@ -72,7 +72,7 @@ Essentially all GL convenience methods (`gl::drawCube()`, `gl::drawSphere()`, `g
 
 [`gl::Batch`] is the fast path in Cinder 0.9.x for typical cases. An instance of [`gl::Batch`] represents the combination of geometry and an associated shader. To get started, let’s optimize our previous use of the convenience method gl::drawSolidCircle().
 
-[`gl::Batch`]: book/cinder/gl/Batch.md
+[`gl::Batch`]: cinder/gl/Batch.md
 
 
 ```cpp
@@ -113,19 +113,19 @@ This uses [`geom::Circle()`], which is one of many classes provided with Cinder 
 
 To draw a gl::Batch we simply use its draw() member method. Notice that we still set the color with [`gl::color()`]. Cinder “knows” that the Batch’s shader requires the current color, and it passes it along in a uniform automatically. We’ll look at how that machinery works later.
 
-[`TriMesh`]: book/cinder/TriMesh.md
-[`VboMesh`]: book/cinder/VboMesh.md
-[`geom::Source`]: book/cinder/geom/Source.md
-[`geom::Sphere()`]: book/cinder/geom/Sphere.md
-[`geom::Teapot()`]: book/cinder/geom/Teapot.md
-[`geom::WireCone()`]: book/cinder/geom/WireCone.md
-[`geom::Circle()`]: book/cinder/geom/Circle.md
-[`gl::GlslProgRef`]: book/cinder/gl/GlslProg.md
-[`gl::GlslProg`]: book/cinder/gl/GlslProg.md
-[`gl::getStockShader()`]: book/cinder/gl/getStockShader.md
-[`gl::bindStockShader()`]: book/cinder/gl/bindStockShader.md
-[`gl::ShaderDef`]: book/cinder/gl/ShaderDef.md
-[`gl::color()`]: book/cinder/gl/color.md
+[`TriMesh`]: cinder/TriMesh.md
+[`VboMesh`]: cinder/VboMesh.md
+[`geom::Source`]: cinder/geom/Source.md
+[`geom::Sphere()`]: cinder/geom/Sphere.md
+[`geom::Teapot()`]: cinder/geom/Teapot.md
+[`geom::WireCone()`]: cinder/geom/WireCone.md
+[`geom::Circle()`]: cinder/geom/Circle.md
+[`gl::GlslProgRef`]: cinder/gl/GlslProg.md
+[`gl::GlslProg`]: cinder/gl/GlslProg.md
+[`gl::getStockShader()`]: cinder/gl/getStockShader.md
+[`gl::bindStockShader()`]: cinder/gl/bindStockShader.md
+[`gl::ShaderDef`]: cinder/gl/ShaderDef.md
+[`gl::color()`]: cinder/gl/color.md
 
 <br>
 <br>
@@ -176,12 +176,12 @@ A for-loop iterates from 0 to 2 pi radians. Within the loop we preserve the curr
 
 [`glMatrixMode()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glMatrixMode.xml
 [`glTranslatef()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glTranslate.xml
-[`gl::translate()`]: book/cinder/gl/translate.md
-[`gl::rotate()`]: book/cinder/gl/rotate.md
-[`gl::scale()`]: book/cinder/gl/scale.md
-[`gl::pushModelMatrix()`]: book/cinder/gl/pushModelMatrix.md
-[`gl::popModelMatrix()`]: book/cinder/gl/popModelMatrix.md
-[`setup()`]: book/cinder/app/AppBase.md#setup
+[`gl::translate()`]: cinder/gl/translate.md
+[`gl::rotate()`]: cinder/gl/rotate.md
+[`gl::scale()`]: cinder/gl/scale.md
+[`gl::pushModelMatrix()`]: cinder/gl/pushModelMatrix.md
+[`gl::popModelMatrix()`]: cinder/gl/popModelMatrix.md
+[`setup()`]: cinder/app/AppBase.md#setup
 
 <br>
 <br>
@@ -211,10 +211,10 @@ In this example, creating our variable scpModelMtx  preserves the Model matrix a
 
 Additionally, it’s worth noting that Cinder now caches virtually all state in a class called [`gl::Context`]. This allows Cinder to save and restore state quickly without querying GL for the active values. As a result, it’s safe and fast to use these `gl:: Scoped*`  family of classes for preserving state.
 
-[`gl::ScopedModelMatrix`]: book/cinder/gl/ScopedModelMatrix.md
-[`gl::ScopedColor`]: book/cinder/gl/ScopedColor.md
-[`gl::ScopedTextureBind`]: book/cinder/gl/ScopedTextureBind.md
-[`gl::Context`]: book/cinder/gl/Context.md
+[`gl::ScopedModelMatrix`]: cinder/gl/ScopedModelMatrix.md
+[`gl::ScopedColor`]: cinder/gl/ScopedColor.md
+[`gl::ScopedTextureBind`]: cinder/gl/ScopedTextureBind.md
+[`gl::Context`]: cinder/gl/Context.md
 
 <br>
 <br>
@@ -227,7 +227,7 @@ While [`gl::ShaderDef`] is helpful for basic shaders - in addition to `.color()`
 
 We’ll keep the same circle example, and write a shader that takes the place of our ShaderDef-created version. For the purposes of this example, we’ll make use of the [`CI_GLSL()`] macro, which allows writing GLSL code inline. Our setup routine looks like this now:
 
-[`CI_GLSL()`]: book/cinder/gl/CI_GLSL.md
+[`CI_GLSL()`]: cinder/gl/CI_GLSL.md
 
 ```cpp
 void MyApp::setup()
