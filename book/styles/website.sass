@@ -1,0 +1,97 @@
+html
+  font-size: 55%
+
+.book .book-body .page-wrapper .page-inner section.normal
+  table
+    // Shrink tables to their actual sizes
+    width: auto
+  ol, ul
+    margin-bottom: .85em
+
+// Bug-fix
+// Lists have 0 margin-bottom, and p has 0 margin-top,
+// resulting in contact between the two.
+
+code
+  color: #c7254e
+
+pre
+  border: 1px solid #EFEFEF
+  line-height: 1.1
+  code
+    color: rgb(51, 51, 51)
+
+// Make sidebar more like GitHub
+nav
+  top: 30px
+  position: absolute
+
+ul.summary > li.chapter
+  padding-top: 10px
+
+// Make main body and sidebar the full length
+// of the page; 1 scrollbar
+
+.book
+    // Use inactive elements as categories
+    .book-summary
+        width: 250px
+        border: none
+        background: transparent
+
+        ul.summary
+            position: static
+            top: 0
+            left: 10px
+            right: 10px
+            border-radius: 5px
+            border: 1px solid rgb(230, 230, 230)
+            padding: 5px
+            margin: 10px
+
+            li
+                a
+                    padding: 4px 10px
+                    font-size: 0.9em
+
+                span
+                    cursor: auto
+                    opacity: 1
+                    font-weight: bold
+                
+                // Hide link to GitBook
+                a.gitbook-link, ul.summary > li.divider
+                    display: none
+      
+    .book-body
+        position: absolute
+        top: 0
+        left: 0
+        overflow-y: visible
+        right: 0
+
+    .body-inner
+        position: absolute
+        top: 0
+        left: 0
+        overflow-y: visible
+        right: 0
+
+    .page-wrapper .page-inner section.normal blockquote
+        color: #AAA
+        background: none
+        border-left: 5px solid #F1F1F1
+        padding-left: 8px
+
+.book .book-body, .book .book-body .body-inner
+    bottom: auto;
+
+.modified-date
+  color: #ddd
+  text-align: right
+  padding-top: 50px
+  font-size: 0.8em
+
+// Hide numbering
+.summary .chapter b
+  display: none
