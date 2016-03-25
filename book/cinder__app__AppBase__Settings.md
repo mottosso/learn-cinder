@@ -63,9 +63,17 @@ Startup settings, used during App construction. They are modified before the app
 
 ```cpp
 #include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
-// Pass to instanatiation macro as a lambda.
-CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+using namespace ci;
+using namespace ci::app;
+
+class BasicApp : public App {};
+
+// This line tells Cinder to actually create and run the application.
+CINDER_APP( BasicApp, RendererGl, [&](App::Settings *settings) {
     settings->setWindowSize(1280, 720);
+    settings->setTitle("My App");
 })
 ```
