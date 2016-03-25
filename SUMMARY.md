@@ -13,7 +13,7 @@
    * gl
        * Batch
        * ShaderDef
-       * getStockShader
+       * getStockShader()
        * GlslProg
        * bindStockShader()
        * translate()
