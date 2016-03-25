@@ -13,7 +13,7 @@
    * gl
        * Batch
        * ShaderDef
-       * glGetStockShader
+       * getStockShader
        * GlslProg
        * bindStockShader
 
