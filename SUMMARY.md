@@ -23,6 +23,7 @@
        * ScopedModelMatrix
        * ScopedColor
        * ScopedTextureBind
+       * Context
    * geom
        * Circle
        * Sphere
