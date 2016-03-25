@@ -2,6 +2,7 @@
 cmake_minimum_required( VERSION 2.8 FATAL_ERROR )
 set( CMAKE_VERBOSE_MAKEFILE on )
 
+set( CINDER_DIR $ENV{CINDER} )
 include( $ENV{CINDER}/linux/cmake/Cinder.cmake )
 
 project( Addison )
@@ -9,10 +10,11 @@ project( Addison )
 get_filename_component( SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../src" ABSOLUTE )
 get_filename_component( INC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../include" ABSOLUTE )
 
+
 if( NOT TARGET cinder${CINDER_LIB_SUFFIX} )
     find_package( cinder REQUIRED
         PATHS $ENV{CINDER}/linux/${CMAKE_BUILD_TYPE}/${CINDER_OUT_DIR_PREFIX}
-        $ENV{Cinder_DIR}/linux/${CMAKE_BUILD_TYPE}/${CINDER_OUT_DIR_PREFIX}
+        $ENV{CINDER}/linux/${CMAKE_BUILD_TYPE}/${CINDER_OUT_DIR_PREFIX}
     )
 endif()
 
