@@ -91,19 +91,34 @@ void MyApp::draw()
 }
 ```
 
-This code touches on several different new concepts. First, we’re using our [`ShaderDef`] slightly differently. Rather than binding it using gl::bindStockShader(), we’re using [`gl::getStockShader`], which returns a proper [`GlslProgRef`] based on a ShaderDef. Next, we construct a gl::Batch. The constructor (called via create()) accepts geometry as the first parameter and a GlslProgRef as the second parameter - in our case the one we just generated with getStockShader().
+This code touches on several different new concepts. First, we’re using our [`gl::ShaderDef`] slightly differently. Rather than binding it using [`gl::bindStockShader()`], we’re using [`gl::getStockShader()`], which returns a proper [`gl::GlslProgRef`] based on a [`gl::ShaderDef`]. Next, we construct a [`gl::Batch`]. The constructor (called via create()) accepts geometry as the first parameter and a [`gl::GlslProgRef`] as the second parameter - in our case the one we just generated with [`gl::getStockShader()`].
 
-[`GlslProgRef`]: book/cinder__gl__GlslProg.md
-[`gl::getStockShader`]: book/cinder__gl__getStockShader.md
-[`ShaderDef`]: book/cinder__gl__ShaderDef.md
+Let’s look at the first parameter to our Batch construction, the geometry portion..
 
-Let’s look at the first parameter to our Batch construction, the geometry portion: geom::Circle().center( 100, 100 ).radius( 50 ) . This uses geom::Circle(), which is one of many classes provided with Cinder that can be used to create geometry. Other examples include geom::Sphere(), geom::Teapot(), geom::WireCone(), and many others. The pairing of one of these geom::Sources (or another source of geometry, such as a TriMesh or a VboMesh) with a shader (GlslProg) is expressed with a gl::Batch.
+```cpp
+geom::Circle().center( 100, 100 ).radius( 50 )
+```
 
+This uses [`geom::Circle()`], which is one of many classes provided with Cinder that can be used to create geometry. Other examples include [`geom::Sphere()`], [`geom::Teapot()`], [`geom::WireCone()`], and many others. The pairing of one of these [`geom::Sources`] (or another source of geometry, such as a TriMesh or a VboMesh) with a shader (GlslProg) is expressed with a gl::Batch.
 
-To draw a gl::Batch we simply use its draw() member method. Notice that we still set the color with gl::color(). Cinder “knows” that the Batch’s shader requires the current color, and it passes it along in a uniform automatically. We’ll look at how that machinery works later.
+To draw a gl::Batch we simply use its draw() member method. Notice that we still set the color with [`gl::color()`]. Cinder “knows” that the Batch’s shader requires the current color, and it passes it along in a uniform automatically. We’ll look at how that machinery works later.
 
+[`geom::Sources()`]: book/cinder__geom__Sources.md
+[`geom::Sphere()`]: book/cinder__geom__Sphere.md
+[`geom::Teapot()`]: book/cinder__geom__Teapot.md
+[`geom::WireCone()`]: book/cinder__geom__WireCone.md
+[`geom::Circle()`]: book/cinder__geom__Circle.md
+[`gl::GlslProgRef`]: book/cinder__gl__GlslProg.md
+[`gl::getStockShader()`]: book/cinder__gl__getStockShader.md
+[`gl::bindStockShader()`]: book/cinder__gl__bindStockShader.md
+[`gl::ShaderDef`]: book/cinder__gl__ShaderDef.md
+[`gl::color()`]: book/cinder__gl__color.md
 
-Transformations
+<br>
+<br>
+<br>
+
+### Transformations
 
 In previous versions of OpenGL (and Cinder), there was a global stack of two matrices, one for the ModelView matrix, and one for the Projection matrix. Users manipulated these stacks with functions like glTranslatef() or in Cinder, gl::translate(). In modern GL these stacks are removed entirely. However Cinder still provides this useful functionality through the same methods - gl::translate(), gl::scale(), gl::rotate(), etc.
 
