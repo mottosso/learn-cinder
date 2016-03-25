@@ -91,8 +91,10 @@ void MyApp::draw()
 }
 ```
 
-This code touches on several different new concepts. First, we’re using our [`ShaderDef`] slightly differently. Rather than binding it using gl::bindStockShader(), we’re using gl::getStockShader(), which returns a proper GlslProgRef based on a ShaderDef. Next, we construct a gl::Batch. The constructor (called via create()) accepts geometry as the first parameter and a GlslProgRef as the second parameter - in our case the one we just generated with getStockShader().
+This code touches on several different new concepts. First, we’re using our [`ShaderDef`] slightly differently. Rather than binding it using gl::bindStockShader(), we’re using [`gl::getStockShader`], which returns a proper [`GlslProgRef`] based on a ShaderDef. Next, we construct a gl::Batch. The constructor (called via create()) accepts geometry as the first parameter and a GlslProgRef as the second parameter - in our case the one we just generated with getStockShader().
 
+[`GlslProgRef`]: book/cinder__gl__GlslProg.md
+[`gl::getStockShader`]: book/cinder__gl__getStockShader.md
 [`ShaderDef`]: book/cinder__gl__ShaderDef.md
 
 Let’s look at the first parameter to our Batch construction, the geometry portion: geom::Circle().center( 100, 100 ).radius( 50 ) . This uses geom::Circle(), which is one of many classes provided with Cinder that can be used to create geometry. Other examples include geom::Sphere(), geom::Teapot(), geom::WireCone(), and many others. The pairing of one of these geom::Sources (or another source of geometry, such as a TriMesh or a VboMesh) with a shader (GlslProg) is expressed with a gl::Batch.
