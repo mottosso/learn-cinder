@@ -10,4 +10,5 @@
            * [Settings](book/cinder__app__AppBase__Settings.md)
        * [MouseEvent](book/cinder__app__MouseEvent.md)
    * gl
+       * Batch
 
