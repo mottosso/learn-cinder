@@ -1,3 +1,5 @@
+![image](https://cloud.githubusercontent.com/assets/2152766/14053112/080dd7f8-f2c7-11e5-9629-2d8211dcb2fc.png)
+
 ### Getting Started
 
 This guide is written with users of previous versions of Cinder in mind, and is meant to aid in the transition to Cinder’s new OpenGL API in version 0.9.0.
@@ -162,6 +164,8 @@ Let’s look at this routine.
 
 A for-loop iterates from 0 to 2 pi radians. Within the loop we preserve the current Model matrix using [`gl::pushModelMatrix()`]. We then translate the current Model transformation to the window center plus a bit of trigonometry to arrange the circles’ centers in a larger circle of radius 200. Next we set the current color using HSV color, and then draw our [`gl::Batch`]. Note that this draw command is “aware” of the current Model matrix (not to mention View and Projection) as well as the current color automatically. Finally, we restore the Model matrix to what it was previous to this iteration of the loop, using [`gl::popModelMatrix()`].
 
+![image](https://cloud.githubusercontent.com/assets/2152766/14053127/2591f62e-f2c7-11e5-81a3-8053670c19ff.png)
+
 [`glMatrixMode()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glMatrixMode.xml
 [`glTranslatef()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glTranslate.xml
 [`gl::translate()`]: book/cinder__gl__translate.md
@@ -215,94 +219,78 @@ While [`gl::ShaderDef`] is helpful for basic shaders - in addition to `.color()`
 
 We’ll keep the same circle example, and write a shader that takes the place of our ShaderDef-created version. For the purposes of this example, we’ll make use of the [`CI_GLSL()`] macro, which allows writing GLSL code inline. Our setup routine looks like this now:
 
-[`CI_GLSL`]: book/cinder__gl__CI_GLSL.md
+[`CI_GLSL()`]: book/cinder__gl__CI_GLSL.md
 
+```cpp
 void MyApp::setup()
-
 {
-
   gl::GlslProgRef solidShader = gl::GlslProg::create(
-
-  // vertex code
-
+     // vertex code
      CI_GLSL( 150,
-
        uniform mat4        ciModelViewProjection;
 
-
        in vec4                ciPosition;
-
        in vec4                ciColor;
-
 
        out lowp vec4        Color;
 
-
        void main( void )
-
        {
-
          gl_Position        = ciModelViewProjection * ciPosition;
-
          Color              = ciColor;
-
        }
-
      ),
-
      // fragment code
-
      CI_GLSL( 150,
-
        in vec4          Color;
-
        out vec4         oColor;
 
-
        void main( void )
-
        {
-
          oColor = Color;
-
        }
+     )
+  );
 
-     ) );
-
-        
-
-     mCircleBatch = gl::Batch::create( geom::Circle().radius( 30 ), solidShader );
-
+  mCircleBatch = gl::Batch::create(
+    geom::Circle()
+      .radius(30),
+    solidShader
+  );
 }
+```
 
 
-And just to reiterate, if we had written files named say, solidColor.vert  and solidColor.frag  and stored them as files in our assets  directory - a more common workflow - we’d see a line like this instead of the CI_GLSL macros:
+And just to reiterate, if we had written files named say, `solidColor.vert`  and `solidColor.frag` and stored them as files in our assets  directory - a more common workflow - we’d see a line like this instead of the CI_GLSL macros:
 
-GlslProgRef solidShader = gl::GlslProg::create( loadAsset( “solidColor.vert” ), loadAsset( “solidColor.frag” ) );
-
+```cpp
+GlslProgRef solidShader = gl::GlslProg::create(
+  loadAsset("solidColor.vert"),
+  loadAsset("solidColor.frag")
+);
+```
 
 Looking at our GLSL code above, you’ll see a few distinctive things. First, we have both uniforms and attributes with the prefix ci  - ciModelViewProjection, as well as attributes ciPosition and ciColor. These names are special, and serve as signals to Cinder to automatically fill in their values appropriately. As you might imagine, ciModelViewProjection is equivalent to the current Model, View and Projection matrices concatenated into a single mat4. If you have been writing GLSL shaders in prior OpenGL versions, you likely used the now defunct gl_ModelViewProjectionMatrix variable for this.
 
 
-Similarly, there are automatically recognized vertex attributes; in the example above they are ciPosition and ciColor. In the case of ciPosition, this attribute is automatically supplied by our geom::Circle. ciColor is similar but has a unique caveat. If our geom::Source had supplied a color, the shader would have used it. However Cinder automatically supplies the global current color (set via gl::color()) in the absence of a per-vertex color. As an experiment, let’s try slightly different geometry that does supply per-vertex color. If we change the Batch assignment in setup() out like this:
+Similarly, there are automatically recognized vertex attributes; in the example above they are ciPosition and ciColor. In the case of ciPosition, this attribute is automatically supplied by our [`geom::Circle`]. ciColor is similar but has a unique caveat. If our `geom::Source*` had supplied a color, the shader would have used it. However Cinder automatically supplies the global current color (set via [`gl::color()`]) in the absence of a per-vertex color. As an experiment, let’s try slightly different geometry that does supply per-vertex color. If we change the Batch assignment in [`setup()`] out like this:
 
-
+```cpp
 ColorAf green( 0, 1, 0 ), blue( 0, 0, 1 );
-
-mBatch = gl::Batch::create( geom::Rect().colors( green, green, blue, blue ).
-
-                        rect( Rectf( -15, -10, 15, 10 ) ), solidShader );
-
-
+mBatch = gl::Batch::create(
+  geom::Rect()
+    .colors(green, green, blue, blue)
+    .rect(Rectf(-15, -10, 15, 10)),
+  solidShader
+);
+```
 
 We see this:
 
-  
-
+![image](https://cloud.githubusercontent.com/assets/2152766/14053136/387b1d42-f2c7-11e5-8336-758fff591a63.png)
 
 
 Here we see the global color is ignored as geom::Rect has generated per-vertex colors upon our request. For the curious, this automatic variable uploading occurs in the Batch::draw() call, and it can be invoked manually in advanced usage scenarios. Furthermore, there are mechanisms for manually configuring the mapping to attributes and uniforms in GlslProg::Format for users that have some reason to use a non - default configuration.
-
 
 Conclusion
 
