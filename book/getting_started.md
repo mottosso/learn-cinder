@@ -125,15 +125,9 @@ To draw a gl::Batch we simply use its draw() member method. Notice that we still
 
 In previous versions of OpenGL (and Cinder), there was a global stack of two matrices, one for the ModelView matrix, and one for the Projection matrix. Users manipulated these stacks with functions like [`glTranslatef()`] or in Cinder, [`gl::translate()`]. In modern GL these stacks are removed entirely. However Cinder still provides this useful functionality through the same methods - [`gl::translate()`], [`gl::scale()`], [`gl::rotate()`], etc.
 
-One key difference is that Cinder now separates the Model and View matrices. Calls to [`gl::translate()`] et al manipulate the active Model matrix; there is no longer the concept of the matrix mode (formerly manipulated with the now defunct [`glMatrixMode()`]). Here’s an example; we can adapt the code above to draw a number of circles in a circular arrangement, all using the same gl::Batch.
+One key difference is that Cinder now separates the Model and View matrices. Calls to [`gl::translate()`] et al manipulate the active Model matrix; there is no longer the concept of the matrix mode (formerly manipulated with the now defunct [`glMatrixMode()`]). Here’s an example; we can adapt the code above to draw a number of circles in a circular arrangement, all using the same [`gl::Batch`].
 
-[`glMatrixMode()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glMatrixMode.xml
-[`glTranslatef()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glTranslate.xml
-[`gl::translate()`]: book/cinder__gl__translate.md
-[`gl::rotate()`]: book/cinder__gl__rotate.md
-[`gl::scale()`]: book/cinder__gl__scale.md
-
-First a modification to our setup() routine to create our [`geom::Circle`] at the default origin, rather than at `vec2(100, 100)` as previously. We’ll also shrink the radius a bit:
+First a modification to our [`setup()`] routine to create our [`geom::Circle()`] at the default origin, rather than at `vec2(100, 100)` as previously. We’ll also shrink the radius a bit:
 
 ```cpp
 mCircleBatch = gl::Batch::create(
@@ -164,29 +158,45 @@ void MyApp::draw()
 }
 ```
 
-Let’s look at this routine. A for-loop iterates from 0 to 2 pi radians. Within the loop we preserve the current Model matrix using gl::pushModelMatrix(). We then translate the current Model transformation to the window center plus a bit of trigonometry to arrange the circles’ centers in a larger circle of radius 200. Next we set the current color using HSV color, and then draw our gl::Batch. Note that this draw command is “aware” of the current Model matrix (not to mention View and Projection) as well as the current color automatically. Finally, we restore the Model matrix to what it was previous to this iteration of the loop, using gl::popModelMatrix().
+Let’s look at this routine.
 
+A for-loop iterates from 0 to 2 pi radians. Within the loop we preserve the current Model matrix using [`gl::pushModelMatrix()`]. We then translate the current Model transformation to the window center plus a bit of trigonometry to arrange the circles’ centers in a larger circle of radius 200. Next we set the current color using HSV color, and then draw our [`gl::Batch`]. Note that this draw command is “aware” of the current Model matrix (not to mention View and Projection) as well as the current color automatically. Finally, we restore the Model matrix to what it was previous to this iteration of the loop, using [`gl::popModelMatrix()`].
 
- 
+[`glMatrixMode()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glMatrixMode.xml
+[`glTranslatef()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glTranslate.xml
+[`gl::translate()`]: book/cinder__gl__translate.md
+[`gl::rotate()`]: book/cinder__gl__rotate.md
+[`gl::scale()`]: book/cinder__gl__scale.md
+[`gl::pushModelMatrix()`]: book/cinder__gl__pushModelMatrix.md
+[`gl::popModelMatrix()`]: book/cinder__gl__popModelMatrix.md
+[`setup()`]: book/cinder__app__AppBase.md#setup
 
+<br>
+<br>
+<br>
 
-Scoped Utilities and State
+### Scoped Utilities and State
 
-In Cinder 0.9.0 you’ll see a number of classes which begin with gl::Scoped in the name. Examples include gl::ScopedModelMatrix, gl::ScopedColor, and gl::ScopedTextureBind. While there are other ways to achieve the same thing, these classes are efficient and easy to use. They are designed around RAII, preserving a given piece of state on instantiation and restoring it on destruction. As an example, let’s rework the previous for-loop to use a gl::ScopedModelMatrix:
+In Cinder 0.9.0 you’ll see a number of classes which begin with gl::Scoped in the name; such as [`gl::ScopedModelMatrix`], [`gl::ScopedColor`], and [`gl::ScopedTextureBind`].
 
+While there are other ways to achieve the same thing, these classes are efficient and easy to use. They are designed around RAII, preserving a given piece of state on instantiation and restoring it on destruction. As an example, let’s rework the previous for-loop to use a gl::ScopedModelMatrix:
 
-  for( float angle = 0; angle < 2 * M_PI; angle += 0.2f ) {
+[`gl::ScopedModelMatrix`]: book/cinder__gl__ScopedModelMatrix.md
+[`gl::ScopedColor`]: book/cinder__gl__ScopedColor.md
+[`gl::ScopedTextureBind`]: book/cinder__gl__ScopedTextureBind.md
 
+```cpp
+  for (float angle = 0; angle < 2 * M_PI; angle += 0.2f) {
     gl::ScopedModelMatrix scpModelMtx;
-
-    gl::translate( getWindowCenter() + 200.0f * vec2( sin( angle ), cos( angle ) ) );
-
-    gl::color( Color( CM_HSV, angle / (2 * M_PI), 1, 1 ) );
-
+    gl::translate(
+      getWindowCenter() + 200.0f * vec2(sin(angle), cos(angle))
+    );
+    gl::color(
+      Color(CM_HSV, angle / (2 * M_PI), 1, 1)
+    );
     mCircleBatch->draw();
-
   }
-
+```
 
 In this example, creating our variable scpModelMtx  preserves the Model matrix at its point of instantiation. We then manipulate the Model matrix using gl::translate(). And when the destructor for scpModelMtx  fires at the end of the loop iteration, it will restore the Model matrix to its value when scpModelMtx  was instantiated.
 
