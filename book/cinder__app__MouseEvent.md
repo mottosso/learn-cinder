@@ -87,12 +87,6 @@ void BasicApp::keyDown(KeyEvent event)
     if(event.getCode() == KeyEvent::KEY_SPACE) {
         mPoints.clear();
     }
-    else if(event.getCode() == KeyEvent::KEY_ESCAPE) {
-        if(isFullScreen())
-            setFullScreen(false);
-        else
-            quit();
-    }
 }
 
 void BasicApp::draw()
