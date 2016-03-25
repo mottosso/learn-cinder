@@ -2,5 +2,5 @@
     "styles": {
         "website": "book/styles/website.sass"
     },
-    "plugins": ["styles-sass"],
+    "plugins": ["styles-sass"]
 }
