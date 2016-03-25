@@ -1,6 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
+* [Getting Started](book/getting_started.md)
 * [Installation Guide](book/installation_guide.md)
    * [Ubuntu 14.04](book/building_on_ubuntu14.md)
 * API
