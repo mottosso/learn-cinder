@@ -4,7 +4,7 @@ Startup settings, used during App construction. They are modified before the app
 
 | Namespace |
 |------------
-| `cinder::app::BaseApp::Settings`
+| [`cinder::app::BaseApp::Settings`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base_1_1_settings.html)
 
 <br>
 <br>
