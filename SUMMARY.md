@@ -20,6 +20,7 @@
        * scale()
        * rotate()
        * pushModelMatrix()
+       * ScopedModelMatrix
    * geom
        * Circle
        * Sphere
