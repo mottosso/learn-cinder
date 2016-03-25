@@ -7,4 +7,5 @@
    * [app](book/cinder__app.md)
        * [BaseApp](book/cinder__app__App.md)
            * [Settings](book/cinder__app__AppBase__Settings.md)
+       * AppMsw
 
