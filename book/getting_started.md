@@ -99,7 +99,7 @@ Let’s look at the first parameter to our Batch construction, the geometry port
 geom::Circle().center( 100, 100 ).radius( 50 )
 ```
 
-This uses [`geom::Circle()`], which is one of many classes provided with Cinder that can be used to create geometry. Other examples include [`geom::Sphere()`], [`geom::Teapot()`], [`geom::WireCone()`], and many others. The pairing of one of these [`geom::Source`]'s (or another source of geometry, such as a [`TriMesh`] or a [`VboMesh`]) with a shader (GlslProg) is expressed with a gl::Batch.
+This uses [`geom::Circle()`], which is one of many classes provided with Cinder that can be used to create geometry. Other examples include [`geom::Sphere()`], [`geom::Teapot()`], [`geom::WireCone()`], and many others. The pairing of one of these [`geom::Source`]'s (or another source of geometry, such as a [`TriMesh`] or a [`VboMesh`]) with a shader (i.e. [`gl::GlslProg`]) is expressed with a [`gl::Batch`].
 
 To draw a gl::Batch we simply use its draw() member method. Notice that we still set the color with [`gl::color()`]. Cinder “knows” that the Batch’s shader requires the current color, and it passes it along in a uniform automatically. We’ll look at how that machinery works later.
 
@@ -111,6 +111,7 @@ To draw a gl::Batch we simply use its draw() member method. Notice that we still
 [`geom::WireCone()`]: book/cinder__geom__WireCone.md
 [`geom::Circle()`]: book/cinder__geom__Circle.md
 [`gl::GlslProgRef`]: book/cinder__gl__GlslProg.md
+[`gl::GlslProg`]: book/cinder__gl__GlslProg.md
 [`gl::getStockShader()`]: book/cinder__gl__getStockShader.md
 [`gl::bindStockShader()`]: book/cinder__gl__bindStockShader.md
 [`gl::ShaderDef`]: book/cinder__gl__ShaderDef.md
@@ -122,44 +123,46 @@ To draw a gl::Batch we simply use its draw() member method. Notice that we still
 
 ### Transformations
 
-In previous versions of OpenGL (and Cinder), there was a global stack of two matrices, one for the ModelView matrix, and one for the Projection matrix. Users manipulated these stacks with functions like glTranslatef() or in Cinder, gl::translate(). In modern GL these stacks are removed entirely. However Cinder still provides this useful functionality through the same methods - gl::translate(), gl::scale(), gl::rotate(), etc.
+In previous versions of OpenGL (and Cinder), there was a global stack of two matrices, one for the ModelView matrix, and one for the Projection matrix. Users manipulated these stacks with functions like [`glTranslatef()`] or in Cinder, [`gl::translate()`]. In modern GL these stacks are removed entirely. However Cinder still provides this useful functionality through the same methods - [`gl::translate()`], [`gl::scale()`], [`gl::rotate()`], etc.
 
+One key difference is that Cinder now separates the Model and View matrices. Calls to [`gl::translate()`] et al manipulate the active Model matrix; there is no longer the concept of the matrix mode (formerly manipulated with the now defunct [`glMatrixMode()`]). Here’s an example; we can adapt the code above to draw a number of circles in a circular arrangement, all using the same gl::Batch.
 
-One key difference is that Cinder now separates the Model and View matrices. Calls to gl::translate() et al manipulate the active Model matrix; there is no longer the concept of the matrix mode (formerly manipulated with the now defunct glMatrixMode()). Here’s an example; we can adapt the code above to draw a number of circles in a circular arrangement, all using the same gl::Batch.
+[`glMatrixMode()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glMatrixMode.xml
+[`glTranslatef()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glTranslate.xml
+[`gl::translate()`]: book/cinder__gl__translate.md
+[`gl::rotate()`]: book/cinder__gl__rotate.md
+[`gl::scale()`]: book/cinder__gl__scale.md
 
+First a modification to our setup() routine to create our [`geom::Circle`] at the default origin, rather than at `vec2(100, 100)` as previously. We’ll also shrink the radius a bit:
 
-First a modification to our setup() routine to create our geom::Circle at the default origin, rather than at vec2( 100, 100 ) as previously. We’ll also shrink the radius a bit:
+```cpp
+mCircleBatch = gl::Batch::create(
+  geom::Circle()
+    .radius(30),
+  solidShader
+);
+```
 
+And now in `draw()`, we’ll do the following:
 
-mCircleBatch = gl::Batch::create( geom::Circle().radius( 30 ), solidShader );
-
-
-And now in draw(), we’ll do the following:
-
+```cpp
 void MyApp::draw()
-
 {
+  gl::clear();        
 
-  gl::clear();
-
-        
-
-  for( float angle = 0; angle < 2 * M_PI; angle += 0.2f ) {
-
+  for (float angle = 0; angle < 2 * M_PI; angle += 0.2f) {
     gl::pushModelMatrix();
-
-    gl::translate( getWindowCenter() + 200.0f * vec2( sin( angle ), cos( angle ) ) );
-
-    gl::color( Color( CM_HSV, angle / (2 * M_PI), 1, 1 ) );
-
+    gl::translate(
+      getWindowCenter() + 200.0f * vec2(sin(angle), cos(angle))
+    );
+    gl::color(
+      Color(CM_HSV, angle / (2 * M_PI), 1, 1)
+    );
     mCircleBatch->draw();
-
     gl::popModelMatrix();
-
   }
-
 }
-
+```
 
 Let’s look at this routine. A for-loop iterates from 0 to 2 pi radians. Within the loop we preserve the current Model matrix using gl::pushModelMatrix(). We then translate the current Model transformation to the window center plus a bit of trigonometry to arrange the circles’ centers in a larger circle of radius 200. Next we set the current color using HSV color, and then draw our gl::Batch. Note that this draw command is “aware” of the current Model matrix (not to mention View and Projection) as well as the current color automatically. Finally, we restore the Model matrix to what it was previous to this iteration of the loop, using gl::popModelMatrix().
 
