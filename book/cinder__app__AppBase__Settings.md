@@ -65,8 +65,7 @@ Startup settings, used during App construction. They are modified before the app
 #include "cinder/app/App.h"
 
 // Pass to instanatiation macro as a lambda.
-CINDER_APP(SimpleReceiverApp, RendererGl, [](App::Settings *settings) {
-	settings->setConsoleWindowEnabled();
-	settings->setMultiTouchEnabled( false );
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(1280, 720);
 })
 ```
