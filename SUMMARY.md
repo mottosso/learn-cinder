@@ -20,4 +20,5 @@
        * Circle
        * Sphere
        * Teapot
+       * WireCone
 
