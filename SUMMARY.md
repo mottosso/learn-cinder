@@ -15,4 +15,5 @@
        * ShaderDef
        * glGetStockShader
        * GlslProg
+       * bindStockShader
 
