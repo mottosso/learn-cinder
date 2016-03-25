@@ -1,4 +1,4 @@
-### BaseApp
+### AppBase
 
 Baseclass to platform specific App subclasses.
 
