@@ -2,10 +2,11 @@
 
 * [Introduction](README.md)
 * [Installation Guide](book/installation_guide.md)
-  * [Ubuntu 14.04](book/building_on_ubuntu14.md)
+   * [Ubuntu 14.04](book/building_on_ubuntu14.md)
 * API
 * [cinder](book/cinder.md)
    * [app](book/cinder__app.md)
        * [AppBase](book/cinder__app__AppBase.md)
            * [Settings](book/cinder__app__AppBase__Settings.md)
+       * MouseEvent
 
