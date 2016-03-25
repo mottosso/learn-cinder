@@ -13,4 +13,5 @@
    * gl
        * Batch
        * ShaderDef
+       * glGetStockShader
 
