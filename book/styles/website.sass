@@ -19,9 +19,11 @@ pre
 
 // Make sidebar more like GitHub
 nav
-  top: 30px
-  width: 200px
-  position: absolute
+  min-width: 250px;
+  position: fixed;
+  overflow-y: scroll;
+  height: 100%;
+  background: #222
 
 ul.summary > li.chapter
   padding-top: 10px
@@ -37,11 +39,6 @@ ul.summary > li.chapter
 
         ul.summary
             position: static
-            top: 0
-            left: 10px
-            right: 10px
-            border-radius: 5px
-            border: 1px solid rgb(230, 230, 230)
             padding: 5px
             margin: 10px
 

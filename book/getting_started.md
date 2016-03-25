@@ -1,7 +1,5 @@
 ![image](https://cloud.githubusercontent.com/assets/2152766/14053112/080dd7f8-f2c7-11e5-9629-2d8211dcb2fc.png)
 
-### Getting Started
-
 This guide is written with users of previous versions of Cinder in mind, and is meant to aid in the transition to Cinder’s new OpenGL API in version 0.9.x.
 
 > Source - [forum.libcinder.org](https://forum.libcinder.org/#Topic/23286000002367065)
@@ -50,7 +48,7 @@ gl::bindStockShader( gl::ShaderDef().color() );
 gl::drawSolidCircle( vec2( 100, 100 ), 50 );
 ```
 
-As in previous versions, gl::drawSolidCircle() takes a center point and a radius. However the preceding line is new. [`gl::bindStockShader()`] accepts a [`gl::ShaderDef`] and either generates a shader (a [`gl::GlslProg`]) as is necessary. It also caches these [`gl::GlslProg`]'s to avoid unnecessary compilation. In this example, we’re using `.color()` on the [`gl::ShaderDef`] in order to request that the current color be used, which defaults to white.
+As in previous versions, [`gl::drawSolidCircle()`] takes a center point and a radius. However the preceding line is new. [`gl::bindStockShader()`] accepts a [`gl::ShaderDef`] and either generates a shader (a [`gl::GlslProg`]) as is necessary. It also caches these [`gl::GlslProg`]'s to avoid unnecessary compilation. In this example, we’re using `.color()` on the [`gl::ShaderDef`] in order to request that the current color be used, which defaults to white.
 
 To make our circle red we use the same function we’d use in previous versions, `gl::color()`:
 
