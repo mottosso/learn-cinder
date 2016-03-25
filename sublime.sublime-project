@@ -1,0 +1,50 @@
+{
+	"build_systems":
+	[
+		{
+			"cmd":
+			[
+				"./cibuild",
+				"-j",
+				"8",
+				"-b",
+				"Debug",
+				"-v",
+				"-r"
+			],
+			"name": "Cinder for Linux | Desktop",
+			"syntax": "Packages/ANSIescape/ANSI.tmLanguage",
+			"target": "ansi_color_build",
+			"variants":
+			[
+				{
+					"cmd":
+					[
+						"./cibuild",
+						"-j",
+						"8",
+						"-b",
+						"Debug",
+						"-v"
+					],
+					"name": "Full Rebuild"
+				},
+				{
+					"cmd":
+					[
+						"cibuild",
+						"clean"
+					],
+					"name": "Clean"
+				}
+			],
+			"working_dir": "$file_path/../linux"
+		}
+	],
+	"folders":
+	[
+		{
+			"path": "."
+		},
+	]
+}
