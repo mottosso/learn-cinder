@@ -12,4 +12,5 @@
        * [MouseEvent](book/cinder__app__MouseEvent.md)
    * gl
        * Batch
+       * ShaderDef
 
