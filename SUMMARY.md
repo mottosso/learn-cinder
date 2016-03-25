@@ -16,4 +16,5 @@
        * getStockShader
        * GlslProg
        * bindStockShader
+   * geom
 
