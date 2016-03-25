@@ -24,6 +24,7 @@
        * ScopedColor
        * ScopedTextureBind
        * Context
+       * CI_GLSL
    * geom
        * Circle
        * Sphere
