@@ -22,6 +22,7 @@
        * pushModelMatrix()
        * ScopedModelMatrix
        * ScopedColor
+       * ScopedTextureBind
    * geom
        * Circle
        * Sphere
