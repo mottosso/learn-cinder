@@ -7,8 +7,13 @@ Notes and examples for getting started with [libcinder](https://libcinder.org/).
 On Visual Studio 2013 only, the Cinder installation must reside at `%CINDER%`.
 
 ```bash
+# Windows
 $ set CINDER=c:\path\to\cinder_0.9.0_vc2013
 $ devenv
+
+# Ubuntu
+$ export CINDER=/path/to/cinder
+$ subl
 ```
 
 ### API Reference
