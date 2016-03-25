@@ -23,4 +23,5 @@
        * WireCone
        * Source
    * TriMesh
+   * VboMesh
 
