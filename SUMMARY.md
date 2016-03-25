@@ -2,7 +2,7 @@
 
 * [Introduction](README.md)
 * [Installation Guide](book/installation_guide.md)
-* Namespaces
+* API
 * [cinder](book/cinder.md)
    * [app](book/cinder__app.md)
        * [AppBase](book/cinder__app__AppBase.md)
