@@ -6,6 +6,8 @@
 
 Draws a filled circle centered around center with a radius of radius . Default `numSegments` requests a conservative (high-quality, but slow) number based on radius.
 
+> Using a GL convenience method should always be considered the slow path . They're fine for initial development or code that is not performance-sensitive, but the techniques we'll discuss next should always be preferred when speed counts.
+
 <br>
 <br>
 <br>

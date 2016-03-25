@@ -31,6 +31,7 @@ void MyApp::draw()
 {
     gl::clear(Color::gray(0.1f));
     gl::bindStockShader(gl::ShaderDef().color());
+    gl::color(1.0f, 1.0f, 1.0f); // default
     gl::drawSolidCircle(getWindowCenter(), 20.0f);
 }
 
