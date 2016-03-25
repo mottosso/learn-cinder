@@ -1,17 +1,22 @@
-### App
+### BaseApp
 
-Alias for an appropriate superclass for the current platform.
-
-E.g.
-
-- [AppMsw](cinder__app__AppMsw.md)
-- [AppMac](cinder__app__AppMac.md)
-- [AppWinRt](cinder__app__AppMsw.md)
-
+Baseclass to platform specific App subclasses.
 
 | Namespace |
-|------------
-| `cinder::app::BaseApp`
+|-----------|
+| [`cinder::app::BaseApp`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base.html)
+
+<br>
+<br>
+<br>
+
+### Description
+
+Use `cinder::app::App` which is an alias for an appropriate baseclass relative the current platform.
+
+- [AppMsw](cinder__app__AppMsw.md) on Windows
+- [AppMac](cinder__app__AppMac.md) on Osx
+
 
 <br>
 <br>
@@ -29,8 +34,8 @@ using namespace ci::app;
 
 class MyApp : public App {
   public:
-	void	setup() override;
-	void	draw() override;
+	void setup() override;
+	void draw() override;
 };
 
 void MyApp::setup()
