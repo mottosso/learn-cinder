@@ -44,8 +44,8 @@ As you might imagine, Cinder has changed quite a bit too in order to embrace thi
 In previous versions of Cinder, the easiest way to draw was to use the GL convenience methods, like [`gl::drawSolidCircle()`]. This is still true in 0.9.x, but with a minor caveat. As mentioned previously, OpenGL now requires a shader to be bound, so we’ll need to provide it one. Cinder offers a class called [`gl::ShaderDef`] for easily generating common shaders. To draw a solid white circle, this is the code:
 
 ```cpp
-gl::bindStockShader( gl::ShaderDef().color() );
-gl::drawSolidCircle( vec2( 100, 100 ), 50 );
+gl::bindStockShader(gl::ShaderDef().color());
+gl::drawSolidCircle(vec2(100, 100), 50);
 ```
 
 As in previous versions, [`gl::drawSolidCircle()`] takes a center point and a radius. However the preceding line is new. [`gl::bindStockShader()`] accepts a [`gl::ShaderDef`] and either generates a shader (a [`gl::GlslProg`]) as is necessary. It also caches these [`gl::GlslProg`]'s to avoid unnecessary compilation. In this example, we’re using `.color()` on the [`gl::ShaderDef`] in order to request that the current color be used, which defaults to white.
@@ -55,7 +55,7 @@ To make our circle red we use the same function we’d use in previous versions,
 ```cpp
 gl::bindStockShader(gl::ShaderDef().color());
 gl::color(1, 0, 0);
-gl::drawSolidCircle(vec2( 100, 100 ), 50);
+gl::drawSolidCircle(vec2(100, 100), 50);
 ```
 
 Essentially all GL convenience methods (`gl::drawCube()`, `gl::drawSphere()`, `gl::drawSolidRect()`, etc) still function in 0.9.x, and there are new convenience methods as well. However, using a GL convenience method should always be considered the slow path . They’re fine for initial development or code that is not performance-sensitive, but the techniques we’ll discuss next should always be preferred when speed counts.
@@ -86,7 +86,7 @@ void MyApp::setup()
 
   mCircleBatch = gl::Batch::create(
     geom::Circle()
-      .center(vec2( 100, 100))
+      .center(vec2(100, 100))
       .radius(50),
     solidShader);
 }
@@ -104,7 +104,7 @@ This code touches on several different new concepts. First, we’re using our [`
 Let’s look at the first parameter to our Batch construction, the geometry portion..
 
 ```cpp
-geom::Circle().center( 100, 100 ).radius( 50 )
+geom::Circle().center(100, 100).radius(50)
 ```
 
 This uses [`geom::Circle()`], which is one of many classes provided with Cinder that can be used to create geometry. Other examples include [`geom::Sphere()`], [`geom::Teapot()`], [`geom::WireCone()`], and many others. The pairing of one of these [`geom::Source`]'s (or another source of geometry, such as a [`TriMesh`] or a [`VboMesh`]) with a shader (i.e. [`gl::GlslProg`]) is expressed with a [`gl::Batch`].
@@ -232,7 +232,7 @@ void MyApp::setup()
 {
   gl::GlslProgRef solidShader = gl::GlslProg::create(
      // vertex code
-     CI_GLSL( 150,
+     CI_GLSL(150,
        uniform mat4        ciModelViewProjection;
 
        in vec4                ciPosition;
@@ -240,18 +240,18 @@ void MyApp::setup()
 
        out lowp vec4        Color;
 
-       void main( void )
+       void main(void)
        {
          gl_Position        = ciModelViewProjection * ciPosition;
          Color              = ciColor;
        }
      ),
      // fragment code
-     CI_GLSL( 150,
+     CI_GLSL(150,
        in vec4          Color;
        out vec4         oColor;
 
-       void main( void )
+       void main(void)
        {
          oColor = Color;
        }
@@ -281,7 +281,7 @@ Looking at our GLSL code above, you’ll see a few distinctive things. First, we
 Similarly, there are automatically recognized vertex attributes; in the example above they are `ciPosition` and `ciColor`. In the case of `ciPosition`, this attribute is automatically supplied by our [`geom::Circle()`]. `ciColor` is similar but has a unique caveat. If our [`geom::Source`] had supplied a color, the shader would have used it. However Cinder automatically supplies the global current color (set via [`gl::color()`]) in the absence of a per-vertex color. As an experiment, let’s try slightly different geometry that does supply per-vertex color. If we change the Batch assignment in [`setup()`] out like this:
 
 ```cpp
-ColorAf green( 0, 1, 0 ), blue( 0, 0, 1 );
+ColorAf green(0, 1, 0), blue(0, 0, 1);
 mBatch = gl::Batch::create(
   geom::Rect()
     .colors(green, green, blue, blue)
