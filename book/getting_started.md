@@ -2,7 +2,9 @@
 
 ### Getting Started
 
-This guide is written with users of previous versions of Cinder in mind, and is meant to aid in the transition to Cinder’s new OpenGL API in version 0.9.0.
+This guide is written with users of previous versions of Cinder in mind, and is meant to aid in the transition to Cinder’s new OpenGL API in version 0.9.x.
+
+> Source - [forum.libcinder.org](https://forum.libcinder.org/#Topic/23286000002367065)
 
 <br>
 <br>
@@ -13,7 +15,7 @@ This guide is written with users of previous versions of Cinder in mind, and is 
 OpenGL has evolved considerably in recent versions. And with the introduction of Core Profile  in OpenGL 3.2 (and parallel changes in OpenGL ES 2), much of the functionality of previous versions has been removed entirely. Most prominent was the removal of the fixed function pipeline,  which gave way to the fully programmable pipeline . This change allows OpenGL to more closely map to the underlying hardware, and is a significant improvement with respect to power and performance. However some of the simpler techniques for interacting with GL in previous versions are no longer available.
 
 
-With version 0.9.0, Cinder attempts to expose this new power, while still maintaining a relatively easy-to-use API.  While this document is not an exhaustive tutorial on the new API, it does cover the core concepts, and should be supplemented with a look at the sample code found in samples/_opengl.
+With version 0.9.x, Cinder attempts to expose this new power, while still maintaining a relatively easy-to-use API.  While this document is not an exhaustive tutorial on the new API, it does cover the core concepts, and should be supplemented with a look at the sample code found in samples/_opengl.
 
 <br>
 <br>
@@ -21,7 +23,11 @@ With version 0.9.0, Cinder attempts to expose this new power, while still mainta
 
 ### What’s Changed in OpenGL Itself?
 
-Quite a bit of functionality was removed with OpenGL Core Profile. One of the most significant changes is that OpenGL no longer provides a way to draw without a GLSL program (informally called a shader ). Furthermore, immediate mode - functions like glBegin(), glVertex() and glEnd() - are no longer available. OpenGL also no longer has the notion of a vertex normal, a color, or similar. Instead, all such data is generic per-vertex data which the user supplies in the form of GLSL attributes. This vertex data is also only made available to GLSL programs via generic buffers of vertex data called Vertex Buffer Objects  (VBOs). Additionally, OpenGL no longer has the concept of the GL_MODELVIEW or GL_PROJECTION matrices. Similar to generic attributes, such data are the responsibility of the programmer to maintain and to pass to her shaders via generic GLSL uniform variables. Much of the global state in previous versions of GL is gone entirely as well. For example, texturing is no longer enabled via glEnable( GL_TEXTURE_2D ). Such state is no longer state at all, but is simply implemented or not implemented in the currently bound GLSL program.
+Quite a bit of functionality was removed with OpenGL Core Profile. One of the most significant changes is that OpenGL no longer provides a way to draw without a GLSL program (informally called a shader). Furthermore, immediate mode - functions like [`glBegin()`], [`glVertex()`] and [`glEnd()`] - are no longer available. OpenGL also no longer has the notion of a vertex normal, a color, or similar. Instead, all such data is generic per-vertex data which the user supplies in the form of GLSL attributes. This vertex data is also only made available to GLSL programs via generic buffers of vertex data called Vertex Buffer Objects  (VBOs). Additionally, OpenGL no longer has the concept of the `GL_MODELVIEW` or `GL_PROJECTION` matrices. Similar to generic attributes, such data are the responsibility of the programmer to maintain and to pass to her shaders via generic GLSL uniform variables. Much of the global state in previous versions of GL is gone entirely as well. For example, texturing is no longer enabled via `glEnable(GL_TEXTURE_2D)`. Such state is no longer state at all, but is simply implemented or not implemented in the currently bound GLSL program.
+
+[`glBegin()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glBegin.xml
+[`glVertex()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glVertex.xml
+[`glEnd()`]: https://www.opengl.org/sdk/docs/man2/xhtml/glEnd.xml
 
 <br>
 <br>
@@ -37,24 +43,26 @@ As you might imagine, Cinder has changed quite a bit too in order to embrace thi
 
 ### Getting Started
 
-In previous versions of Cinder, the easiest way to draw was to use the GL convenience methods, like gl::drawSolidCircle(). This is still true in 0.9.0, but with a minor caveat. As mentioned previously, OpenGL now requires a shader to be bound, so we’ll need to provide it one. Cinder offers a class called gl::ShaderDef for easily generating common shaders. To draw a solid white circle, this is the code:
+In previous versions of Cinder, the easiest way to draw was to use the GL convenience methods, like [`gl::drawSolidCircle()`]. This is still true in 0.9.x, but with a minor caveat. As mentioned previously, OpenGL now requires a shader to be bound, so we’ll need to provide it one. Cinder offers a class called [`gl::ShaderDef`] for easily generating common shaders. To draw a solid white circle, this is the code:
 
 ```cpp
 gl::bindStockShader( gl::ShaderDef().color() );
 gl::drawSolidCircle( vec2( 100, 100 ), 50 );
 ```
 
-As in previous versions, gl::drawSolidCircle() takes a center point and a radius. However the preceding line is new. gl::bindStockShader() accepts a gl::ShaderDef() and either generates a shader (a gl::GlslProg) as is necessary. It also caches these gl::GlslProg’s to avoid unnecessary compilation. In this example, we’re using .color() on the ShaderDef in order to request that the current color be used, which defaults to white.
+As in previous versions, gl::drawSolidCircle() takes a center point and a radius. However the preceding line is new. [`gl::bindStockShader()`] accepts a [`gl::ShaderDef`] and either generates a shader (a [`gl::GlslProg`]) as is necessary. It also caches these [`gl::GlslProg`]'s to avoid unnecessary compilation. In this example, we’re using `.color()` on the [`gl::ShaderDef`] in order to request that the current color be used, which defaults to white.
 
 To make our circle red we use the same function we’d use in previous versions, `gl::color()`:
 
 ```cpp
-gl::bindStockShader( gl::ShaderDef().color() );
-gl::color( 1, 0, 0 );
-gl::drawSolidCircle( vec2( 100, 100 ), 50 );
+gl::bindStockShader(gl::ShaderDef().color());
+gl::color(1, 0, 0);
+gl::drawSolidCircle(vec2( 100, 100 ), 50);
 ```
 
-Essentially all GL convenience methods (gl::drawCube(), gl::drawSphere(), gl::drawSolidRect(), etc) still function in 0.9.0, and there are new convenience methods as well. However, using a GL convenience method should always be considered the slow path . They’re fine for initial development or code that is not performance-sensitive, but the techniques we’ll discuss next should always be preferred when speed counts.
+Essentially all GL convenience methods (`gl::drawCube()`, `gl::drawSphere()`, `gl::drawSolidRect()`, etc) still function in 0.9.x, and there are new convenience methods as well. However, using a GL convenience method should always be considered the slow path . They’re fine for initial development or code that is not performance-sensitive, but the techniques we’ll discuss next should always be preferred when speed counts.
+
+[`gl::drawSolidCircle()`]: book/cinder/gl/drawSolidCircle.md
 
 <br>
 <br>
@@ -62,7 +70,7 @@ Essentially all GL convenience methods (gl::drawCube(), gl::drawSphere(), gl::dr
 
 ### Batches
 
-[`gl::Batch`] is the fast path in Cinder 0.9.0 for typical cases. An instance of [`gl::Batch`] represents the combination of geometry and an associated shader. To get started, let’s optimize our previous use of the convenience method gl::drawSolidCircle().
+[`gl::Batch`] is the fast path in Cinder 0.9.x for typical cases. An instance of [`gl::Batch`] represents the combination of geometry and an associated shader. To get started, let’s optimize our previous use of the convenience method gl::drawSolidCircle().
 
 [`gl::Batch`]: book/cinder__gl__Batch.md
 
@@ -80,15 +88,15 @@ void MyApp::setup()
 
   mCircleBatch = gl::Batch::create(
     geom::Circle()
-      .center( vec2( 100, 100 ) )
-      .radius( 50 ),
-    solidShader );
+      .center(vec2( 100, 100))
+      .radius(50),
+    solidShader);
 }
 
 void MyApp::draw()
 {
   gl::clear();
-  gl::color( 1, 0, 0 );
+  gl::color(1, 0, 0);
   mCircleBatch->draw();
 }
 ```
@@ -181,7 +189,7 @@ A for-loop iterates from 0 to 2 pi radians. Within the loop we preserve the curr
 
 ### Scoped Utilities and State
 
-In Cinder 0.9.0 you’ll see a number of classes which begin with gl::Scoped in the name; such as [`gl::ScopedModelMatrix`], [`gl::ScopedColor`], and [`gl::ScopedTextureBind`].
+In Cinder 0.9.x you’ll see a number of classes which begin with gl::Scoped in the name; such as [`gl::ScopedModelMatrix`], [`gl::ScopedColor`], and [`gl::ScopedTextureBind`].
 
 While there are other ways to achieve the same thing, these classes are efficient and easy to use. They are designed around RAII, preserving a given piece of state on instantiation and restoring it on destruction. As an example, let’s rework the previous for-loop to use a [`gl::ScopedModelMatrix`]:
 
@@ -270,10 +278,10 @@ GlslProgRef solidShader = gl::GlslProg::create(
 );
 ```
 
-Looking at our GLSL code above, you’ll see a few distinctive things. First, we have both uniforms and attributes with the prefix ci  - ciModelViewProjection, as well as attributes ciPosition and ciColor. These names are special, and serve as signals to Cinder to automatically fill in their values appropriately. As you might imagine, ciModelViewProjection is equivalent to the current Model, View and Projection matrices concatenated into a single mat4. If you have been writing GLSL shaders in prior OpenGL versions, you likely used the now defunct gl_ModelViewProjectionMatrix variable for this.
+Looking at our GLSL code above, you’ll see a few distinctive things. First, we have both uniforms and attributes with the prefix ci  - ciModelViewProjection, as well as attributes `ciPosition` and `ciColor`. These names are special, and serve as signals to Cinder to automatically fill in their values appropriately. As you might imagine, `ciModelViewProjection` is equivalent to the current Model, View and Projection matrices concatenated into a single mat4. If you have been writing GLSL shaders in prior OpenGL versions, you likely used the now defunct gl_ModelViewProjectionMatrix variable for this.
 
 
-Similarly, there are automatically recognized vertex attributes; in the example above they are ciPosition and ciColor. In the case of ciPosition, this attribute is automatically supplied by our [`geom::Circle()`]. ciColor is similar but has a unique caveat. If our `geom::Source*` had supplied a color, the shader would have used it. However Cinder automatically supplies the global current color (set via [`gl::color()`]) in the absence of a per-vertex color. As an experiment, let’s try slightly different geometry that does supply per-vertex color. If we change the Batch assignment in [`setup()`] out like this:
+Similarly, there are automatically recognized vertex attributes; in the example above they are `ciPosition` and `ciColor`. In the case of `ciPosition`, this attribute is automatically supplied by our [`geom::Circle()`]. `ciColor` is similar but has a unique caveat. If our `geom::Source*` had supplied a color, the shader would have used it. However Cinder automatically supplies the global current color (set via [`gl::color()`]) in the absence of a per-vertex color. As an experiment, let’s try slightly different geometry that does supply per-vertex color. If we change the Batch assignment in [`setup()`] out like this:
 
 ```cpp
 ColorAf green( 0, 1, 0 ), blue( 0, 0, 1 );
@@ -298,4 +306,4 @@ Here we see the global color is ignored as geom::Rect has generated per-vertex c
 
 ### Conclusion
 
-The OpenGL API in Cinder 0.9.0 is quite deep - much more so than can be captured in this post. However hopefully this serves as enough background to dig into the samples, which are the best place to learn until we have more thorough documentation.
+The OpenGL API in Cinder 0.9.x is quite deep - much more so than can be captured in this post. However hopefully this serves as enough background to dig into the samples, which are the best place to learn until we have more thorough documentation.
