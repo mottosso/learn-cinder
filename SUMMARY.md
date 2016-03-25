@@ -16,6 +16,7 @@
        * getStockShader
        * GlslProg
        * bindStockShader
+       * translate
    * geom
        * Circle
        * Sphere
