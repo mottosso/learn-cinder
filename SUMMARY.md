@@ -5,6 +5,6 @@
 * Namespaces
 * [cinder](book/cinder.md)
    * [app](book/cinder__app.md)
-       * [App](book/cinder__app__AppBase.md)
+       * [App](book/cinder__app__App.md)
            * [Settings](book/cinder__app__AppBase__Settings.md)
 
