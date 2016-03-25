@@ -1,6 +1,6 @@
 # Summary
 
-* [Introduction](README.md)
+* [Introduction](book/README.md)
 * [cinder](book/cinder.md)
   * [app](book/cinder__app.md)
     * [AppBase](book/cinder__app__AppBase.md)
