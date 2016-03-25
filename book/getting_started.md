@@ -99,11 +99,13 @@ Let’s look at the first parameter to our Batch construction, the geometry port
 geom::Circle().center( 100, 100 ).radius( 50 )
 ```
 
-This uses [`geom::Circle()`], which is one of many classes provided with Cinder that can be used to create geometry. Other examples include [`geom::Sphere()`], [`geom::Teapot()`], [`geom::WireCone()`], and many others. The pairing of one of these [`geom::Sources`] (or another source of geometry, such as a TriMesh or a VboMesh) with a shader (GlslProg) is expressed with a gl::Batch.
+This uses [`geom::Circle()`], which is one of many classes provided with Cinder that can be used to create geometry. Other examples include [`geom::Sphere()`], [`geom::Teapot()`], [`geom::WireCone()`], and many others. The pairing of one of these [`geom::Source`]'s (or another source of geometry, such as a [`TriMesh`] or a [`VboMesh`]) with a shader (GlslProg) is expressed with a gl::Batch.
 
 To draw a gl::Batch we simply use its draw() member method. Notice that we still set the color with [`gl::color()`]. Cinder “knows” that the Batch’s shader requires the current color, and it passes it along in a uniform automatically. We’ll look at how that machinery works later.
 
-[`geom::Sources()`]: book/cinder__geom__Sources.md
+[`TriMesh`]: book/cinder__TriMesh.md
+[`VboMesh`]: book/cinder__VboMesh.md
+[`geom::Source`]: book/cinder__geom__Source.md
 [`geom::Sphere()`]: book/cinder__geom__Sphere.md
 [`geom::Teapot()`]: book/cinder__geom__Teapot.md
 [`geom::WireCone()`]: book/cinder__geom__WireCone.md
