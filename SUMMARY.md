@@ -17,7 +17,7 @@
        * GlslProg
        * bindStockShader
        * translate
-       * scale
+       * scale()
        * rotate()
        * pushModelMatrix()
    * geom
