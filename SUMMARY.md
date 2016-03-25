@@ -16,7 +16,7 @@
        * getStockShader
        * GlslProg
        * bindStockShader
-       * translate
+       * translate()
        * scale()
        * rotate()
        * pushModelMatrix()
