@@ -19,4 +19,5 @@
    * geom
        * Circle
        * Sphere
+       * Teapot
 
