@@ -25,6 +25,7 @@
        * ScopedTextureBind
        * Context
        * CI_GLSL
+       * drawSolidCircle()
    * geom
        * Circle
        * Sphere
