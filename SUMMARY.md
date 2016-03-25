@@ -14,4 +14,5 @@
        * Batch
        * ShaderDef
        * glGetStockShader
+       * GlslProg
 
