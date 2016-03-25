@@ -273,7 +273,7 @@ GlslProgRef solidShader = gl::GlslProg::create(
 Looking at our GLSL code above, you’ll see a few distinctive things. First, we have both uniforms and attributes with the prefix ci  - ciModelViewProjection, as well as attributes ciPosition and ciColor. These names are special, and serve as signals to Cinder to automatically fill in their values appropriately. As you might imagine, ciModelViewProjection is equivalent to the current Model, View and Projection matrices concatenated into a single mat4. If you have been writing GLSL shaders in prior OpenGL versions, you likely used the now defunct gl_ModelViewProjectionMatrix variable for this.
 
 
-Similarly, there are automatically recognized vertex attributes; in the example above they are ciPosition and ciColor. In the case of ciPosition, this attribute is automatically supplied by our [`geom::Circle`]. ciColor is similar but has a unique caveat. If our `geom::Source*` had supplied a color, the shader would have used it. However Cinder automatically supplies the global current color (set via [`gl::color()`]) in the absence of a per-vertex color. As an experiment, let’s try slightly different geometry that does supply per-vertex color. If we change the Batch assignment in [`setup()`] out like this:
+Similarly, there are automatically recognized vertex attributes; in the example above they are ciPosition and ciColor. In the case of ciPosition, this attribute is automatically supplied by our [`geom::Circle()`]. ciColor is similar but has a unique caveat. If our `geom::Source*` had supplied a color, the shader would have used it. However Cinder automatically supplies the global current color (set via [`gl::color()`]) in the absence of a per-vertex color. As an experiment, let’s try slightly different geometry that does supply per-vertex color. If we change the Batch assignment in [`setup()`] out like this:
 
 ```cpp
 ColorAf green( 0, 1, 0 ), blue( 0, 0, 1 );
@@ -290,8 +290,12 @@ We see this:
 ![image](https://cloud.githubusercontent.com/assets/2152766/14053136/387b1d42-f2c7-11e5-8336-758fff591a63.png)
 
 
-Here we see the global color is ignored as geom::Rect has generated per-vertex colors upon our request. For the curious, this automatic variable uploading occurs in the Batch::draw() call, and it can be invoked manually in advanced usage scenarios. Furthermore, there are mechanisms for manually configuring the mapping to attributes and uniforms in GlslProg::Format for users that have some reason to use a non - default configuration.
+Here we see the global color is ignored as geom::Rect has generated per-vertex colors upon our request. For the curious, this automatic variable uploading occurs in the [`gl::Batch.draw()`](`gl::Batch`) call, and it can be invoked manually in advanced usage scenarios. Furthermore, there are mechanisms for manually configuring the mapping to attributes and uniforms in GlslProg::Format for users that have some reason to use a non - default configuration.
 
-Conclusion
+<br>
+<br>
+<br>
+
+### Conclusion
 
 The OpenGL API in Cinder 0.9.0 is quite deep - much more so than can be captured in this post. However hopefully this serves as enough background to dig into the samples, which are the best place to learn until we have more thorough documentation.
