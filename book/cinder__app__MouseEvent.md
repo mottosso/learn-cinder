@@ -10,14 +10,6 @@ Represents a mouse event.
 <br>
 <br>
 
-### Description
-
-Passed to window events involving the mouse.
-
-<br>
-<br>
-<br>
-
 ### Public Methods
 
 
