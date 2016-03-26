@@ -27,6 +27,7 @@
        * [rotate()](book/cinder/gl/rotate.md)
        * [scale()](book/cinder/gl/scale.md)
        * [CI_GLSL](book/cinder/gl/CI_GLSL.md)
+       * [color()](book/cinder/gl/color.md)
    * [geom](book/cinder/geom.md)
        * [Circle](book/cinder/geom/Circle.md)
        * [Source](book/cinder/geom/Source.md)
@@ -35,4 +36,5 @@
        * [WireCone](book/cinder/geom/WireCone.md)
    * [TriMesh](book/cinder/TriMesh.md)
    * [VboMesh](book/cinder/VboMesh.md)
+   * [Color](book/cinder/color.md)
 
