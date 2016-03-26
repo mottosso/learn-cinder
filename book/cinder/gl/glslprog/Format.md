@@ -1,13 +1,10 @@
-### `GlslProg`
+### Format
 
-A shader - a.k.a. GLSL program.
+A convenient way to write GLSL code inline with our C++ code.
 
-| Namespace                | Include   
-|--------------------------|-----------
-| [`gl::GlslProg`]    | [`#include "cinder/gl/GlslProg.h"`]
-
-[`gl::GlslProg`]: https://libcinder.org/docs/branch/master/classcinder_1_1gl_1_1_glsl_prog.html
-[`#include "cinder/gl/GlslProg.h"`]: https://libcinder.org/docs/branch/master/classcinder_1_1gl_1_1_glsl_prog.html
+| Namespace       | Include
+|-----------------|-------------
+| `gl::GlslProg::Format` | `#include "cinder/gl/GlslProg.h"`
 
 <br>
 <br>
@@ -15,13 +12,12 @@ A shader - a.k.a. GLSL program.
 
 ### Description
 
-Shaders can either be created via convenience functions [`gl::getStockShader()`], written via [`gl::GlslProg::Format`] or loaded from disk via [`loadAsset()`]
+This macro enables the declaration of GLSL with overall C++ code and is useful for debugging, testing, and sharing of small snippets of code on forums and mailing lists.
 
-- [Tutorial](https://libcinder.org/docs/branch/master/guides/opengl/part5.html)
+It serves as a simplified alternative to storing `.vert` and `.frag` files on disk and loading them via the Cinder [Asset] or [Resource] system.
 
-[`gl::getStockShader()`]: getStockShader.md
-[`gl::GlslProg::Format`]: `GlslProg/Format.md`
-[`loadAsset()`]: ../app/getAsset.md
+[Asset]: https://libcinder.org/docs/branch/master/guides/resources/index.html
+[Resource]: https://libcinder.org/docs/branch/master/guides/resources/index.html
 
 <br>
 <br>
@@ -30,7 +26,6 @@ Shaders can either be created via convenience functions [`gl::getStockShader()`]
 ### Example
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14060620/b90753e4-f327-11e5-9b90-a69baedb3c10.png)
-
 
 ```cpp
 #include "cinder/app/App.h"
