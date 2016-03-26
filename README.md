@@ -13,5 +13,10 @@ I document the things I use for the operating system(s) I use them on; i.e. Wind
 
 **Motivation**
 
-- Simplify contributions
-- Timestamp on articles
+- The official documentation lacks examples.
+- Contributing to the existing documentation is difficult.
+- Existing documentation lacks timestamp.
+
+Furthermore, it is advised that the [samples] are the best way to learn Cinder, but samples do not communicate intent or reason.
+
+[samples]: https://github.com/cinder/Cinder/tree/master/samples
