@@ -88,7 +88,7 @@ Pair geometry with a GLSL program.
 
 ### Example
 
-![image](https://cloud.githubusercontent.com/assets/2152766/14059781/5c44d68e-f30b-11e5-849c-3e9b24ba1fca.png)
+![image](https://cloud.githubusercontent.com/assets/2152766/14059908/688c6ba6-f30f-11e5-8371-c74ad8452d5d.png)
 
 
 ```cpp
@@ -101,53 +101,40 @@ using namespace ci::app;
 
 class MyApp : public App {
   public:
-	void setup() override;
-	void draw() override;
-	
-	CameraPersp		mCam;
-	gl::BatchRef	mBox;
+    void setup() override;
+    void draw() override;
+    
+    CameraPersp     mCam;
+    gl::BatchRef    mBox;
 };
 
 void MyApp::setup()
 {
-	auto lambert = gl::ShaderDef().lambert().color();
-	gl::GlslProgRef shader = gl::getStockShader(lambert);	
-	mBox = gl::Batch::create(geom::Cube(), shader);
-	
-	mCam.lookAt(vec3(3, 4.5, 4.5), vec3(0, 1, 0));
+    gl::enableDepthRead();
+    gl::enableDepthWrite();
+
+    auto lambert = gl::ShaderDef().lambert().color();
+    gl::GlslProgRef shader = gl::getStockShader(lambert);   
+    mBox = gl::Batch::create(geom::Cube(), shader);
+    
+    mCam.lookAt(vec3(3, 4.5, 4.5), vec3(0, 1, 0));
 }
 
 void MyApp::draw()
 {
-	gl::clear();
-	gl::enableDepthRead();
-	gl::enableDepthWrite();
+    gl::clear(Color::gray(0.2f));
 
-	gl::setMatrices(mCam);
+    gl::setMatrices(mCam);
+    gl::pushModelMatrix();
 
-	int numSpheres = 64;
-	float maxAngle = M_PI * 7;
-	float spiralRadius = 1;
-	float height = 2;
-	float boxSize = 0.05f;
-	float anim = getElapsedFrames() / 30.0f;
+    gl::translate(vec3(0, 0, 0));
+    gl::scale(vec3(1.0f, 1.0f, 1.0f));
+    gl::color(Color(CM_HSV, 0.5, 1, 1));
 
-	for(int s = 0; s < numSpheres; ++s) {
-		float rel = s / (float)numSpheres;
-		float angle = rel * maxAngle;
-		float y = fabs(cos(rel * M_PI + anim)) * height;
-		float r = rel * spiralRadius;
-		vec3 offset(r * cos(angle), y / 2, r * sin(angle));
-		
-		gl::pushModelMatrix();
-		gl::translate(offset);
-		gl::scale(vec3(boxSize, y, boxSize));
-		gl::color(Color(CM_HSV, rel, 1, 1));
-		mBox->draw();
-		gl::popModelMatrix();
-	}
+    mBox->draw();
+
+    gl::popModelMatrix();
 }
 
 CINDER_APP(MyApp, RendererGl)
-
 ```
