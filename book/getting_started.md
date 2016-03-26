@@ -109,7 +109,7 @@ geom::Circle().center(100, 100).radius(50)
 
 This uses [`geom::Circle()`], which is one of many classes provided with Cinder that can be used to create geometry. Other examples include [`geom::Sphere()`], [`geom::Teapot()`], [`geom::WireCone()`], and many others. The pairing of one of these [`geom::Source`]'s (or another source of geometry, such as a [`TriMesh`] or a [`VboMesh`]) with a shader (i.e. [`gl::GlslProg`]) is expressed with a [`gl::Batch`].
 
-To draw a gl::Batch we simply use its draw() member method. Notice that we still set the color with [`gl::color()`]. Cinder “knows” that the Batch’s shader requires the current color, and it passes it along in a uniform automatically. We’ll look at how that machinery works later.
+To draw a [`gl::Batch`] we simply use its `draw()` member method. Notice that we still set the color with [`gl::color()`]. Cinder “knows” that the Batch’s shader requires the current color, and it passes it along in a uniform automatically. We’ll look at how that machinery works later.
 
 [`TriMesh`]: cinder/TriMesh.md
 [`VboMesh`]: cinder/VboMesh.md
