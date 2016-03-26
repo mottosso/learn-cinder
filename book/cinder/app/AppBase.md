@@ -2,9 +2,12 @@
 
 Baseclass to platform specific App subclasses.
 
-| Namespace |
-|-----------|
-| [`cinder::app::BaseApp`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base.html)
+| Namespace                | Include
+|--------------------------|-------------|
+| [`cinder::app::BaseApp`] | `#include "cinder/app.h"`
+
+
+[`cinder::app::BaseApp`]: https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base.html
 
 <br>
 <br>

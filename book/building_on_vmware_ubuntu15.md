@@ -1,12 +1,14 @@
-### VMWare | Ubuntu 15.10
+### Install for Ubuntu 15.10 in VMWare Workstation 12.0
 
-This document walks you through setting up Cinder in a Ubuntu or Xubuntu 15.10 guest running under VMWare 12.0.
+This document walks you through setting up Cinder in a Ubuntu guest running under VMWare Workstation 12.0.
 
 <br>
 <br>
 <br>
 
-### Prerequisites
+### Kernel Setup
+
+Workstation natively supports OpenGL up to version 2.0 but the minimum requirement for Cinder is 3.2. So we'll need to install support for it.
 
 In a newly installed version of Ubuntu, create a `vmware-mesa.sh` with the following content.
 
@@ -71,6 +73,8 @@ echo vmwgfx | sudo tee -a /etc/modules
 find /lib/modules -name vmwgfx.ko -exec ls -l '{}' \;
 ```
 
+> Source - [chaoticbob/Cinder](https://github.com/chaoticbob/Cinder/wiki/Cinder-for-Linux-on-VMWare)
+
 Now run. It should take about 10-20 minutes to finish.
 
 ```bash
@@ -78,9 +82,60 @@ $ chmod +x vmware-mesa.sh
 $ ./vmware-mesa.sh
 ```
 
+Once it's done, reboot your machine.
+
 <br>
 <br>
 <br>
 
 ### Building
 
+Let's install Cinder.
+
+```bash
+sudo apt-get install -y \
+	cmake \
+	clang \
+	libxcursor-dev \
+	libxrandr-dev \
+	libxinerama-dev \
+	libxi-dev \
+	libgl1-mesa-dev \
+	zlib1g-dev \
+	libfontconfig1-dev \
+	libmpg123-dev \
+	libsndfile1 \
+	libsndfile1-dev \
+	libpulse-dev \
+	libasound2-dev \
+	libcurl4-gnutls-dev \
+	libgstreamer1.0-dev \
+	libgstreamer-plugins-bad1.0-dev \
+	libgstreamer-plugins-base1.0-dev \
+	gstreamer1.0-libav \
+	gstreamer1.0-alsa \
+	gstreamer1.0-pulseaudio \
+	gstreamer1.0-plugins-bad
+  
+# Building
+git clone --recursive -b cmake https://github.com/cinder/Cinder.git cinder
+cd cinder/linux
+./cibuild
+
+# Testing
+cd ../samples/_opengl/NormalMapping/linux
+./cibuild
+./Debug/ogl/NormalMapping
+```
+
+You should now be seeing this, which means the installation was a success!
+
+![screenshot_2016-03-26_03-42-12](https://cloud.githubusercontent.com/assets/2152766/14059659/8025357c-f305-11e5-87fe-ccd851609f42.png)
+
+<br>
+<br>
+<br>
+
+### Next Steps
+
+Now head on to the [Getting Started](getting_started.md) guide.

@@ -1,12 +1,22 @@
 ### `drawSolidCicle()`
 
-| Output      | Function
-|------------:|:-------------------------
-| void        | drawSolidCircle (const vec2 &center, float radius, int numSegments=-1)
+| Namespace | Include
+|-----------|-----------
+| `gl::drawSolidCircle()` | `#include "cinder/gl.h"`
 
 Draws a filled circle centered around center with a radius of radius . Default `numSegments` requests a conservative (high-quality, but slow) number based on radius.
 
 > Using a GL convenience method should always be considered the slow path . They're fine for initial development or code that is not performance-sensitive, but [`gl::Batch`](Batch.md) should be preferred where speed counts.
+
+<br>
+<br>
+<br>
+
+### Signature
+
+| Output      | Function
+|------------:|:-------------------------
+| void        | drawSolidCircle (const vec2 &center, float radius, int numSegments=-1)
 
 <br>
 <br>
