@@ -4,6 +4,7 @@
 * [Getting Started](book/getting_started.md)
 * [Installation Guide](book/installation_guide.md)
    * [Ubuntu 14.04](book/building_on_ubuntu14.md)
+   * VMWare | Ubuntu 15.10
 * API
 * [cinder](book/cinder.md)
    * [app](book/cinder/app.md)
