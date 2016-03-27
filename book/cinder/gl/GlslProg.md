@@ -1,4 +1,4 @@
-### `GlslProg`
+### GlslProg
 
 A shader - a.k.a. GLSL program.
 
