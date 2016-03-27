@@ -1,10 +1,12 @@
 ### Settings
 
-Startup settings, used during App construction. They are modified before the app is created by passing a `SettingsFn` to the app instantiation macros.
+Startup settings, used during [`App`] construction.
 
 | Namespace |
 |------------
 | [`cinder::app::BaseApp::Settings`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base_1_1_settings.html)
+
+[`app`]: AppBase.md
 
 <br>
 <br>
@@ -16,48 +18,48 @@ Startup settings, used during App construction. They are modified before the app
 |--------------:|:------------------------------------------------------------|
 |        | Settings ()
 |        | ~Settings ()
-| void   | [setWindowSize](cinder__app__AppBase__Settings.setWindowSize.md) (int windowSizeX, int windowSizeY)
-| void   | [setWindowSize](cinder__app__AppBase__Settings.setWindowSize.md) (const ivec2 &size)
-| ivec2  | [getWindowSize](cinder__app__AppBase__Settings.getWindowSize.md) () const
-| ivec2  | [getWindowPos](cinder__app__AppBase__Settings.getWindowPos.md) () const
-| void   | [setWindowPos](cinder__app__AppBase__Settings.setWindowPos.md) (int windowPosX, int windowPosY)
-| void   | [setWindowPos](cinder__app__AppBase__Settings.setWindowPos.md) (const ivec2 &windowPos)
-| bool   | [isWindowPosSpecified](cinder__app__AppBase__Settings.isWindowPosSpecified.md) () const
-| void   | [setWindowPosUnspecified](cinder__app__AppBase__Settings.setWindowPosUnspecified.md) ()
-| void   | [setQuitOnLastWindowCloseEnabled](cinder__app__AppBase__Settings.setQuitOnLastWindowCloseEnabled.md) (bool enable=true)
-| bool   | [isQuitOnLastWindowCloseEnabled](cinder__app__AppBase__Settings.isQuitOnLastWindowCloseEnabled.md) () const
-| bool   | [isFullScreen](cinder__app__AppBase__Settings.isFullScreen.md) ()
-| void   | [setFullScreen](cinder__app__AppBase__Settings.setFullScreen.md) (bool fullScreen=true, const FullScreenOptions &options=[FullScreenOption](cinder__app__AppBase__Settings.FullScreenOption.md)s())
-| bool   | [isResizable](cinder__app__AppBase__Settings.isResizable.md) () const
-| void   | [setResizable](cinder__app__AppBase__Settings.setResizable.md) (bool resizable=true)
-| bool   | [isBorderless](cinder__app__AppBase__Settings.isBorderless.md) () const
-| void   | [setBorderless](cinder__app__AppBase__Settings.setBorderless.md) (bool borderless=true)
-| bool   | [isAlwaysOnTop](cinder__app__AppBase__Settings.isAlwaysOnTop.md) () const
-| void   | [setAlwaysOnTop](cinder__app__AppBase__Settings.setAlwaysOnTop.md) (bool alwaysOnTop=true)
-| DisplayRef   | [getDisplay](cinder__app__AppBase__Settings.getDisplay.md) () const
-| void   | [setDisplay](cinder__app__AppBase__Settings.setDisplay.md) (DisplayRef display)
-| Window::Format   | [getDefaultWindowFormat](cinder__app__AppBase__Settings.getDefaultWindowFormat.md) () const
-| void   | [setDefaultWindowFormat](cinder__app__AppBase__Settings.setDefaultWindowFormat.md) (const Window::Format &format)
-| void   | [setDefaultRenderer](cinder__app__AppBase__Settings.setDefaultRenderer.md) (const RendererRef &renderer)
-| RendererRef   | [getDefaultRenderer](cinder__app__AppBase__Settings.getDefaultRenderer.md) () const
-| void | [prepareWindow](cinder__app__AppBase__Settings.prepareWindow.md) (const Window::Format &format)
-| std::vector< Window::Format > & | [getWindowFormats](cinder__app__AppBase__Settings.getWindowFormats.md) ()
-| const std::vector< Window::Format > & | [getWindowFormats](cinder__app__AppBase__Settings.getWindowFormats.md) () const
-| const std::string &   | [getTitle](cinder__app__AppBase__Settings.getTitle.md) () const
-| void   | [setTitle](cinder__app__AppBase__Settings.setTitle.md) (const std::string &title)
-| void   | [setHighDensityDisplayEnabled](cinder__app__AppBase__Settings.setHighDensityDisplayEnabled.md) (bool enable=true)
-| bool   | [isHighDensityDisplayEnabled](cinder__app__AppBase__Settings.isHighDensityDisplayEnabled.md) () const
-| void   | [setMultiTouchEnabled](cinder__app__AppBase__Settings.setMultiTouchEnabled.md) (bool enable=true)
-| bool   | [isMultiTouchEnabled](cinder__app__AppBase__Settings.isMultiTouchEnabled.md) () const
-| void   | [setPowerManagementEnabled](cinder__app__AppBase__Settings.setPowerManagementEnabled.md) (bool enable=true)
-| bool   | [isPowerManagementEnabled](cinder__app__AppBase__Settings.isPowerManagementEnabled.md) () const
-| void   | [setFrameRate](cinder__app__AppBase__Settings.setFrameRate.md) (float frameRate)
-| void   | [disableFrameRate](cinder__app__AppBase__Settings.disableFrameRate.md) ()
-| bool   | [isFrameRateEnabled](cinder__app__AppBase__Settings.isFrameRateEnabled.md) () const
-| float   | [getFrameRate](cinder__app__AppBase__Settings.getFrameRate.md) () const
-| const std::vector< std::string > &   | [getCommandLineArgs](cinder__app__AppBase__Settings.getCommandLineArgs.md) () const
-| void   | [setShouldQuit](cinder__app__AppBase__Settings.setShouldQuit.md) (bool shouldQuit=true)
-| bool   | [getShouldQuit](cinder__app__AppBase__Settings.getShouldQuit.md) () const
+| void   | [setWindowSize]() (int windowSizeX, int windowSizeY)
+| void   | [setWindowSize]() (const ivec2 &size)
+| ivec2  | [getWindowSize]() () const
+| ivec2  | [getWindowPos]() () const
+| void   | [setWindowPos]() (int windowPosX, int windowPosY)
+| void   | [setWindowPos]() (const ivec2 &windowPos)
+| bool   | [isWindowPosSpecified]() () const
+| void   | [setWindowPosUnspecified]() ()
+| void   | [setQuitOnLastWindowCloseEnabled]() (bool enable=true)
+| bool   | [isQuitOnLastWindowCloseEnabled]() () const
+| bool   | [isFullScreen]() ()
+| void   | [setFullScreen]() (bool fullScreen=true, const FullScreenOptions &options=[FullScreenOption]()s())
+| bool   | [isResizable]() () const
+| void   | [setResizable]() (bool resizable=true)
+| bool   | [isBorderless]() () const
+| void   | [setBorderless]() (bool borderless=true)
+| bool   | [isAlwaysOnTop]() () const
+| void   | [setAlwaysOnTop]() (bool alwaysOnTop=true)
+| DisplayRef   | [getDisplay]() () const
+| void   | [setDisplay]() (DisplayRef display)
+| Window::Format   | [getDefaultWindowFormat]() () const
+| void   | [setDefaultWindowFormat]() (const Window::Format &format)
+| void   | [setDefaultRenderer]() (const RendererRef &renderer)
+| RendererRef   | [getDefaultRenderer]() () const
+| void | [prepareWindow]() (const Window::Format &format)
+| std::vector< Window::Format > & | [getWindowFormats]() ()
+| const std::vector< Window::Format > & | [getWindowFormats]() () const
+| const std::string &   | [getTitle]() () const
+| void   | [setTitle]() (const std::string &title)
+| void   | [setHighDensityDisplayEnabled]() (bool enable=true)
+| bool   | [isHighDensityDisplayEnabled]() () const
+| void   | [setMultiTouchEnabled]() (bool enable=true)
+| bool   | [isMultiTouchEnabled]() () const
+| void   | [setPowerManagementEnabled]() (bool enable=true)
+| bool   | [isPowerManagementEnabled]() () const
+| void   | [setFrameRate]() (float frameRate)
+| void   | [disableFrameRate]() ()
+| bool   | [isFrameRateEnabled]() () const
+| float   | [getFrameRate]() () const
+| const std::vector< std::string > &   | [getCommandLineArgs]() () const
+| void   | [setShouldQuit]() (bool shouldQuit=true)
+| bool   | [getShouldQuit]() () const
 
 ### Example
 
@@ -71,8 +73,8 @@ using namespace ci::app;
 
 class BasicApp : public App {};
 
-// This line tells Cinder to actually create and run the application.
-CINDER_APP( BasicApp, RendererGl, [&](App::Settings *settings) {
+// Pass settings as lambda
+CINDER_APP(BasicApp, RendererGl, [&](App::Settings *settings) {
     settings->setWindowSize(1280, 720);
     settings->setTitle("My App");
 })
