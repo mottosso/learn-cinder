@@ -35,9 +35,14 @@ nav
 
         ul.summary
             position: static
-            padding: 20px
+            padding: 20 0px
 
             li
+                padding-left: 20px
+                
+                ul
+                  padding-left: 0px;
+
                 a
                     padding: 4px 10px
                     font-size: 0.9em
@@ -50,6 +55,9 @@ nav
                 // Hide link to GitBook
                 a.gitbook-link, ul.summary > li.divider
                     display: none
+                
+                &.active
+                  background: #ECF5FF
    
         // Titles
         ul.summary > li > span
