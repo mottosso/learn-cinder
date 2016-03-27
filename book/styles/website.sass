@@ -9,7 +9,7 @@ html
     margin-bottom: .85em
 
 a 
-  outline: 0
+  outline: none
 
 code
   color: #c7254e
@@ -23,9 +23,6 @@ pre
 // Make sidebar more like GitHub
 nav
   min-width: 250px
-
-// ul.summary > li.chapter
-//   padding-top: 10px
 
 // Make main body and sidebar the full length
 // of the page; 1 scrollbar
@@ -49,6 +46,7 @@ nav
                 a
                     padding: 4px 10px
                     font-size: 0.9em
+                    outline: none
                 
                 span
                     cursor: auto
@@ -65,7 +63,8 @@ nav
                   letter-spacing: 1px
                   background: #ECF5FF
    
-        // Titles
+        // First level, we're using these
+        // for top-level category names.
         ul.summary > li > span
             font-size: 1.2em
             font-weight: bold
