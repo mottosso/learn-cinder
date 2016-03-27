@@ -20,21 +20,14 @@ Even though that code simply loads and draws an image, there’s actually quite 
 
 These two lines highlight one of the core characteristics of Cinder’s design: data, its I/O (Input/Output) and manipulation are carefully separated. Objects and functions are designed for distinct logical points in the process of loading, manipulating, and transferring data. For example, [`loadImage()`] is a standalone function, not a member of [`gl::Texture`]. Similarly, a [`gl::Texture`] doesn’t draw itself - it’s designed to represent image data, but not to manipulate or render it. To draw a [`gl::Texture`], we use a standalone function as well, [`gl::draw()`]. As we explore more of Cinder’s image capabilities, we’ll look at some of the power and convenience this division of labor brings.
 
-Continuing this theme of the separation of responsibilities, we introduce the [`Surface`] class. This class represents a block of bitmap data on the CPU, just as the [`gl::Texture`] represents a block of bitmap data on the GPU. That’s all each does and that’s a good thing. When you want to use a bitmap in OpenGL, you need to load it onto the GPU. Luckily Cinder makes this easy by allowing you to pass the bitmap to an OpenGL Texture by constructing a [gl::`Texture`] directly from a [`Surface`]:
+Continuing this theme of the separation of responsibilities, we introduce the [`Surface`] class. This class represents a block of bitmap data on the CPU, just as the [`gl::Texture`] represents a block of bitmap data on the GPU. That’s all each does and that’s a good thing. When you want to use a bitmap in OpenGL, you need to load it onto the GPU. Cinder enables you to pass the bitmap to an OpenGL Texture by constructing a [`gl::Texture`] from a [`Surface`]:
 
 ```cpp
-Surface mySurface; // initialized elsewhere
+Surface mySurface; // Initialized elsewhere
 gl::Texture texture = gl::Texture(mySurface);
 ```
 
 The rest of this article is going to run through a few different topics in greater depth: [`Surface`], [`Channel`], I/O, and [`Texture`], so feel free to skip around in a technologically enhanced fashion or to read along in the time honored "beginning to end" fashion.
-
-[`gl::Texture`]: cinder/gl/Texture.md
-[`gl::draw()`]: cinder/gl/draw.md
-[`loadImage()`]: cinder/loadImage.md
-[`Surface`]: cinder/Surface.md
-[`Texture`]: cinder/gl/Texture.md
-[`Channel`]: cinder/Channel.md
 
 <br>
 <br>
@@ -42,7 +35,7 @@ The rest of this article is going to run through a few different topics in great
 
 ### Surface
 
-The [`Surface`] comes in two varieties: an 8 bit unsigned integer and 32 bit floating point high dynamic range version. This means each of the color components - red, green, blue and sometimes alpha - are represented using either an 8 bit `uint8_t` or a 32 bit `float`. These two types are Surface8u and Surface32f, respectively. The majority of the time a Surface8u is just what you need. However if you’re doing some advanced image processing, or you want to make use of high dynamic range images, Surface32f is your best bet. Also it’s worth noting _Surface_ is just a convenient synonym for Surface8u - you can use either name for the class in your code.
+The [`Surface`] comes in two varieties: an 8 bit unsigned integer and 32 bit floating point high dynamic range version. This means each of the color components - red, green, blue and sometimes alpha - are represented using either an 8 bit `uint8_t` or a 32 bit `float`. These two types are [`Surface8u`] and [`Surface32f`], respectively. The majority of the time a Surface8u is just what you need. However if you’re doing some advanced image processing, or you want to make use of high dynamic range images, Surface32f is your best bet. Also it’s worth noting _Surface_ is just a convenient synonym for Surface8u - you can use either name for the class in your code.
 
 The most important thing to recognize about the [`Surface`] is where it lives: on the CPU. Any manipulations that you’d like to do using C++ code (as opposed something like an OpenGL shader), such as filtering, replacing sections of bitmaps, or tweaking values of pixels, should all be performed using a [`Surface`]. You declare a [`Surface`] like so:
 
@@ -381,3 +374,12 @@ And that’s that. As promised: image data from the filesystem, to the CPU, to t
 —
 
 _Joshua Noble is a writer, designer, and programmer based in Portland, Oregon and New York City. He’s the author of, most recently,_ [_Programming Interactivity_](http://www.amazon.com/Programming-Interactivity-Designers-Processing-Openframeworks/dp/0596154143) _and the forthcoming book Research for Living._
+
+[`gl::Texture`]: cinder/gl/Texture.md
+[`gl::draw()`]: cinder/gl/draw.md
+[`loadImage()`]: cinder/loadImage.md
+[`Surface`]: cinder/Surface.md
+[`Surface8u`]: cinder/Surface.md
+[`Surface32f`]: cinder/Surface.md
+[`Texture`]: cinder/gl/Texture.md
+[`Channel`]: cinder/Channel.md
