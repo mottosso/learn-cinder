@@ -56,4 +56,5 @@
    * SurfaceChannelOrder
    * [ImageSource](book/cinder/ImageSource.md)
    * Rect
+* Guide to Meshes
 
