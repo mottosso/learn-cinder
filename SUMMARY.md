@@ -11,7 +11,7 @@
        * [AppBase](book/cinder/app/AppBase.md)
            * [Settings](book/cinder/app/AppBase/Settings.md)
        * [AppMsw](book/cinder/app/AppMsw.md)
-       * AppLinux
+       * [AppLinux](book/cinder/app/AppLinux.md)
        * AppMac
        * console()
        * [MouseEvent](book/cinder/app/MouseEvent.md)
