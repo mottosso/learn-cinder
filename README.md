@@ -1,33 +1,47 @@
-# Learn Cinder
+### Learn Cinder
 
-Notes and examples for getting started with [libcinder](https://libcinder.org/).
+Personal notes and examples for getting started with [libcinder](https://libcinder.org/).
 
-<br>
-<br>
-
-### Usage
-
-1. Open [`sublime.sublime-project`](https://github.com/mottosso/learn-cinder/blob/master/sublime.sublime-project)
-2. Navigate to `/src` of a project
-3. Build with F7
-
-The project configuration contains a build system which triggers `cibuild`.
+- [GitBook](https://mottosso.gitbooks.io/cinder/content/)
 
 <br>
 <br>
+<br>
 
-### API Reference
+### Goals
 
-I document the things I use for the operating system(s) I use them on; i.e. Windows 8.1, Ubuntu 14.04 and Ubuntu 15.10.
+With this project, I aim to..
 
-- https://mottosso.gitbooks.io/cinder/content/
+1. Simplify [existing documentation].
+2. Provide description and examples for relevant classes and functions.
+2. Conform coding style with the [CppCoreGuidelines].
 
-**Motivation**
+I use the word "relevant" meaning "relevant to me", as an artist working in feature film visual effects interested in computer graphics and software development.
 
-- The official documentation lacks examples.
-- Contributing to the existing documentation is difficult.
-- Existing documentation lacks sense of time (is it new? is it old?).
+[CppCoreGuidelines]: https://github.com/isocpp/CppCoreGuidelines
+[existing documentation]: https://libcinder.org/docs/branch/master/
 
-[Samples] are the suggested best way to learn Cinder, but I need more.
+<br>
+<br>
+<br>
 
-[samples]: https://github.com/cinder/Cinder/tree/master/samples
+### Motivation
+
+I find that learning a new framework is a daunting task. So I've decided to approach it in a "divide-and-conquer" kind of fashion; where I inspect the most prominent components piece by piece and document what I find and learn in the way that makes the most sense to me.
+
+Having had a few years of experience with the Qt framework, I've learnt that I am unlikely (and unwilling) to learn most things by heart and prefer remembering where to find things instead. Luckily, the Qt documentation resonates well with me and finding what I'm looking for is typically a matter of seconds.
+
+I'd like the same to be true for Cinder, but unfortunately [the current documentation](https://libcinder.org/docs/branch/master/) does lack in a few of those areas.
+
+- No descriptions
+- No examples
+- No timestamp
+- Slow
+
+No examples, as in the functions and classes are mostly undocumented. No description, no motivation for its existence and worst of all nothing to demonstrate how to actually use it.
+
+A timestamp is important, because some, if not most parts seem out of date and most often does not work with the current release.
+
+And, unexpectedly, visiting any page freezes my browser for about 2-3 seconds, and it's important to me that looking up information on a particular piece of code is as seamless as possible.
+
+With this project, I aim to rectify these things for my current and future self.
