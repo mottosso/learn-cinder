@@ -349,15 +349,15 @@ void MyApp::surfaceMaskImage(const Surface &mask, Surface *target)
 }
 ```
 
-That could be accelerated and made more general by passing a [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html) instead of a [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html):
+That could be accelerated and made more general by passing a [`Channel`] instead of a [`Surface`]:
 
 ```cpp
 void ChannelDemoApp::channelMaskImage( const Channel &mask, Surface *target )
 {
     Channel::ConstIter maskIter = mask.getIter(); // using const because we're not modifying it
-    Surface::Iter targetIter( target->getIter() ); // not using const because we are modifying it
-    while( maskIter.line() && targetIter.line() ) { // line by line
-        while( maskIter.pixel() && targetIter.pixel() ) { // pixel by pixel
+    Surface::Iter targetIter{target->getIter()}; // not using const because we are modifying it
+    while (maskIter.line() && targetIter.line()) { // line by line
+        while (maskIter.pixel() && targetIter.pixel()) { // pixel by pixel
             float maskValue = maskIter.v() / 255.0f;
 
             targetIter.r() *= maskValue;
