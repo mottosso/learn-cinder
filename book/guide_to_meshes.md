@@ -63,23 +63,51 @@ Drawing a shape requires that you keep track of which drawing mode is being used
 The TriMesh represents a series of vertices connected with the same connection algorithm as the `GL_TRIANGLE_STRIP`. It’s a convienent way to keep track of multiple complex objects, draw and scale them easily, and manage which vertices create which faces of a model. Let’s get the simplest example out the way first, drawing a square consisting of two triangles. This requires, as you’d imagine, four vertices that represent the vertices of each triangle.
 
 ```cpp
-mesh = TriMesh(
-    TriMesh::Format()
-        .positions()
-        .colors(3)
-);
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 
-mesh.appendPosition(vec3(10, 100, 0));
-mesh.appendColorRgb(Color(0, 0, 0));
-mesh.appendPosition(vec3(100, 100, 0));
-mesh.appendColorRgb(Color(1, 0, 0));
-mesh.appendPosition(vec3(100, 10, 0));
-mesh.appendColorRgb(Color(1, 1, 0));
-mesh.appendPosition(vec3(10, 10, 0));
-mesh.appendColorRgb(Color(0, 1, 0));
+using namespace ci;
+using namespace ci::app;
 
-mesh.appendTriangle(0, 1, 2);
-mesh.appendTriangle(0, 2, 3);
+class MyApp : public App {
+  public:
+      void setup() override;
+      void draw() override;
+
+      TriMesh mesh;
+};
+
+void MyApp::setup()
+{
+    mesh = TriMesh(
+        TriMesh::Format()
+            .positions()
+            .colors(3)
+    );
+
+    mesh.appendPosition(vec3(10, 100, 0));
+    mesh.appendColorRgb(Color(0, 0, 0));
+    mesh.appendPosition(vec3(100, 100, 0));
+    mesh.appendColorRgb(Color(1, 0, 0));
+    mesh.appendPosition(vec3(100, 10, 0));
+    mesh.appendColorRgb(Color(1, 1, 0));
+    mesh.appendPosition(vec3(10, 10, 0));
+    mesh.appendColorRgb(Color(0, 1, 0));
+
+    mesh.appendTriangle(0, 1, 2);
+    mesh.appendTriangle(0, 2, 3);
+}
+
+void MyApp::draw()
+{
+    gl::clear();
+    gl::draw(mesh);
+}
+
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(240, 160);
+})
 ```
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066071/accbc24c-f438-11e5-8cea-11bfd200beb5.png)
@@ -89,51 +117,57 @@ So far, so good. Now, let’s extend that a little further and build something i
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066072/b142302c-f438-11e5-84dd-005699ad5cb4.png)
 
 ```cpp
+mesh = TriMesh(
+    TriMesh::Format()
+        .positions()
+        .colors(3)
+);
+
 // Create the points of our cube
-vec3 v0(-100,-100,-100);
-vec3 v1(100,-100,-100);
-vec3 v2(100, 100,-100);
-vec3 v3(-100, 100,-100);
-vec3 v4(-100,-100, 100);
-vec3 v5(100,-100, 100);
-vec3 v6(100, 100, 100);
-vec3 v7(-100, 100, 100);
+vec3 v0 { -100,-100,-100 };
+vec3 v1 { 100,-100,-100 };
+vec3 v2 { 100, 100,-100 };
+vec3 v3 { -100, 100,-100 };
+vec3 v4 { -100,-100, 100 };
+vec3 v5 { 100,-100, 100 };
+vec3 v6 { 100, 100, 100 };
+vec3 v7 { -100, 100, 100 };
 
 // Create the colors for each vertex
-Color c0(0, 0, 0);
-Color c1(1, 0, 0);
-Color c2(1, 1, 0);
-Color c3(0, 1, 0);
-Color c4(0, 0, 1);
-Color c5(1, 0, 1);
-Color c6(1, 1, 1);
-Color c7(0, 1, 1);
+Color c0 { 0, 0, 0 };
+Color c1 { 1, 0, 0 };
+Color c2 { 1, 1, 0 };
+Color c3 { 0, 1, 0 };
+Color c4 { 0, 0, 1 };
+Color c5 { 1, 0, 1 };
+Color c6 { 1, 1, 1 };
+Color c7 { 0, 1, 1 };
 
 vec3 faces[6][4] = { /* Vertices for the 6 faces of a cube. */
-	{v0, v1, v2, v3}, {v3, v2, v6, v7}, {v7, v6, v5, v4},
-	{v4, v5, v1, v0}, {v5, v6, v2, v1}, {v7, v4, v0, v3}
+    {v0, v1, v2, v3}, {v3, v2, v6, v7}, {v7, v6, v5, v4},
+    {v4, v5, v1, v0}, {v5, v6, v2, v1}, {v7, v4, v0, v3}
 };
 
 Color colors[6][4] = { /* colors for each vertex of the cube. */
-	{c0, c1, c2, c3}, {c3, c2, c6, c7}, {c7, c6, c5, c4},
-	{c4, c5, c1, c0}, {c5, c6, c2, c1}, {c7, c4, c0, c3}
+    {c0, c1, c2, c3}, {c3, c2, c6, c7}, {c7, c6, c5, c4},
+    {c4, c5, c1, c0}, {c5, c6, c2, c1}, {c7, c4, c0, c3}
 };
 
 for (int i = 0; i < 6; i++)
 {
-	mesh.appendVertex(faces[i][0]);
-	mesh.appendColorRGB(colors[i][0]);
-	mesh.appendVertex(faces[i][1]);
-	mesh.appendColorRGB(colors[i][1]);
-	mesh.appendVertex(faces[i][2]);
-	mesh.appendColorRGB(colors[i][2]);
-	mesh.appendVertex(faces[i][3]);
-	mesh.appendColorRGB(colors[i][3]);
+    mesh.appendPosition(faces[i][0]);
+    mesh.appendColorRgb(colors[i][0]);
+    mesh.appendPosition(faces[i][1]);
+    mesh.appendColorRgb(colors[i][1]);
+    mesh.appendPosition(faces[i][2]);
+    mesh.appendColorRgb(colors[i][2]);
+    mesh.appendPosition(faces[i][3]);
+    mesh.appendColorRgb(colors[i][3]);
 
-	int numberVertices = mesh.getNumVertices();
+    int numberVertices = mesh.getNumVertices();
 
-	mesh.appendTriangle(numberVertices - 4, numberVertices - 3, numberVertices - 2);
-	mesh.appendTriangle(numberVertices - 4, numberVertices - 2, numberVertices - 1);
+    mesh.appendTriangle(numberVertices - 4, numberVertices - 3, numberVertices - 2);
+    mesh.appendTriangle(numberVertices - 4, numberVertices - 2, numberVertices - 1);
 }
 ```
 
