@@ -18,7 +18,7 @@ TinderBox creates a project layout with separate folders for both assets and res
 
 ## Assets
 
-Assets are quite simple to use. Simply place any file you'd like to reference from your application into the _assets_ folder that TinderBox has created for you. To access this file from your code, you'll want to call [`loadAsset()`]. This is a member function of your App, but if you'd like to call it from outside your App, call the [`app::loadAsset()`] variant. The function takes one parameter, which is simply the name of the file you'd like to use. For example, to load a PNG file as a gl::Texture from your assets folder, you'd do something like this:
+Assets are quite simple to use. Simply place any file you'd like to reference from your application into the _assets_ folder that TinderBox has created for you. To access this file from your code, you'll want to call [`loadAsset()`]. This is a member function of your App, but if you'd like to call it from outside your App, call the [`loadAsset()`] variant. The function takes one parameter, which is simply the name of the file you'd like to use. For example, to load a PNG file as a gl::Texture from your assets folder, you'd do something like this:
 
 ```cpp
 gl::Texture::create(loadImage(loadAsset("logo.png")));
@@ -128,3 +128,14 @@ Results in something about like this: `/Users/andrewfb/Code/cinder/samples/resiz
 ### Resources on Windows
 
 Let's take a look now at how resources are handled on Microsoft Windows. The most noticeable difference relative to OS X is that resources are not stored as individual files, since an EXE does not encapsulate a directory like an OS X application bundle does. Instead, resources are baked into the EXE using a resource compiler, and are stored as binary data. However we can access this binary data in memory using the same [`loadResource()`] routine we do on OS X. Furthermore, Cinder's internal code is able to handle loading from either the flat file or in-memory representations transparently and efficiently, so in general you will not need to change application code between the platforms.
+
+
+[`loadAsset()`]: cinder/app/loadAsset.md
+[`getAssetPath()`]: cinder/app/getAssetPath.md
+[`addAssetDirectory()`]: cinder/app/addAssetDirectory.md
+[`DataSourceRef`]: cinder/DataSource.md
+[`loadResource()`]: cinder/app/loadResource.md
+[`loadImage()`]: cinder/loadImage.md
+[`gl::Texture`]: cinder/gl/Texture.md
+[`Surface`]: cinder/Surface.md
+[`getResourcePath()`]: cinder/app/getResourcePath.md
