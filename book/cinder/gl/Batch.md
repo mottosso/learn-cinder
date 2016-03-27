@@ -1,6 +1,6 @@
 ### `Batch`
 
-Baseclass to platform specific App subclasses.
+Geometry and GLSL program combined.
 
 | Namespace                | Include   
 |--------------------------|-----------
@@ -15,7 +15,7 @@ Baseclass to platform specific App subclasses.
 
 ### Description
 
-Pair geometry with a GLSL program.
+Use this objet to associate geometry with a particular shader. Cinder implicitly caches and reuses the shader for each set of geometry.
 
 - [Tutorial](https://libcinder.org/docs/branch/master/guides/opengl/part3.html)
 
