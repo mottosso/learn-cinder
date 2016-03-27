@@ -9,10 +9,10 @@ In this little tutorial we’re going to follow a path that starts with a file o
 ![image](https://cloud.githubusercontent.com/assets/2152766/14061380/da77d66c-f376-11e5-8e7e-bb15dced96bf.png)
 
 ```cpp
-// probably in your App's setup() method
+// Probably in your App's setup() method
 gl::Texture texture = loadImage(loadAsset("image.jpg"));
 
-// and in your App's draw()
+// And in your App's draw()
 gl::draw(texture);
 ```
 
