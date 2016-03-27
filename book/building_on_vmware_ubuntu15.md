@@ -82,7 +82,7 @@ $ chmod +x vmware-mesa.sh
 $ ./vmware-mesa.sh
 ```
 
-Once it's done, reboot your machine.
+Once it's done, reboot the VMWare Workstation guest.
 
 <br>
 <br>
