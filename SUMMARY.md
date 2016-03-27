@@ -51,4 +51,5 @@
    * [VboMesh](book/cinder/VboMesh.md)
    * Surface
    * Area
+   * SurfaceChannelOrder
 
