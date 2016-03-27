@@ -89,7 +89,7 @@ Finally, optimize your shader to run as fast as possible. And try to do as much 
 
 ### Examples
 
-**Basic**
+#### Basic
 
 The shortest possible example.
 
@@ -147,7 +147,7 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
 <br>
 <br>
 
-**With camera**
+#### With camera
 
 The above example assumed a default camera, which only renderes triangles at `z=0`. To render vertices in depth, you will need to establish a point of view.
 
@@ -217,7 +217,7 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
 <br>
 <br>
 
-**Sierpinski Triangle**
+#### Sierpinski Triangle
 
 > Source: [TriMesh HelloWorld](https://forum.libcinder.org/topic/trimesh-helloworld)
 
@@ -304,7 +304,7 @@ int sierpinski(TriMesh& mesh, const vec3& centre, float size, int tri_mesh_index
 <br>
 <br>
 
-**3d**
+#### 3D
 
 This is how you can draw triangles with depth.
 
