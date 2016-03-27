@@ -235,8 +235,11 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-int sierpinski(TriMesh& mesh, const vec3& centre, float size, int tri_mesh_index, int num_iterations);
-
+int sierpinski(TriMesh& mesh,
+               const vec3& centre,
+               float size,
+               int tri_mesh_index,
+               int num_iterations);
 
 class MyApp : public App {
   public:
@@ -277,23 +280,41 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
  *      https://en.wikipedia.org/wiki/Sierpinski_triangle
  *
 */
-int sierpinski(TriMesh& mesh, const vec3& centre, float size, int tri_mesh_index, int num_iterations)
+int sierpinski(TriMesh& mesh,
+               const vec3& centre,
+               float size,
+               int tri_mesh_index,
+               int num_iterations)
 {
     if(num_iterations > 0)
     {
         num_iterations -= 1;
         float new_size = size * 0.5f;
-        tri_mesh_index = sierpinski(mesh, centre + vec3(0,1,0)*new_size, new_size, tri_mesh_index, num_iterations);
-        tri_mesh_index = sierpinski(mesh, centre + vec3(-1,-1,0)*new_size, new_size, tri_mesh_index, num_iterations);
-        tri_mesh_index = sierpinski(mesh, centre + vec3(1,-1,0)*new_size, new_size, tri_mesh_index, num_iterations);
+        tri_mesh_index = sierpinski(mesh,
+                                    centre + vec3(0, 1, 0) * new_size,
+                                    new_size,
+                                    tri_mesh_index,
+                                    num_iterations);
+        tri_mesh_index = sierpinski(mesh,
+                                    centre + vec3(-1, -1, 0) * new_size,
+                                    new_size,
+                                    tri_mesh_index,
+                                    num_iterations);
+        tri_mesh_index = sierpinski(mesh,
+                                    centre + vec3(1, -1, 0) * new_size,
+                                    new_size,
+                                    tri_mesh_index,
+                                    num_iterations);
         return tri_mesh_index;
     }
     else
     {
-        mesh.appendPosition(centre + vec3(0,1,0)*size);
-        mesh.appendPosition(centre + vec3(-1,-1,0)*size);
-        mesh.appendPosition(centre + vec3(1,-1,0)*size);
-        mesh.appendTriangle(tri_mesh_index, tri_mesh_index+1, tri_mesh_index+2);
+        mesh.appendPosition(centre + vec3(0, 1, 0) * size);
+        mesh.appendPosition(centre + vec3(-1, -1, 0) * size);
+        mesh.appendPosition(centre + vec3(1, -1, 0) * size);
+        mesh.appendTriangle(tri_mesh_index,
+                            tri_mesh_index + 1,
+                            tri_mesh_index + 2);
 
         return tri_mesh_index + 3;
     }
