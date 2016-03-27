@@ -6,6 +6,62 @@
 
 In this little tutorial we’re going to follow a path that starts with a file on the filesystem, say a PNG file, and ends with the image being drawn to the screen using OpenGL.
 
+If you want to follow along, here's some boilerplate.
+
+```cpp
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
+using namespace ci;
+using namespace ci::app;
+
+class MyApp : public App {
+    public:
+        void setup() override;
+        void draw() override;
+    
+        gl::Texture2dRef mTex;
+        Surface bitmap;
+        Area area;
+};
+
+void MyApp::setup()
+{
+    auto img = loadImage(loadUrl(
+        "https://www.cs.cmu.edu/~chuck/lennapg/len_std.jpg"
+    ));
+
+    Surface bitmap(img);
+
+    Area area(0, 0, 500, 500);
+    Surface::Iter iter = bitmap.getIter(area);
+    while (iter.line()) {
+        while (iter.pixel()) {
+            iter.r() = 255 - iter.r();
+            iter.g() = 255 - iter.g();
+            iter.b() = 255 - iter.b();
+        }
+    }
+
+    mTex = gl::Texture2d::create(bitmap);
+}
+
+void MyApp::draw()
+{
+    gl::clear();
+    gl::draw(mTex);
+}
+
+CINDER_APP(MyApp, RendererGl)
+```
+
+<br>
+<br>
+<br>
+
+### Getting Started
+
 ![image](https://cloud.githubusercontent.com/assets/2152766/14061380/da77d66c-f376-11e5-8e7e-bb15dced96bf.png)
 
 ```cpp
