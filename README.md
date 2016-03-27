@@ -5,9 +5,9 @@ Notes and examples for getting started with [libcinder](https://libcinder.org/).
 <br>
 <br>
 
-### API Reference
+### Personal API Reference
 
-I document the things I use for the operating system(s) I use them on; i.e. Windows 8.1, Ubuntu 14.04 and Ubuntu 15.10.
+My personal notes and reference for Cinder.
 
 - https://mottosso.gitbooks.io/cinder/content/
 
@@ -15,8 +15,8 @@ I document the things I use for the operating system(s) I use them on; i.e. Wind
 
 - The official documentation lacks examples.
 - Contributing to the existing documentation is difficult.
-- Existing documentation lacks timestamp.
+- Existing documentation lacks sense of time (is it new? is it old?).
 
-Furthermore, it is advised that the [samples] are the best way to learn Cinder, but samples do not communicate intent or reason.
+[Samples] are the suggested best way to learn Cinder, but I need more.
 
 [samples]: https://github.com/cinder/Cinder/tree/master/samples
