@@ -369,175 +369,240 @@ while (i < 24)
 
 mesh.bufferIndices(indices);
 
-positions.push_back(Vec3f(100, 200, 1));
-positions.push_back(Vec3f(200, 200, 1));
-positions.push_back(Vec3f(200, 100, 1));
-positions.push_back(Vec3f(100, 100, 1));
+positions.push_back(vec3(100, 200, 1));
+positions.push_back(vec3(200, 200, 1));
+positions.push_back(vec3(200, 100, 1));
+positions.push_back(vec3(100, 100, 1));
 
-positions.push_back(Vec3f(200, 200, 1));
-positions.push_back(Vec3f(200, 200, 100));
-positions.push_back(Vec3f(200, 100, 100));
-positions.push_back(Vec3f(200, 100, 1));
+positions.push_back(vec3(200, 200, 1));
+positions.push_back(vec3(200, 200, 100));
+positions.push_back(vec3(200, 100, 100));
+positions.push_back(vec3(200, 100, 1));
 
-positions.push_back(Vec3f(200, 200, 100));
-positions.push_back(Vec3f(100, 200, 100));
-positions.push_back(Vec3f(100, 100, 100));
-positions.push_back(Vec3f(200, 100, 100));
+positions.push_back(vec3(200, 200, 100));
+positions.push_back(vec3(100, 200, 100));
+positions.push_back(vec3(100, 100, 100));
+positions.push_back(vec3(200, 100, 100));
 
-positions.push_back(Vec3f(100, 200, 100));
-positions.push_back(Vec3f(100, 200, 1));
-positions.push_back(Vec3f(100, 100, 1));
-positions.push_back(Vec3f(100, 100, 100));
+positions.push_back(vec3(100, 200, 100));
+positions.push_back(vec3(100, 200, 1));
+positions.push_back(vec3(100, 100, 1));
+positions.push_back(vec3(100, 100, 100));
 
-positions.push_back(Vec3f(100, 200, 100));
-positions.push_back(Vec3f(200, 200, 100));
-positions.push_back(Vec3f(200, 200, 1));
-positions.push_back(Vec3f(100, 200, 1));
+positions.push_back(vec3(100, 200, 100));
+positions.push_back(vec3(200, 200, 100));
+positions.push_back(vec3(200, 200, 1));
+positions.push_back(vec3(100, 200, 1));
 
-positions.push_back(Vec3f(100, 100, 100));
-positions.push_back(Vec3f(200, 100, 100));
-positions.push_back(Vec3f(200, 100, 1));
-positions.push_back(Vec3f(100, 100, 1));
+positions.push_back(vec3(100, 100, 100));
+positions.push_back(vec3(200, 100, 100));
+positions.push_back(vec3(200, 100, 1));
+positions.push_back(vec3(100, 100, 1));
 
 // now we can buffer positions
 mesh.bufferPositions(positions);
 ```
 
-This creates the same old boring looking white cube. Until we update the colors. This requires retrieving the color values from the mesh and using an iterator to examine the values, which is a familiar pattern in Cinder. The VertexIter object is created to iterate over all the values in the mesh, you assign to the result of VboMesh::mapVertexBuffer() like so:
+This creates the same old boring looking white cube. Until we update the colors. This requires retrieving the color values from the mesh and using an iterator to examine the values, which is a familiar pattern in Cinder.
+
+The [`VertexIter`] object is created to iterate over all the values in the mesh, you assign to the result of `VboMesh::mapVertexBuffer()` like so:
 
 ```cpp
 void VboTutorial::update()
 {
-float g = sin(getElapsedSeconds());
-float b = cos(getElapsedSeconds());
-gl::VboMesh::VertexIter iter = mesh.mapVertexBuffer();
-for( int x = 0; x < 24; ++x ) {
-//positions.at(x) *= 1.001;
-iter.setColorRGBA( ColorA( 1 - (g+b/3), g, b, 0.5) );
-++iter;
-}
+	float g = sin(getElapsedSeconds());
+	float b = cos(getElapsedSeconds());
+	gl::VboMesh::VertexIter iter = mesh.mapVertexBuffer();
+	for (int x = 0; x < 24; ++x)
+	{
+		//positions.at(x) *= 1.001;
+		iter.setColorRGBA(ColorA(1 - (g+b/3), g, b, 0.5));
+		++iter;
+	}
 }
 ```
 
-Dynamic positions are handled in the same way as dynamic colors. To create the dynamic positions for the simple cube in the VboMesh, setting up the VboMesh is going to look familiar, assigning the indices via a vector of uints, but the actual updating of the positions is going to look quite different because you can’t pass a position values into the VboMesh by using VboMesh::bufferPositions(). Instead, you create an VertexIter to iterate over and modify the positions:
+Dynamic positions are handled in the same way as dynamic colors. To create the dynamic positions for the simple cube in the [`VboMesh`], setting up the [`VboMesh`] is going to look familiar, assigning the indices via a vector of uints, but the actual updating of the positions is going to look quite different because you can’t pass a position values into the VboMesh by using `VboMesh::bufferPositions()`. Instead, you create an VertexIter to iterate over and modify the positions:
 
 ```cpp
 void VboTutorialApp::setup()
 {
-gl::VboMesh::Layout layout;
-layout.setStaticIndices();
-layout.setDynamicColorsRGBA();
-layout.setDynamicPositions();
+	gl::VboMesh::Layout layout;
 
-int vertCount = 24;
-int quadCount = 6;
-mesh = gl::VboMesh(vertCount, quadCount * 4, layout, GL_QUADS);
-vector indices;
-int i=0;
-while(i < 24){
-indices.push_back(i);
-i++;
-}
+	layout.setStaticIndices();
+	layout.setDynamicColorsRGBA();
+	layout.setDynamicPositions();
 
-mesh.bufferIndices(indices);
+	int vertCount = 24;
+	int quadCount = 6;
+
+	mesh = gl::VboMesh(vertCount, quadCount * 4, layout, GL_QUADS);
+	vector indices;
+
+	int i = 0;
+	while (i < 24)
+	{
+		indices.push_back(i);
+		i++;
+	}
+
+	mesh.bufferIndices(indices);
 }
 ```
 
-Note that creating the VboMesh only buffers the indices and not any positions. Creating position data is done via a VertexIter, for instance, in the update() of the application:
+Note that creating the [`VboMesh`] only buffers the indices and not any positions. Creating position data is done via a [`VertexIter`], for instance, in the `update()` of the application:
 
 ```cpp
 void VboTutorialApp::update()
 {
-gl::VboMesh::VertexIter iter = mesh.mapVertexBuffer();
-for( int idx = 0; idx < numberOfVertices; ++idx ) {
-iter.setPosition( Vec3f( xVal, yVal, zVal) );
-++iter;
-}
+	gl::VboMesh::VertexIter iter = mesh.mapVertexBuffer();
+	for (int idx = 0; idx < numberOfVertices; ++idx)
+	{
+		iter.setPosition( Vec3f( xVal, yVal, zVal) );
+		++iter;
+	}
 }
 ```
 
-The positions are automatically generated to be unit vector values, stored both on the graphics card and in the application memory, When you modify the VertexIter you mark a certain range of data as needing to be uploaded to the graphics card. For those interested in the underlying functionality, this uses the stored local copy of the vertex and index information to pass to glBufferDataARB(). The values are only uploaded to the card when index, color, or position data is modified saving time and space on any draw operation when changes haven’t been made. This is an important nuance because the idea of keeping records both on the graphics card and in the application memory is used throughout the VboMesh, color data, texture positions, and even indices. If you create dynamic texture positions using either setDynamicTexCoords2d() if you’re using 2d coordinates or setDynamicTexCoords3d() if you’re using 3d coordinates, you can reposition a texture on a mesh dynamically. There are some key differences between 2d textures and 3d textures that you can read up more on here . To move a texture around the x axis of the mesh, create a VertexIter and then modify the texture using setTexCoord3d2() or setTexCoord2d2() depending on the texture type that you’re using. For instance, shifting a 2d texture around:
+The positions are automatically generated to be unit vector values, stored both on the graphics card and in the application memory. When you modify the [`VertexIter`] you mark a certain range of data as needing to be uploaded to the graphics card.
+
+For those interested in the underlying functionality, this uses the stored local copy of the vertex and index information to pass to `glBufferDataARB()`. The values are only uploaded to the card when index, color, or position data is modified saving time and space on any draw operation when changes haven’t been made.
+
+This is an important nuance because the idea of keeping records both on the graphics card and in the application memory is used throughout the [`VboMesh`], color data, texture positions and even indices.
+
+If you create dynamic texture positions using either `setDynamicTexCoords2d()` if you’re using 2d coordinates or `setDynamicTexCoords3d()` if you’re using 3d coordinates, you can reposition a texture on a mesh dynamically. There are some key differences between 2d textures and 3d textures that you can read up more on here.
+
+To move a texture around the x axis of the mesh, create a [`VertexIter`] and then modify the texture using `setTexCoord3d2()` or `setTexCoord2d2()` depending on the texture type that you’re using. For instance, shifting a 2d texture around:
 
 ```cpp
 // dynmaically generate our new positions based on a simple sine wave for mesh
 gl::VboMesh::VertexIter iter2 = mVboMesh2.mapVertexBuffer();
-for( int x = 0; x < VERTICES_X; ++x ) {
-for( int z = 0; z < VERTICES_Z; ++z ) {
-float height = sin( z / (float)VERTICES_Z * zFreq + x / (float)VERTICES_X * xFreq + offset ) / 5.0f;
-iter2.setPosition( Vec3f( x / (float)VERTICES_X, height, z / (float)VERTICES_Z ) + Vec3f( 0, 0.5, 0 ) );
-iter.setTexCoord2d2( Vec2f( x / (float)VERTICES_X, z / (float)VERTICES_Z ));
-++iter2;
-}
+for (int x = 0; x < VERTICES_X; ++x)
+{
+	for (int z = 0; z < VERTICES_Z; ++z)
+	{
+		float height = sin(
+			z / (float)VERTICES_Z * zFreq
+			+ x / (float)VERTICES_X * xFreq
+			+ offset
+		) / 5.0f;
+
+		
+		iter2.setPosition(
+			vec3(x / (float)VERTICES_X, height, z / (float)VERTICES_Z)
+			+ vec3(0, 0.5, 0)
+		);
+		
+		iter.setTexCoord2d2(
+			vec2(x / (float)VERTICES_X, z / (float)VERTICES_Z)
+		);
+
+		++iter2;
+	}
 }
 ```
 
-You can also copy the values from one VboMesh to another, retrieving values from a mesh using the VboMesh::getIndexVbo() to get the indices from a mesh and VboMesh::getStaticVbo() to get the vertex data from the mesh. The VboMesh can be constructed like so assuming that there’s another VboMesh called otherMesh:
+You can also copy the values from one VboMesh to another, retrieving values from a mesh using the `VboMesh::getIndexVbo()` to get the indices from a mesh and `VboMesh::getStaticVbo()` to get the vertex data from the mesh. The [`VboMesh`] can be constructed like so assuming that there's another [`VboMesh`] called `otherMesh`:
 
 ```cpp
-mesh = gl::VboMesh( numberVertices, numberQuads * 4, otherMesh.getLayout(), GL_QUADS, &otherMesh.getIndexVbo(), NULL, &otherMesh.getDynamicVbo());
+mesh = gl::VboMesh(
+  numberVertices,              // size_t numVertices,
+  numberQuads * 4,             // size_t numIndices,
+  otherMesh.getLayout(),       // Layout layout,
+  GL_QUADS,                    // GLenum primitiveType,
+  &otherMesh.getIndexVbo(),    // Vbo *indexBuffer,
+  NULL,                        // Vbo *staticBuffer,
+  &otherMesh.getDynamicVbo()   // Vbo *dynamicBuffer
+);
 ```
 
 You may be noticing the last two parameters, which are pointers to either the static or dynamic VBO data from the source VBO.
 
+Which you use will depend on how the source has been created, using the dynamic properties from a source VBO requires that the source has dynamic positionsVBO with dynamic properties.
+
+Using the static values from a buffer means copying the values over so that they can be manipulated independently. This means that the target mesh will have the same properties as the source mesh until they are altered.
+
+Using the dynamic properties of a mesh means that the target mesh is using the same data as the source and changes to the source will be reflected in the target mesh. This makes it easy to reflect changes across meshes, for instance color effects or textures, but makes your meshes dependent on the source mesh.
+
+For the last trick of interoperation between the mesh types in Cinder, a [`VboMesh`] can load a mesh from a [`TriMesh`] instance, which means that you can import and export an `.obj` file to a VBO.
+
+For instance:
+
 ```cpp
-VboMesh( size_t numVertices, size_t numIndices, Layout layout, GLenum primitiveType, Vbo *indexBuffer, Vbo *staticBuffer, Vbo *dynamicBuffer );
-```
-
-Which you use will depend on how the source has been created, using the dynamic properties from a source VBO requires that the source has dynamic positionsVBO with dynamic properties. Using the static values from a buffer means copying the values over so that they can be manipulated independently. This means that the target mesh will have the same properties as the source mesh until they are altered. Using the dynamic properties of a mesh means that the target mesh is using the same data as the source and changes to the source will be reflected in the target mesh. This makes it easy to reflect changes across meshes, for instance color effects or textures, but makes your meshes dependent on the source mesh.
-
-For the last trick of interoperation between the mesh types in Cinder, a VboMesh can load a mesh from a TriMesh instance, which means that you can easily import and export an .obj file to a VBO with ease, for instance:
-
-```cpp
-ObjLoader loader( loadResource( OBJ_FILE_RESOURCE ));
+ObjLoader loader(loadResource(OBJ_FILE_RESOURCE));
 loader.load(&trimesh);
 gl::VboMesh mesh = gl::VboMesh(trimesh);
 ```
 
 And that gets you from a modeling tool to a VBO quite painlessly.
 
-As a final demonstration of how much is built into the VBO and mesh handling in Cinder you can easily create normals and set the normals for a VBO using the VertexIter object and its setNormal() method. A normal is simply a vector that’s perpendicular to the face of a triangle or quad in a mesh or other piece of OpenGL geometry and they’re quite important if you plan to use lighting of any kind when rendering a TriMesh or VBO to the screen. The normal essentially tells OpenGL how any light is to be reflected off of a particular face. This allows you to create shading, depth, and other real world lighting effects. It’s also a little out of the scope of this guide, so I’ll point you to a chapter from OpenGL Programming aka “The Red Book” Using the VertexIter allows you set the normal position for each vertex in a VBO (or in a TriMesh for that matter) by iterating through the vertices of the VBO and setting each normal with an appropriate value. The algorithm here was taken from the [http://www.opengl.org/wiki/Calculating_a_Surface_Normal](http://www.opengl.org/wiki/Calculating_a_Surface_Normal) OpenGL wiki which explains the algorithm in a little bit greater detail, as well as providing an alternative algorithm.
+<br>
+<br>
+<br>
+
+### Final Demonstration
+
+As a final demonstration of how much is built into the VBO and mesh handling in Cinder, you can easily create and set the normals for a VBO using the [`VertexIter`] object and its `setNormal()` method.
+
+A normal is simply a vector that's perpendicular to the face of a triangle or quad in a mesh or other piece of OpenGL geometry. They're quite important if you plan to use lighting of any kind when rendering a [`TriMesh`] or VBO to the screen.
+
+The normal essentially tells OpenGL how any light is to be reflected off of a particular face. This allows you to create shading, depth, and other real world lighting effects. It's also a little out of the scope of this guide, so I'll point you to a chapter from OpenGL Programming aka “The Red Book”.
+
+Using the [`VertexIter`] allows you set the normal position for each vertex in a VBO (or in a [`TriMesh`] for that matter) by iterating through the vertices of the VBO and setting each normal with an appropriate value.
+
+The algorithm here was taken from the [OpenGL Wiki](http://www.opengl.org/wiki/Calculating_a_Surface_Normal) OpenGL wiki and explains the algorithm in a little bit greater detail, as well as providing an alternative algorithm.
 
 ```cpp
-Vec3f v0, v1, v2;
+vec3 v0, v1, v2;
 
 // dynmaically generate our new positions based on a simple sine wave
 gl::VboMesh::VertexIter iter = mVboMesh.mapVertexBuffer();
-for( int x = 0; x < VERTICES_X; ++x ) {
-for( int z = 0; z < VERTICES_Z ; ++z ) {
 
-float height = sin( z / (float)VERTICES_Z * zFreq + x / (float)VERTICES_X * xFreq + offset ) / 2.0f;
-if( currentVert == 0) {
-v0.set( x / (float)VERTICES_X, height, z / (float)VERTICES_Z );
-++currentVert;
-} else if ( currentVert == 1) {
-v1.set( x / (float)VERTICES_X, height, z / (float)VERTICES_Z );
-++currentVert;
-} else {
+for (int x = 0; x < VERTICES_X; ++x)
+{
+	for (int z = 0; z < VERTICES_Z ; ++z)
+	{
+		float height = sin(z / (float)VERTICES_Z * zFreq + x / (float)VERTICES_X * xFreq + offset) / 2.0f;
+		if (currentVert == 0)
+		{
+			v0.set(x / (float)VERTICES_X, height, z / (float)VERTICES_Z);
+			++currentVert;
+			} else if (currentVert == 1) {
+			v1.set(x / (float)VERTICES_X, height, z / (float)VERTICES_Z);
+			++currentVert;
+		} else {
 
-//v3.set( x / (float)VERTICES_X, height, z / (float)VERTICES_Z );
-v2.set( x / (float)VERTICES_X, height, z / (float)VERTICES_Z );
+			//v3.set(x / (float)VERTICES_X, height, z / (float)VERTICES_Z);
+			v2.set(x / (float)VERTICES_X, height, z / (float)VERTICES_Z);
 
-Vec3f uu = v2 - v0;
-Vec3f vv = v1 - v0;
-Vec3f n = uu.cross(vv).normalized();
+			vec3 uu = v2 - v0;
+			vec3 vv = v1 - v0;
+			vec3 n = uu.cross(vv).normalized();
 
-iter.setPosition(v0);
-iter.setNormal(n);
-++iter;
-iter.setPosition(v1);
-iter.setNormal(n);
-++iter;
-iter.setPosition(v2);
-iter.setNormal(n);
-++iter;
-currentVert = 0;
-
-}
-}
+			iter.setPosition(v0);
+			iter.setNormal(n);
+			++iter;
+			iter.setPosition(v1);
+			iter.setNormal(n);
+			++iter;
+			iter.setPosition(v2);
+			iter.setNormal(n);
+			++iter;
+			currentVert = 0;
+		}
+	}
 }
 ```
 
-So hopefully you’re feeling a little more comfortable not only with creating and manipulating meshes in Cinder, but also with underestanding what some of the underlying mechanics of a mesh and OpenGL geometry are as well. This guide has barely scratched the surface, but it should be enough to get you started. For more information you can check the excellent references at [songho](http://songho.ca/opengl/gl_vbo.html) or to the reference for the [TriMesh](http://libcinder.org/docs/v0.8.2/classcinder_1_1_tri_mesh.html) and [VBO mesh](http://libcinder.org/docs/v0.8.2/classcinder_1_1gl_1_1_vbo_mesh.html). Have fun, and make something beautiful.
+<br>
+<br>
+<br>
+
+### Conclusion
+
+Hopefully you're feeling a little more comfortable not only with creating and manipulating meshes in Cinder, but also with underestanding what some of the underlying mechanics of a mesh and OpenGL geometry are as well. This guide has barely scratched the surface, but it should be enough to get you started. For more information you can check the excellent references at [songho](http://songho.ca/opengl/gl_vbo.html) or to the reference for the [`TriMesh`] and [`VboMesh`].
+
+Have fun, and make something beautiful.
 
 —
 
