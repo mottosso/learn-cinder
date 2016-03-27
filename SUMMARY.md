@@ -12,7 +12,7 @@
            * [Settings](book/cinder/app/AppBase/Settings.md)
        * [AppMsw](book/cinder/app/AppMsw.md)
        * [AppLinux](book/cinder/app/AppLinux.md)
-       * AppMac
+       * [AppMac](book/cinder/app/AppMac.md)
        * console()
        * [MouseEvent](book/cinder/app/MouseEvent.md)
        * [loadAsset()](book/cinder/app/loadAsset.md)
