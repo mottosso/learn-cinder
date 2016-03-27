@@ -352,12 +352,12 @@ void MyApp::surfaceMaskImage(const Surface &mask, Surface *target)
 That could be accelerated and made more general by passing a [`Channel`] instead of a [`Surface`]:
 
 ```cpp
-void ChannelDemoApp::channelMaskImage( const Channel &mask, Surface *target )
+void ChannelDemoApp::channelMaskImage(const Channel &mask, Surface *target)
 {
-    Channel::ConstIter maskIter = mask.getIter(); // using const because we're not modifying it
-    Surface::Iter targetIter{target->getIter()}; // not using const because we are modifying it
-    while (maskIter.line() && targetIter.line()) { // line by line
-        while (maskIter.pixel() && targetIter.pixel()) { // pixel by pixel
+    Channel::ConstIter maskIter = mask.getIter();
+    Surface::Iter targetIter{target->getIter()};
+    while (maskIter.line() && targetIter.line()) {
+        while (maskIter.pixel() && targetIter.pixel()) {
             float maskValue = maskIter.v() / 255.0f;
 
             targetIter.r() *= maskValue;
@@ -368,49 +368,55 @@ void ChannelDemoApp::channelMaskImage( const Channel &mask, Surface *target )
 }
 ```
 
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_mask-640x159.jpg "images_mask")
+![image](https://cloud.githubusercontent.com/assets/2152766/14065845/47684e18-f431-11e5-9068-e9da3bfa043b.png)
 
 As a side note, this could be optimized substantially, so don’t take the above code to be an example of fast image manipulation.
 
-The value of a Channel at any position can be retrieved using the `v()` (_v_ for _value_) function of [Channel::Iter](http://libcinder.org/docs/dev/classcinder_1_1_channel_t_1_1_iter.html). Many of the image processing functions in Cinder can also be used with single channels, allowing you to, for instance, perform an edge detection function using only the blue channel of a [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html):
+The value of a Channel at any position can be retrieved using the `v()` (_v_ for _value_) function of [`Channel::Iter`]. Many of the image processing functions in Cinder can also be used with single channels, allowing you to, for instance, perform an edge detection function using only the blue channel of a [`Surface`]:
+
+[`Channel::Iter`]: cinder/Channel/Iter.md
 
 ```cpp
-gl::Texture createEdgeTexture( const Channel &src )
+gl::Texture createEdgeTexture(const Channel &src)
 {
-    Channel temp( src.getWidth(), src.getHeight() );
-    cinder::ip::edgeDetectSobel( src, &temp );
-    return gl::Texture( temp );
+    Channel temp{src.getWidth(), src.getHeight()};
+    cinder::ip::edgeDetectSobel(src, &temp);
+    return gl::Texture(temp);
 }
 ```
 
 This would be called like so:
 
 ```cpp
-myTexture = createEdgeTexture( simpleSurface.getChannelBlue() );
+myTexture = createEdgeTexture(simpleSurface.getChannelBlue());
 ```
 
 ![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_edgeDetect-640x237.png "images_edgeDetect")
 
-In summary, the [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html) is a lightweight tool for working with a particular color channel from a [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html), or as a standalone grayscale image. Copying, image processing operations, or other time critical operations that don’t require all the data from a bitmap are best done with the [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html).
+In summary, the [`Channel`] is a lightweight tool for working with a particular color channel from a [`Surface`], or as a standalone grayscale image. Copying, image processing operations or other time critical operations that don’t require all the data from a bitmap are best done with the [`Channel`].
+
+<br>
+<br>
+<br>
 
 ### I/O Operations
 
-Very often you’ll want to read or write an image file, which is a topic we’ll explore in this section. In the beginning of this article you saw loading images using the `loadIma method. This function can be used to load from file paths:
+Very often you’ll want to read or write an image file, which is a topic we’ll explore in this section. In the beginning of this article you saw loading images using the [`loadImage()`] function. This function can be used to load from file paths..
 
 ```cpp
-loadImage( "data/image.png" );
+loadImage(loadAsset("data/image.png"));
 ```
 
-or, with a slight variation, from a URL:
+..or, with a slight variation, from a URL:
 
 ```cpp
-loadImage( loadUrl( "http://site.com/image.png" ) );
+loadImage(loadUrl( "http://site.com/image.png"));
 ```
 
 We can also use this method to load images stored in resources (described in a [separate guide](http://libcinder.org/docs/dev/_cinder_resources.html)):
 
 ```cpp
-loadImage( loadResource( RES_LOGO_IMAGE ) );
+loadImage(loadResource(RES_LOGO_IMAGE));
 ```
 
 If you look up `loadIma in the Cinder documentation, you’ll see it returns an [ImageSourceRef](http://libcinder.org/docs/dev/namespacecinder.html#aca11590d504e68de86f3a57444c2eb70). The way this class (and its cousin, [ImageTargetRef](http://libcinder.org/docs/dev/namespacecinder.html#aa5caf83179f34be27691363934b85afb)) work under the hood will be the topic of a future tutorial, but we can benefit from them without understanding their inner workings. In short, an [ImageSource](http://libcinder.org/docs/dev/classcinder_1_1_image_source.html) is able to represent any sort of image, even the ones we can’t manipulate directly using [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html)s or[Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html)s. You can pass an ImageSourceRef to the constructor of [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html)s, [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html)s, [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html)s and several other classes like our OpenCV wrapper classes. The power of this design - a separate class to represent a generic source of an image - is that a source and its destination can negotiate between themselves to create the best representation. For example, let’s imagine you have a grayscale 8-bit image stored in a PNG file you’d like to turn into a [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html). By using code like the following, you get the most optimal representation:
