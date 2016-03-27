@@ -1,7 +1,5 @@
 ### VMWare Workstation 12.0
 
-> Source: [Cinder for Linux on VMWare](https://github.com/chaoticbob/Cinder/wiki/Cinder-for-Linux-on-VMWare)
-
 This document walks you through setting up Cinder in a Ubuntu guest running under VMWare Workstation 12.0.
 
 <br>
