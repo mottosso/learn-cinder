@@ -1,4 +1,4 @@
-### `drawSolidCicle()`
+### drawSolidCicle()
 
 | Namespace | Include
 |-----------|-----------

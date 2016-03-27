@@ -1,4 +1,4 @@
-### `getStockShader()`
+### getStockShader()
 
 Generate generic shader.
 

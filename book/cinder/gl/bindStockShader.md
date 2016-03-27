@@ -1,4 +1,4 @@
-### `bindStockShader()`
+### bindStockShader()
 
 | Output      | Function
 |------------:|:-------------------------
