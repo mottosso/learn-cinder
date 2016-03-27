@@ -1,4 +1,4 @@
-### `loadUrl()`
+### loadUrl()
 
 Passed to [`loadImage()`] to load an image from a URL.
 

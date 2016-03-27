@@ -1,4 +1,4 @@
-### `TriMesh`
+### TriMesh
 
 Construct a triangle mesh from `vec3` and `Color` objects.
 
