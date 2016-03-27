@@ -308,7 +308,7 @@ int sierpinski(TriMesh& mesh, const vec3& centre, float size, int tri_mesh_index
 
 This is how you can draw triangles with depth.
 
-![image](https://cloud.githubusercontent.com/assets/2152766/14067777/ab7154e4-f464-11e5-91d3-e66634442543.png)
+![image](https://cloud.githubusercontent.com/assets/2152766/14067835/8c0fad92-f466-11e5-9764-ab69799b0d9a.png)
 
 ```cpp
 #include "cinder/app/App.h"
@@ -339,7 +339,7 @@ void MyApp::setup()
 
 void MyApp::draw()
 {
-    gl::clear(Color::white());
+    gl::clear();
 
     mMesh = TriMesh(
         TriMesh::Format()
@@ -390,8 +390,13 @@ void MyApp::draw()
 
         int numberVertices = mMesh.getNumVertices();
 
-        mMesh.appendTriangle(numberVertices - 4, numberVertices - 3, numberVertices - 2);
-        mMesh.appendTriangle(numberVertices - 4, numberVertices - 2, numberVertices - 1);
+        mMesh.appendTriangle(numberVertices - 4,
+                             numberVertices - 3,
+                             numberVertices - 2);
+
+        mMesh.appendTriangle(numberVertices - 4,
+                             numberVertices - 2,
+                             numberVertices - 1);
     }
 
     gl::setMatrices(mCam);
