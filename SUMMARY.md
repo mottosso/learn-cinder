@@ -10,7 +10,7 @@
    * [app](book/cinder/app.md)
        * [AppBase](book/cinder/app/AppBase.md)
            * [Settings](book/cinder/app/AppBase/Settings.md)
-       * AppMsw
+       * [AppMsw](book/cinder/app/AppMsw.md)
        * AppLinux
        * AppMac
        * console()

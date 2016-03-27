@@ -4,10 +4,10 @@ Baseclass to platform specific App subclasses.
 
 | Namespace                | Include
 |--------------------------|-------------|
-| [`cinder::app::BaseApp`] | `#include "cinder/app.h"`
+| [`cinder::app::AppBase`] | `#include "cinder/app.h"`
 
 
-[`cinder::app::BaseApp`]: https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base.html
+[`cinder::app::AppBase`]: https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base.html
 
 <br>
 <br>
@@ -17,8 +17,9 @@ Baseclass to platform specific App subclasses.
 
 Use `cinder::app::App` which is a [typedef] for an appropriate baseclass [relative the current platform][platform].
 
-- [AppMsw](cinder__app__AppMsw.md) on Windows
-- [AppMac](cinder__app__AppMac.md) on Osx
+- [AppMsw](AppMsw.md) on Windows
+- [AppMac](AppMac.md) on Osx
+- [AppLinux](AppLinux.md) on Linux
 
 [typedef]: http://en.cppreference.com/w/cpp/language/typedef
 [platform]: https://github.com/cinder/Cinder/blob/e50d9d206824617b2833d89865ee48e06a0e8cfb/include/cinder/app/App.h
