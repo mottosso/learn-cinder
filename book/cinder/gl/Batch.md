@@ -7,7 +7,7 @@ Geometry and GLSL program combined.
 | [`cinder::gl::Batch`]    | [`#include "cinder/gl/gl.h"`]
 
 [`cinder::gl::Batch`]: https://libcinder.org/docs/branch/master/classcinder_1_1gl_1_1_batch.html
-[`#include "cinder/gl/gl.h"`]: https://github.com/cinder/Cinder/blob/master/include/cinder/gl/gl.h
+[`#include "cinder/gl/gl.h"`]: https://github.com/cinder/Cinder/blob/master/include/cinder/gl/Batch.h
 
 <br>
 <br>
