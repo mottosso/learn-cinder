@@ -10,7 +10,7 @@ In this little tutorial we’re going to follow a path that starts with a file o
 
 ```cpp
 // probably in your App's setup() method
-gl::Texture texture = loadImage("image.jpg");
+gl::Texture texture = loadImage(loadAsset("image.jpg"));
 
 // and in your App's draw()
 gl::draw(texture);
