@@ -1,15 +1,6 @@
 # Summary
 
 * [Introduction](README.md)
-* Guides
-* [Getting Started](book/getting_started.md)
-* [Images in Cinder](book/images_in_cinder.md)
-* [Guide to Meshes](book/guide_to_meshes.md)
-* [Resources](book/resources.md)
-* [Installation Guide](book/installation_guide.md)
-   * [Ubuntu 14.04](book/building_on_ubuntu14.md)
-   * [VMWare | Ubuntu 15.10](book/building_on_vmware_ubuntu15.md)
-* API
 * [cinder](book/cinder.md)
    * [app](book/cinder/app.md)
        * [AppBase](book/cinder/app/AppBase.md)
@@ -61,4 +52,13 @@
    * [ImageSource](book/cinder/ImageSource.md)
    * Rect
    * ObjLoader
+* Guides
+* [Getting Started](book/getting_started.md)
+* [Images in Cinder](book/images_in_cinder.md)
+* [Guide to Meshes](book/guide_to_meshes.md)
+* [Resources](book/resources.md)
+* [Installation Guide](book/installation_guide.md)
+   * [Ubuntu 14.04](book/building_on_ubuntu14.md)
+   * [VMWare | Ubuntu 15.10](book/building_on_vmware_ubuntu15.md)
+* API
 
