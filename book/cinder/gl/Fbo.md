@@ -1,4 +1,4 @@
-### `Fbo`
+### Fbo
 
 Represents an OpenGL Framebuffer Object.
 
