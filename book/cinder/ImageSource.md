@@ -11,7 +11,7 @@
 |                | ImageSource ()
 |                | ~ImageSource ()
 | float          | getPixelAspectRatio () const
-| bool           | isPremultiplied () const |Returns whether the ImageSource 's color data has been premultiplied by its alpha channel.
+| bool           | isPremultiplied () const
 | size_t | getRowBytes () const 
 | int32_t | getCount () const
 | void | load (ImageTargetRef target)=0
