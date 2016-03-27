@@ -221,79 +221,124 @@ For instance, in the image below, if the Iter is currently pointing at the pixel
 
 This saves you the trouble of either using multiple iterators (messy) or maintaining multiple pointers (awful). The [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html) does provide`getPixel()` and `setPixel()` methods to return the [Color](http://libcinder.org/docs/dev/classcinder_1_1_color_t.html) of a pixel at a single point, but the accessor methods of [Iter](http://libcinder.org/docs/dev/classcinder_1_1_surface_t_1_1_iter.html) are faster and preferable. As an example, if you wanted to create a twirl effect in an image, you could do something like the following:
 
+![image](https://cloud.githubusercontent.com/assets/2152766/14065756/762f364c-f42e-11e5-90d2-f92404b95d76.png)
+
 ```cpp
-void TwirlSampleApp::twirl( Surface *surface, Area area, float maxAngle )
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
+using namespace ci;
+using namespace ci::app;
+
+class MyApp : public App {
+    public:
+        void setup() override;
+        void draw() override;
+        void twirl(Surface *surface, Area area, float maxAngle);
+    
+        gl::Texture2dRef mTex;
+        Surface bitmap;
+        Area area;
+};
+
+void MyApp::twirl(Surface *surface, Area area, float maxAngle)
 {
-    // make a clone of the surface
     Surface inputSurface = surface->clone();
+ 
+    Surface::ConstIter inputIter{inputSurface.getIter()};
+    Surface::Iter outputIter{surface->getIter(area)};
 
-    // we'll need to iterate the inputSurface as well as the output surface
-    Surface::ConstIter inputIter( inputSurface.getIter() );
-    Surface::Iter outputIter( surface->getIter( area ) );
+    float maxDistance = length((vec2)area.getSize()) / 2;
+    ivec2 mid = (area.getUL() + area.getLR()) / 2;
 
-    float maxDistance = area.getSize().length() / 2;
-    Vec2f mid = ( area.getUL() + area.getLR() ) / 2;
-
-    while( inputIter.line() && outputIter.line() ) {
-        while( inputIter.pixel() && outputIter.pixel() ) {
-            Vec2f current = inputIter.getPos() - mid;
-            float r = current.length();
+    while (inputIter.line() && outputIter.line()) {
+        while (inputIter.pixel() && outputIter.pixel()) {
+            vec2 current = inputIter.getPos() - mid;
+            float r = length(current);
             float twirlAngle = r / maxDistance * maxAngle;
-            float angle = atan2( current.y, current.x );
-            Vec2f outSample( r * cos( angle + twirlAngle ), r * sin( angle + twirlAngle ) );
-            Vec2i out = outSample - current;
+            float angle = atan2(current.y, current.x);
+            float twirlCos = cos(angle + twirlAngle);
+            float twirlSin = sin(angle + twirlAngle);
+            vec2 outSample(r * twirlCos, r * twirlSin);
+            ivec2 out = outSample - current;
 
-            outputIter.r() = inputIter.rClamped( out.x, out.y );
-            outputIter.g() = inputIter.gClamped( out.x, out.y );
-            outputIter.b() = inputIter.bClamped( out.x, out.y );
+            outputIter.r() = inputIter.rClamped(out.x, out.y);
+            outputIter.g() = inputIter.gClamped(out.x, out.y);
+            outputIter.b() = inputIter.bClamped(out.x, out.y);
         }
     }
 }
+
+void MyApp::setup()
+{
+    auto img = loadImage(loadUrl(
+        "https://www.cs.cmu.edu/~chuck/lennapg/len_std.jpg"
+    ));
+
+    Surface bitmap(img);
+    Area area(0, 0, 256, 256);
+    twirl(&bitmap, area, 2.0f);
+    mTex = gl::Texture2d::create(bitmap);
+}
+
+void MyApp::draw()
+{
+    gl::clear();
+    gl::draw(mTex);
+}
+
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(256, 256);
+    settings->setTitle("Twirl");
+})
 ```
 
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_twirl-640x154.png "images_twirl")
+Without getting into too much detail, the algorithm converts the coordinates of each pixel into polar coordinates, adds a value to the angle based on how far it is from the center, and then converts this back to rectangular coordinates. One thing to note in that code is the use of `rClamped()` and friends. Unlike the normal versions, the *clamped* variants of these accessors are safe to use when you might be illegally accessing pixels that don’t exist in the bitmap. For example, trying to access the pixel to the left of a row’s left-most pixel would be illegal normally, but `rClamped()` will return the red value of the left-most pixel, clamping the x & y coordinates to the boundaries of the image.
 
-Without getting into too much detail, the algorithm converts the coordinates of each pixel into polar coordinates, adds a value to the angle based on how far it is from the center, and then converts this back to rectangular coordinates. One thing to note in that code is the use of rClamped() and friends. Unlike the normal versions, the _clamped_ variants of these accessors are safe to use when you might be illegally accessing pixels that don’t exist in the bitmap. For example, trying to access the pixel to the left of a row’s left-most pixel would be illegal normally, but rClamped() will return the red value of the left-most pixel, clamping the x & y coordinates to the boundaries of the image.
+You may have noticed that channels in a bitmap get special attention, so much so that they have their own class to help you work with them more easily. Let’s look at the [`Channel`] class itself.
 
-You may have noticed that channels in a bitmap get special attention, so much so that they have their own class to help you work with them more easily. Let’s look at the [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html) class itself.
+<br>
+<br>
+<br>
 
 ### Channel
 
-You can think of a [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html) as a collection of images in its own right - one for the red, the green, the blue and sometimes alpha. To interact with[Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html)s in that way in Cinder, we can use the [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html) class. You may be familiar with this view from Photoshop:
+You can think of a [`Surface`] as a collection of images in its own right - one for the red, the green, the blue and sometimes alpha. To interact with[`Surface`] in that way in Cinder, we can use the [`Channel`] class. You may be familiar with this view from Photoshop:
 
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_channelPanel-640x241.jpg "images_channelPanel")
+![image](https://cloud.githubusercontent.com/assets/2152766/14065797/d72c96f0-f42f-11e5-967c-9a037ad01894.png)
 
-A [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html) is structured to conceptually replicate this. In the normal cases you don’t need to interact with individual [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html)s, but in certain instances it can be very powerful. If you want to create a [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html) from a [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html), you can just construct it:
-
-```cpp
-Surface surface( channel );
-```
-
-You’ll get a grayscale image automatically because the red, green and blue channels will all be set to the same values as the [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html) instance passed in. If you want to turn a [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html) into a [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html), making your color image into a single grayscale channel, you just do the inverse:
+A [`Surface`] is structured to conceptually replicate this. In the normal cases you don’t need to interact with individual [`Channel`]s, but in certain instances it can be very powerful. If you want to create a [`Surface`] from a [`Channel`], you can just construct it:
 
 ```cpp
-Channel channel( surface );
+Surface surface(channel);
 ```
 
-In this case a high quality grayscale interpretation is automatically made of your RGB data. We say “high quality” because the red, green and blue are weighted to mimick the way your eye perceives luminance (derived from the [Rec. 709 high definition video spec](http://en.wikipedia.org/wiki/Rec._709), for those interested in such things). Using a [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html) instead of a [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html) can also be a smart move when you simply need a lightweight grayscale image, to work with the face detection of OpenCV for example. This saves on both memory and processing time.
-
-You can also mix the 8u and 32f variants of the [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html) and [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html) as well without causing problems:
+You’ll get a grayscale image automatically because the red, green and blue channels will all be set to the same values as the [`Channel`] instance passed in. If you want to turn a [`Surface`] into a [`Channel`], making your color image into a single grayscale channel, you just do the inverse:
 
 ```cpp
-Channel8u myChannel( ... );
-Surface32f myHdrSurface( myChannel );
+Channel channel(surface);
 ```
 
-A potential use for the [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html) would be to do some sort of masking on the CPU, for instance, using the red channel of a [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html) to set the alpha of another [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html):
+In this case a high quality grayscale interpretation is automatically made of your RGB data. We say “high quality” because the red, green and blue are weighted to mimick the way your eye perceives luminance (derived from the [Rec. 709 high definition video spec](http://en.wikipedia.org/wiki/Rec._709), for those interested in such things). Using a [`Channel`] instead of a [`Surface`] can also be a smart move when you simply need a lightweight grayscale image, to work with the face detection of OpenCV for example. This saves on both memory and processing time.
+
+You can also mix the 8u and 32f variants of the [`Channel`] and [`Surface`] as well without causing problems:
+
+```cpp
+Channel8u myChannel(...);
+Surface32f myHdrSurface(myChannel);
+```
+
+A potential use for the [`Channel`] would be to do some sort of masking on the CPU, for instance, using the red channel of a [`Surface`] to set the alpha of another [`Surface`]:
 
 ```cpp
 // only uses the red pixels of the mask Surface
-void ChannelDemoApp::surfaceMaskImage( const Surface &mask, Surface *target )
+void MyApp::surfaceMaskImage(const Surface &mask, Surface *target)
 {
-    Surface::ConstIter maskIter( mask.getIter() ); // using const because we're not modifying it
-    Surface::Iter targetIter( target->getIter() ); // not using const because we are modifying it
-    while( maskIter.line() && targetIter.line() ) { // line by line
-        while( maskIter.pixel() && targetIter.pixel() ) { // pixel by pixel
+    Surface::ConstIter maskIter{mask.getIter()}; // using const because we're not modifying it
+    Surface::Iter targetIter{target->getIter()}; // not using const because we are modifying it
+    while (maskIter.line() && targetIter.line()) { // line by line
+        while (maskIter.pixel() && targetIter.pixel()) { // pixel by pixel
             float maskValue = maskIter.r() / 255.0f;
 
             targetIter.r() *= maskValue;
