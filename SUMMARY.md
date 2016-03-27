@@ -3,7 +3,7 @@
 * [Introduction](README.md)
 * [Getting Started](book/getting_started.md)
 * [Images in Cinder](book/images_in_cinder.md)
-* Guide to Meshes
+* [Guide to Meshes](book/guide_to_meshes.md)
 * [Resources](book/resources.md)
 * [Installation Guide](book/installation_guide.md)
    * [Ubuntu 14.04](book/building_on_ubuntu14.md)
