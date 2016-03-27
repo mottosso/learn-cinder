@@ -37,6 +37,7 @@
        * [CI_GLSL](book/cinder/gl/CI_GLSL.md)
        * [color()](book/cinder/gl/color.md)
        * [Texture](book/cinder/gl/Texture.md)
+           * Format
    * [geom](book/cinder/geom.md)
        * [Circle](book/cinder/geom/Circle.md)
        * [Source](book/cinder/geom/Source.md)
