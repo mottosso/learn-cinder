@@ -141,11 +141,75 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
 })
 ```
 
+**With camera**
+
+![image](https://cloud.githubusercontent.com/assets/2152766/14067766/370cc3d6-f464-11e5-945c-a9e24f4ba0ef.png)
+
+
+```cpp
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
+using namespace ci;
+using namespace ci::app;
+using namespace std;
+
+
+class MyApp : public App {
+  public:
+    void setup();
+    void draw();
+
+    CameraPersp mCam;
+    TriMesh mMesh;
+};
+
+void MyApp::setup()
+{
+    mCam.lookAt(vec3(0, 0, 500), vec3(0));
+}
+
+void MyApp::draw()
+{
+    gl::clear();
+
+    mMesh = TriMesh(
+        TriMesh::Format()
+            .positions()
+            .colors(3)
+    );
+
+    mMesh.appendPosition(vec3(-100, 100, 0));
+    mMesh.appendColorRgb(Color(0, 0, 0));
+    mMesh.appendPosition(vec3(100, 100, 0));
+    mMesh.appendColorRgb(Color(1, 0, 0));
+    mMesh.appendPosition(vec3(100, -100, 0));
+    mMesh.appendColorRgb(Color(1, 1, 0));
+    mMesh.appendPosition(vec3(-100, -100, 0));
+    mMesh.appendColorRgb(Color(0, 1, 0));
+
+    mMesh.appendTriangle(0, 1, 2);
+    mMesh.appendTriangle(0, 2, 3);
+
+    gl::setMatrices(mCam);
+    gl::pushModelView();
+    gl::draw(mMesh);
+    gl::popModelView();
+}
+
+
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(360, 240);
+})
+
+```
+
 **Sierpinski Triangle**
 
 > Source: [TriMesh HelloWorld](https://forum.libcinder.org/topic/trimesh-helloworld)
 
-![image](https://cloud.githubusercontent.com/assets/2152766/14067706/c0606b62-f462-11e5-9c36-1096bb8064d7.png)
+![untitled](https://cloud.githubusercontent.com/assets/2152766/14067723/3bdcfe4a-f463-11e5-9a0b-cfbc0686c47b.gif)
 
 
 ```cpp
