@@ -1,5 +1,7 @@
 ### Resources in Cinder
 
+> [Source](https://libcinder.org/docs/branch/master/guides/resources/index.html)
+
 Most applications need to reference data outside their own code to do anything very interesting. Cinder offers two mechanisms for including data files with your app: *assets* and *resources*. These two techniques have a lot in common. The primary difference is that resources are "baked" directly into your application, and assets are separate files living alongside your application. Assets can be easily modified separately from your code, and they take a lot less work to setup, especially on Windows. However, distribution and installation can be simpler with resources since there's no way for the data your application depends on to "go missing", and it reduces the chances that a user might modify your data unexpectedly.
 
 <br>
