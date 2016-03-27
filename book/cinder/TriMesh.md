@@ -87,7 +87,9 @@ Finally, optimize your shader to run as fast as possible. And try to do as much 
 <br>
 
 
-### Example
+### Examples
+
+**Basic**
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14067563/ff660762-f45e-11e5-9d72-9fd2b975ede1.png)
 
@@ -137,4 +139,85 @@ void MyApp::draw()
 CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
     settings->setWindowSize(240, 160);
 })
+```
+
+**Sierpinski Triangle**
+
+> Source: [TriMesh HelloWorld](https://forum.libcinder.org/topic/trimesh-helloworld)
+
+![image](https://cloud.githubusercontent.com/assets/2152766/14067706/c0606b62-f462-11e5-9c36-1096bb8064d7.png)
+
+
+```cpp
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
+using namespace ci;
+using namespace ci::app;
+using namespace std;
+
+int sierpinski(TriMesh& mesh, const vec3& centre, float size, int tri_mesh_index, int num_iterations);
+
+
+class MyApp : public App {
+  public:
+    void setup();
+    void draw();
+
+    CameraPersp mCam;
+};
+
+void MyApp::setup()
+{
+    mCam.lookAt(vec3(0, 0, 200), vec3(0), vec3(0, 1, 0));
+}
+
+void MyApp::draw()
+{
+    gl::clear();
+
+    TriMesh mesh;
+    int iterations = (int)((1 + sin(getElapsedSeconds())) * 4);
+    sierpinski(mesh, vec3(0), 50, 0, iterations);
+
+    gl::setMatrices(mCam);
+    gl::pushModelView();
+    gl::draw(mesh);
+    gl::popModelView();
+}
+
+
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(640, 480);
+})
+
+
+/** Sierpinski Triangle
+ *
+ * Reference:
+ *      https://en.wikipedia.org/wiki/Sierpinski_triangle
+ *
+*/
+int sierpinski(TriMesh& mesh, const vec3& centre, float size, int tri_mesh_index, int num_iterations)
+{
+    if(num_iterations > 0)
+    {
+        num_iterations -= 1;
+        float new_size = size * 0.5f;
+        tri_mesh_index = sierpinski(mesh, centre + vec3(0,1,0)*new_size, new_size, tri_mesh_index, num_iterations);
+        tri_mesh_index = sierpinski(mesh, centre + vec3(-1,-1,0)*new_size, new_size, tri_mesh_index, num_iterations);
+        tri_mesh_index = sierpinski(mesh, centre + vec3(1,-1,0)*new_size, new_size, tri_mesh_index, num_iterations);
+        return tri_mesh_index;
+    }
+    else
+    {
+        mesh.appendPosition(centre + vec3(0,1,0)*size);
+        mesh.appendPosition(centre + vec3(-1,-1,0)*size);
+        mesh.appendPosition(centre + vec3(1,-1,0)*size);
+        mesh.appendTriangle(tri_mesh_index, tri_mesh_index+1, tri_mesh_index+2);
+
+        return tri_mesh_index + 3;
+    }
+}
 ```
