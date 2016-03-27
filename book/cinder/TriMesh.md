@@ -89,7 +89,7 @@ Finally, optimize your shader to run as fast as possible. And try to do as much 
 
 ### Example
 
-![image](https://cloud.githubusercontent.com/assets/2152766/14067075/c1b9a7bc-f453-11e5-86b1-162c4a6099ff.png)
+![image](https://cloud.githubusercontent.com/assets/2152766/14067563/ff660762-f45e-11e5-9d72-9fd2b975ede1.png)
 
 ```cpp
 #include "cinder/app/App.h"
@@ -115,20 +115,26 @@ void MyApp::setup()
             .colors(3)
     );
 
-     mesh.appendPosition(vec3(200, 500, 0));
-     mesh.appendColorRgb(Color(1, 0, 1));
-     mesh.appendPosition(vec3(500, 200, 0));
-     mesh.appendColorRgb(Color(1, 0, 0));
-     mesh.appendPosition(vec3(500, 500, 0));
-     mesh.appendColorRgb(Color(0, 0, 1));
-     mesh.appendTriangle(0, 1, 2);
+    mesh.appendPosition(vec3(10, 100, 0));
+    mesh.appendColorRgb(Color(0, 0, 0));
+    mesh.appendPosition(vec3(100, 100, 0));
+    mesh.appendColorRgb(Color(1, 0, 0));
+    mesh.appendPosition(vec3(100, 10, 0));
+    mesh.appendColorRgb(Color(1, 1, 0));
+    mesh.appendPosition(vec3(10, 10, 0));
+    mesh.appendColorRgb(Color(0, 1, 0));
+
+    mesh.appendTriangle(0, 1, 2);
+    mesh.appendTriangle(0, 2, 3);
 }
 
 void MyApp::draw()
 {
-    gl::clear(); 
+    gl::clear();
     gl::draw(mesh);
 }
 
-CINDER_APP(MyApp, RendererGl)
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(240, 160);
+})
 ```
