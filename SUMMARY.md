@@ -16,7 +16,7 @@
        * [console()](book/cinder/app/AppBase/console.md)
        * [MouseEvent](book/cinder/app/MouseEvent.md)
        * [loadAsset()](book/cinder/app/loadAsset.md)
-       * loadImage()
+       * [loadImage()](book/cinder/loadImage.md)
        * loadResource()
    * [gl](book/cinder/gl.md)
        * [Batch](book/cinder/gl/Batch.md)
