@@ -13,7 +13,7 @@
        * [AppMsw](book/cinder/app/AppMsw.md)
        * [AppLinux](book/cinder/app/AppLinux.md)
        * [AppMac](book/cinder/app/AppMac.md)
-       * console()
+       * [console()](book/cinder/app/AppBase/console.md)
        * [MouseEvent](book/cinder/app/MouseEvent.md)
        * [loadAsset()](book/cinder/app/loadAsset.md)
        * loadImage()
