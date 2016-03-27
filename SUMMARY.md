@@ -58,4 +58,5 @@
    * SurfaceChannelOrder
    * [ImageSource](book/cinder/ImageSource.md)
    * Rect
+   * ObjLoader
 
