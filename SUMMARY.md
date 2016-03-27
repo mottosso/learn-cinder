@@ -50,4 +50,5 @@
    * [TriMesh](book/cinder/TriMesh.md)
    * [VboMesh](book/cinder/VboMesh.md)
    * Surface
+   * Area
 
