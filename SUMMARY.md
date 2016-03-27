@@ -52,4 +52,5 @@
    * Surface
    * Area
    * SurfaceChannelOrder
+   * ImageSource
 
