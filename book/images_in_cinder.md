@@ -391,7 +391,7 @@ This would be called like so:
 myTexture = createEdgeTexture(simpleSurface.getChannelBlue());
 ```
 
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_edgeDetect-640x237.png "images_edgeDetect")
+![image](https://cloud.githubusercontent.com/assets/2152766/14065967/d3abb6e0-f435-11e5-83ce-a73e45a530e6.png)
 
 In summary, the [`Channel`] is a lightweight tool for working with a particular color channel from a [`Surface`], or as a standalone grayscale image. Copying, image processing operations or other time critical operations that don’t require all the data from a bitmap are best done with the [`Channel`].
 
@@ -413,19 +413,19 @@ loadImage(loadAsset("data/image.png"));
 loadImage(loadUrl( "http://site.com/image.png"));
 ```
 
-We can also use this method to load images stored in resources (described in a [separate guide](http://libcinder.org/docs/dev/_cinder_resources.html)):
+We can also use this method to load images stored in resources (described in a [separate guide](resources.md):
 
 ```cpp
 loadImage(loadResource(RES_LOGO_IMAGE));
 ```
 
-If you look up `loadIma in the Cinder documentation, you’ll see it returns an [ImageSourceRef](http://libcinder.org/docs/dev/namespacecinder.html#aca11590d504e68de86f3a57444c2eb70). The way this class (and its cousin, [ImageTargetRef](http://libcinder.org/docs/dev/namespacecinder.html#aa5caf83179f34be27691363934b85afb)) work under the hood will be the topic of a future tutorial, but we can benefit from them without understanding their inner workings. In short, an [ImageSource](http://libcinder.org/docs/dev/classcinder_1_1_image_source.html) is able to represent any sort of image, even the ones we can’t manipulate directly using [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html)s or[Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html)s. You can pass an ImageSourceRef to the constructor of [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html)s, [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html)s, [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html)s and several other classes like our OpenCV wrapper classes. The power of this design - a separate class to represent a generic source of an image - is that a source and its destination can negotiate between themselves to create the best representation. For example, let’s imagine you have a grayscale 8-bit image stored in a PNG file you’d like to turn into a [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html). By using code like the following, you get the most optimal representation:
+If you look up [`loadImage()`] in the Cinder documentation, you’ll see it returns an [`ImageSource`]. The way this class (and its cousin, [`ImageTarget`]) work under the hood will be the topic of a future tutorial, but we can benefit from them without understanding their inner workings. In short, an [`ImageSource`] is able to represent any sort of image, even the ones we can’t manipulate directly using [`Channel`] or[`Surface`]. You can pass an ImageSourceRef to the constructor of [`gl::Texture`], [`Channel`], [`Surface`] and several other classes like our OpenCV wrapper classes. The power of this design - a separate class to represent a generic source of an image - is that a source and its destination can negotiate between themselves to create the best representation. For example, let’s imagine you have a grayscale 8-bit image stored in a PNG file you’d like to turn into a [`gl::Texture`]. By using code like the following, you get the most optimal representation:
 
 ```cpp
 gl::Texture myTexture = loadImage( "grayscale.png" );
 ```
 
-OpenGL can store textures in a special grayscale-only mode which saves valuable GPU memory. The [ImageSource](http://libcinder.org/docs/dev/classcinder_1_1_image_source.html) which comes back from`loadIma can tell the constructor of [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) the things it needs to know to allocate such a representation, and it does so automatically.
+OpenGL can store textures in a special grayscale-only mode which saves valuable GPU memory. The [`ImageSource`] which comes back from`loadIma can tell the constructor of [`gl::Texture`] the things it needs to know to allocate such a representation, and it does so automatically.
 
 And what about the other way around - writing an image out as a file? As you might have guessed, it’s done with a function called `writeImage()` imageSource to dataTarget. Optional extension parameter allows specification of a file type..."):
 
@@ -439,33 +439,37 @@ Cinder automatically infers the sort of image you want from the file extension. 
 writeImage( "/path/to/image_without_extension", surfaceToBeWritten, "jpg" );
 ```
 
-It’s not just Surfaces that can be saved. For example, you can pass a [Channel](http://libcinder.org/docs/dev/classcinder_1_1_channel_t.html) to `writeImage()` imageSource to dataTarget. Optional extension parameter allows specification of a file type...") and the I/O machinery will automatically understand it’s dealing with grayscale data and will use an optimized variant of say, PNG for you. Or if you pass a Channel32f, `writeImage()` imageSource to dataTarget. Optional extension parameter allows specification of a file type...") will use the 16-bit grayscale mode of PNG to try to preserve as much of your precision as possible. As a fun fact, you can also pass a [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) to`writeImage()` imageSource to dataTarget. Optional extension parameter allows specification of a file type..."), or you can convert between file formats with code like this:
+It’s not just Surfaces that can be saved. For example, you can pass a [`Channel`] to `writeImage()` and the I/O machinery will automatically understand it’s dealing with grayscale data and will use an optimized variant of say, PNG for you. Or if you pass a Channel32f, `writeImage()` will use the 16-bit grayscale mode of PNG to try to preserve as much of your precision as possible. As a fun fact, you can also pass a [`gl::Texture`], or you can convert between file formats with code like this:
 
 ```cpp
-writeImage( "output.png", loadImage( "input.jpg" ) );
+writeImage("output.png", loadImage("input.jpg"));
 ```
+
+<br>
+<br>
+<br>
 
 ### GL::Texture
 
-As we’ve seen, the [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) represents an image on your graphics card. The class features all the things that you would expect of an OpenGL texture: an ID (sometimes called a _name_ in the OpenGL docs), functions to `bind()` and `unbind()`, an `update()` method to load new data into the Texture, methods to initialize the texture, etc.
+As we’ve seen, the [`gl::Texture`] represents an image on your graphics card. The class features all the things that you would expect of an OpenGL texture: an ID (sometimes called a _name_ in the OpenGL docs), functions to `bind()` and `unbind()`, an `update()` method to load new data into the [`gl::Texture`], methods to initialize the texture, etc.
 
-There are a few conceptual things to keep in mind when working with a Texture. Fundamentally it’s just a bitmap object, but your program has handed it off to another piece of hardware, the GPU, which has its own memory and processors. Copying from CPU to GPU (by for example, constructing a [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) from a [Surface](http://libcinder.org/docs/dev/classcinder_1_1_surface_t.html)) is much slower than say, copying from one Surface to another, so you should do this judiciously. However once the image data is on the GPU it’s ready for any sort of use with OpenGL.
+There are a few conceptual things to keep in mind when working with a [`gl::Texture`]. Fundamentally it’s just a bitmap object, but your program has handed it off to another piece of hardware, the GPU, which has its own memory and processors. Copying from CPU to GPU (by for example, constructing a [`gl::Texture`] from a [`Surface`]) is much slower than say, copying from one Surface to another, so you should do this judiciously. However once the image data is on the GPU it’s ready for any sort of use with OpenGL.
 
-The actual data of a [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) is stored on the GPU very similarly to the way a Surface stores its bitmap data in memory. You’ll recall that the Surface provides an iterator that can be used to walk the bitmap data and access the pixel data or channel data at any point. Doing the same in the [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) is a different matter. As you are likely familiar, modern GPUs implement a fairly rigid multi-stage process known as the “graphics pipeline” (discussed in Wikipedia [here](http://en.wikipedia.org/wiki/Graphics_pipeline)). If you want to access the pixels of a texture there are a few different techniques that you can use, all of which are a little beyond the scope of this article. The most common and recommendation-worthy would be in a Fragment Shader, which are implemented in Cinder using the [gl::GlslProg](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_glsl_prog.html) class.
+The actual data of a [`gl::Texture`] is stored on the GPU very similarly to the way a Surface stores its bitmap data in memory. You’ll recall that the Surface provides an iterator that can be used to walk the bitmap data and access the pixel data or channel data at any point. Doing the same in the [`gl::Texture`] is a different matter. As you are likely familiar, modern GPUs implement a fairly rigid multi-stage process known as the “graphics pipeline” (discussed in Wikipedia [here](http://en.wikipedia.org/wiki/Graphics_pipeline)). If you want to access the pixels of a texture there are a few different techniques that you can use, all of which are a little beyond the scope of this article. The most common and recommendation-worthy would be in a Fragment Shader, which are implemented in Cinder using the [`gl::GlslProg`] class.
 
-You’ve seen how [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html)s are drawn:
-
-```cpp
-gl::draw( mProcessedImageTex, getWindowBounds() );
-```
-
-The first parameter is of course the [Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) that you want to draw, and the optional second is a [Rectf](http://libcinder.org/docs/dev/namespacecinder.html#ac60c086a9aa8f5320c96da74cbf20f8b) that indicates how large and where the texture should be drawn. It’s important that a [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) be filled with bitmap data before you try to draw it - a [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) can also point to nothing, just as a Surface can. You can populate a [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) a few different ways, such as by constructing the [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) from a Surface:
+You’ve seen how [`gl::Texture`]s are drawn:
 
 ```cpp
-texture = gl::Texture( surfaceInstance );
+gl::draw(mProcessedImageTex, getWindowBounds());
 ```
 
-or by initiailizing the Texture with some dummy data:
+The first parameter is of course the [`Texture`] that you want to draw, and the optional second is a [`Rectf`] that indicates how large and where the texture should be drawn. It’s important that a [`gl::Texture`] be filled with bitmap data before you try to draw it - a [`gl::Texture`] can also point to nothing, just as a [`Surface`] can. You can populate a [`gl::Texture`] a few different ways, such as by constructing the [`gl::Texture`] from a Surface.
+
+```cpp
+texture = gl::Texture(surfaceInstance);
+```
+
+..or by initiailizing the Texture with some dummy data:
 
 ```cpp
 gl::Texture texture(500, 500);
@@ -473,34 +477,36 @@ gl::Texture texture(500, 500);
 
 Of course if you just draw this, your program won’t crash, but you’ll just see junk data - whatever random memory happens to be on the graphics card at the moment. Cool if you’re making glitch art, not if you’re not.
 
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_buffer-640x223.jpg "images_buffer")
+![image](https://cloud.githubusercontent.com/assets/2152766/14065966/c1469e7a-f435-11e5-966d-a1bb8ef9ce2e.png)
 
-You can also initialize the Texture with a [gl::Texture::Format](http://libcinder.org/docs/dev/structcinder_1_1gl_1_1_texture_1_1_format.html) object that contains specs for how to build the Texture. For instance, by default a[gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) will simply clamp the Texture to its boundaries. If you wanted the texture to repeat, you could pass in a [Texture::Format](http://libcinder.org/docs/dev/structcinder_1_1gl_1_1_texture_1_1_format.html) object like so:
+You can also initialize the Texture with a [`gl::Texture::Format`] object that contains specs for how to build the Texture. For instance, by default a[`gl::Texture`] will simply clamp the Texture to its boundaries. If you wanted the texture to repeat, you could pass in a [`Texture::Format`] object like so:
 
 ```cpp
 gl::Texture::Format fmt;
-fmt.setWrap( GL_REPEAT );
-texture = gl::Texture( someSurface, fmt );
+fmt.setWrap(GL_REPEAT);
+texture = gl::Texture(someSurface, fmt);
 ```
 
 The differences between clamping and repeating can be seen in the image below:  
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_clampRepeat-640x183.png "images_clampRepeat")
+
+![image](https://cloud.githubusercontent.com/assets/2152766/14065969/dae98c84-f435-11e5-8e49-c74d81432e6f.png)
 
 There are other features that you can set with the Format object too - mipmapping for instance. What’s that you may ask? Take a look at the following images:  
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_mipmapCompare-640x183.png "images_mipmapCompare")
 
-Notice the edges on the left. As the English say: that’s not cricket. We want smoothed edges as the [gl::Texture](http://libcinder.org/docs/dev/classcinder_1_1gl_1_1_texture.html) itself is scaled down. This is where mipmapping comes in: the GPU can generate multiple copies of Texture data when you create it and that data can be swapped in and out when needed for minification or magnification in your application.
+![image](https://cloud.githubusercontent.com/assets/2152766/14065970/e1113332-f435-11e5-85ae-82576803fea2.png)
+
+Notice the edges on the left. As the English say: that’s not cricket. We want smoothed edges as the [`gl::Texture`] itself is scaled down. This is where mipmapping comes in: the GPU can generate multiple copies of Texture data when you create it and that data can be swapped in and out when needed for minification or magnification in your application.
 
 A mipmap is a miniaturized version of the larger bitmap that helps you reduce artifacts when scaling. The smaller the texture is drawn, the smaller the mipmap that the GPU will select. As an example: a texture has a basic size of 256 by 256 pixels, so a mipmap set will be generated with a series of 8 images, each one-fourth the total area of the previous one: 128×128 pixels, 64×64, 32×32, 16×16, 8×8, 4×4, 2×2, 1×1 (a single pixel).
 
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_mipmap.png "images_mipmap")
+![image](https://cloud.githubusercontent.com/assets/2152766/14065974/ebb8a360-f435-11e5-9ccb-a4e2fccd18bb.png)
 
 Artifacts are reduced since the mipmap images are effectively already anti-aliased, taking some of the burden off the real-time renderer and potentially improving performance.
 
 ```cpp
 gl::Texture::Format fmt;
-fmt.enableMipmapping( true );
-fmt.setMinFilter( GL_LINEAR_MIPMAP_LINEAR );
+fmt.enableMipmapping(true);
+fmt.setMinFilter(GL_LINEAR_MIPMAP_LINEAR);
 ```
 
 You’ll notice we added a call to setMinFilter() to tell it use our mipmap. In general Cinder is designed for you to use the OpenGL constants directly (like `GL_LINEAR_MIPMAP_LINEAR`) so if these are unfamiliar to you, we’d recommend you pick up a book like [The OpenGL Programming Guide](http://www.opengl.org/documentation/red_book/).
@@ -519,4 +525,9 @@ _Joshua Noble is a writer, designer, and programmer based in Portland, Oregon an
 [`Surface32f`]: cinder/Surface.md
 [`Texture`]: cinder/gl/Texture.md
 [`Channel`]: cinder/Channel.md
+[`ImageSource`]: cinder/ImageSource.md
+[`ImageTarget`]: cinder/ImageTarget.md
 [`SurfaceChannelOrder::BGRA`]: cinder/SurfaceChannelOrder.md
+[`gl::GlslProg`]: cinder/gl/GlslProg.md
+[`Rectf`]: cinder/Reftf.md
+[`gl::Texture::Format`]: cinder/gl/Texture/Format.md
