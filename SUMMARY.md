@@ -52,6 +52,7 @@
    * loadImage()
    * [TriMesh](book/cinder/TriMesh.md)
    * [VboMesh](book/cinder/VboMesh.md)
+       * Layout.md
    * [Surface](book/cinder/Surface.md)
    * Area
    * SurfaceChannelOrder
