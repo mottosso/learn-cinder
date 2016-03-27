@@ -1,6 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
+* Guides
 * [Getting Started](book/getting_started.md)
 * [Images in Cinder](book/images_in_cinder.md)
 * [Guide to Meshes](book/guide_to_meshes.md)
@@ -60,5 +61,4 @@
    * [ImageSource](book/cinder/ImageSource.md)
    * Rect
    * ObjLoader
-* Guides
 
