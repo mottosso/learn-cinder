@@ -11,8 +11,8 @@
        * [AppBase](book/cinder/app/AppBase.md)
            * [Settings](book/cinder/app/AppBase/Settings.md)
        * AppMsw
-       * console()
        * AppLinux
+       * console()
        * [MouseEvent](book/cinder/app/MouseEvent.md)
        * [loadAsset()](book/cinder/app/loadAsset.md)
        * loadImage()
