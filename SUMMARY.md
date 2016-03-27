@@ -1,7 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
-* Guides
+* GUIDES
 * [Getting Started](book/getting_started.md)
 * [Images in Cinder](book/images_in_cinder.md)
 * [Guide to Meshes](book/guide_to_meshes.md)
