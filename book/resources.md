@@ -51,14 +51,6 @@ It's worth understanding a bit about how assets work under the hood. The first t
 <br>
 <br>
 
-### Assets on iOS
-
-iOS applications of course cannot require a separate folder at runtime. However TinderBox-generated iOS applications automatically include their _assets_ folder in their application's bundle, and the asset-discovery mechanism in Cinder on iOS knows to look here.
-
-<br>
-<br>
-<br>
-
 ### Additional Asset Folders
 
 While Cinder will automatically look for a specific folder as the "official" assets directory, users can use [`addAssetDirectory()`] in order to offer supplemental paths for searching for assets. [`loadAsset()`] and [`getAssetPath()`] will search the primary assets folder first, followed by any supplemental asset directories the user may have provided.
