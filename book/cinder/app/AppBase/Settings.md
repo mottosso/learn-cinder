@@ -1,12 +1,13 @@
 ### Settings
 
-Startup settings, used during [`App`] construction.
+Configure an [`App`]
 
-| Namespace |
-|------------
-| [`cinder::app::BaseApp::Settings`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base_1_1_settings.html)
+| Namespace | Include
+|-----------|-------------------------
+| [`cinder::app::BaseApp::Settings`] | `#include "cinder/app/AppBase.h"`
 
-[`app`]: AppBase.md
+[`cinder::app::BaseApp::Settings`]: https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base_1_1_settings.html
+[`App`]: AppBase.md
 
 <br>
 <br>
@@ -60,6 +61,10 @@ Startup settings, used during [`App`] construction.
 | const std::vector< std::string > &   | [getCommandLineArgs]() () const
 | void   | [setShouldQuit]() (bool shouldQuit=true)
 | bool   | [getShouldQuit]() () const
+
+<br>
+<br>
+<br>
 
 ### Example
 
