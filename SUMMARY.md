@@ -3,7 +3,7 @@
 * [Introduction](README.md)
 * [Getting Started](book/getting_started.md)
 * [Images in Cinder](book/images_in_cinder.md)
-* Resources
+* [Resources](book/Resources.md)
 * [Installation Guide](book/installation_guide.md)
    * [Ubuntu 14.04](book/building_on_ubuntu14.md)
    * [VMWare | Ubuntu 15.10](book/building_on_vmware_ubuntu15.md)
