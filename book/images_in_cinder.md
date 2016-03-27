@@ -35,7 +35,7 @@ The rest of this article is going to run through a few different topics in great
 
 ### Surface
 
-The [`Surface`] comes in two varieties: an 8 bit unsigned integer and 32 bit floating point high dynamic range version. This means each of the color components - red, green, blue and sometimes alpha - are represented using either an 8 bit `uint8_t` or a 32 bit `float`. These two types are [`Surface8u`] and [`Surface32f`], respectively. The majority of the time a Surface8u is just what you need. However if you’re doing some advanced image processing, or you want to make use of high dynamic range images, Surface32f is your best bet. Also it’s worth noting _Surface_ is just a convenient synonym for Surface8u - you can use either name for the class in your code.
+The [`Surface`] comes in two varieties: an 8 bit unsigned integer and 32 bit floating point high dynamic range version. This means each of the color components - red, green, blue and sometimes alpha - are represented using either an 8 bit `uint8_t` or a 32 bit `float`. These two types are [`Surface8u`] and [`Surface32f`], respectively. The majority of the time a [`Surface8u`] is just what you need. However if you’re doing some advanced image processing, or you want to make use of high dynamic range images, [`Surface32f`] is your best bet. Also it’s worth noting *[`Surface`] is just a convenient synonym for [`Surface8u`] - you can use either name for the class in your code*
 
 The most important thing to recognize about the [`Surface`] is where it lives: on the CPU. Any manipulations that you’d like to do using C++ code (as opposed something like an OpenGL shader), such as filtering, replacing sections of bitmaps, or tweaking values of pixels, should all be performed using a [`Surface`]. You declare a [`Surface`] like so:
 
@@ -47,32 +47,52 @@ Surface32f hdrSurface;     // an empty 32 bit high dynamic range surface
 When you declare a [`Surface`] without assigning it or constructing it, it’s empty. The memory hasn’t been set aside for it yet and trying to use a[`Surface`] before it’s been allocated is going to lead to your code throwing an exception. This is akin to trying to sit down before a chair is beneath your hindquarters: best to put something there first. To allocate the memory for a [`Surface`] you can call the constructor like so:
 
 ```cpp
-Surface mySurface( 640, 480, true ); // width, height, alpha?
+Surface mySurface(
+  640,  // width
+  480,  // height
+  true  // alpha
+);
 ```
 
-So what’s that doing? Simply setting aside memory. [`Surface`] are contiguous in memory, which means that when you look at an image you see a grid of pixels, but the memory is simply a block of bytes filled with numeric values. In our case above, we’ve asked for a [`Surface`] that is 640 pixels wide, 480 pixels tall, has an alpha channel. It’s worth noting that not all Surfaces have an alpha channel. Let’s also look at a slightly different way to allocate a Surface:
+So what’s that doing? Simply setting aside memory. [`Surface`] are contiguous in memory, which means that when you look at an image you see a grid of pixels, but the memory is simply a block of bytes filled with numeric values. In our case above, we’ve asked for a [`Surface`] that is 640 pixels wide, 480 pixels tall and has an alpha channel. It’s worth noting that not all Surfaces have an alpha channel. Let’s also look at a slightly different way to allocate a Surface:
 
 ```cpp
-Surface mySurface( 640, 480, true, SurfaceChannelOrder::RGBA ); // width, height, alpha?, channel order
+Surface mySurface(
+  640,  // width
+  480,  // height
+  true, // alpha
+  SurfaceChannelOrder::RGBA // channel order
+);
 ```
 
-Here we’ve asked that the color channels of a pixel be ordered in memory as `red-green-blue-alpha`. This last parameter is optional (notice that we left it out earlier) and it defaults to something reasonable based on whether you have an alpha channel or not. If we had passed something different like [`SurfaceChannelOrder::BGRA`] our pixels would be represented in `blue-green-red-alpha` order in memory instead. Why would we ever want that? Well many graphics APIs - such as Apple’s [Quartz](http://developer.apple.com/library/mac/#documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/Introduction/Introduction.html), Microsoft’s [GDI+](http://msdn.microsoft.com/en-us/library/ms533798(VS.85).aspx), [Cairo](http://cairographics.org/), or [OpenCV](http://opencv.willowgarage.com/wiki/) prefer or even require that pixels be ordered in a manner other than RGBA. This feature is part of what allows Cinder [`Surface`] to seamlessly interoperate with these and other APIs.
+Here we’ve asked that the color channels of a pixel be ordered in memory as `red-green-blue-alpha`. This last parameter is optional (notice that we left it out earlier) and it defaults to something reasonable based on whether you have an alpha channel or not. If we had passed something different like [`SurfaceChannelOrder::BGRA`] our pixels would be represented in `blue-green-red-alpha` order in memory instead. Why would we ever want that? Well many graphics APIs - such as Apple’s [Quartz], [Microsoft's GDI+], [Cairo] or [OpenCV] prefer or even require that pixels be ordered in a manner other than RGBA. This feature is part of what allows Cinder [`Surface`] to interoperate with these and other APIs.
+
+[Quartz]: http://developer.apple.com/library/mac/#documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/Introduction/Introduction.html
+[Cairo]: http://cairographics.org/
+[OpenCV]: http://opencv.willowgarage.com/wiki/
+[Microsoft's GDI+]: http://msdn.microsoft.com/en-us/library/ms533798(VS.85).aspx
 
 In the image below, the small area outlined by the white box is blown up on the right hand side to show the red, green and blue values, as well as the alpha, which is depicted as a block of white to indicate that the pixel is 100% opaque (a value of 255).
 
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_gridPixelView-640x234.png "images_gridPixelView")
+![image](https://cloud.githubusercontent.com/assets/2152766/14065376/f9a5872a-f41e-11e5-9682-c1e560cb069b.png)
 
 The application deals with the bitmap data sequentially…
 
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_byteStrip-640x10.png "images_byteStrip")
+![image](https://cloud.githubusercontent.com/assets/2152766/14065379/00a90902-f41f-11e5-8f45-4282fb06aefc.png)
 
 … and stores it in memory as an array of numbers (in this case, bytes).
 
-![](http://www.creativeapplications.net/wp-content/uploads/2010/12/images_byteNumberStrip-640x13.png "images_byteNumberStrip")
+![image](https://cloud.githubusercontent.com/assets/2152766/14065382/07e75cfa-f41f-11e5-8c95-4c9d8e7aadff.png)
 
 The idea to take away is that the [`Surface`] is, at its heart, a block of raw data that is interpreted as a rectangular array of pixels. When you’re creating or working with images, you’re simply moving numbers around and the [`Surface`] is really a collection of methods to help you work with that data more easily.
 
-For advanced users, if you’re familiar with C++ templates then you’ll recognize what you see when you open up the `Surface.h` file - the core type is a class [`SurfaceT`], templated on `uint8_t` or `float`. However understanding the implementation is definitely not necessary to understand how to use it. Also, as a side note, Cinder supports a 3rd less common [`Surface`] type named Surface16u, but not all of Cinder’s image manipulation code supports it - it’s there primarily as an intermediate representation (handy for things like the depth information of the Microsoft Kinect).
+For advanced users, if you’re familiar with C++ templates then you’ll recognize what you see when you open up the [`Surface.h`] file - the core type is a class [`SurfaceT`][`Surface`], templated on `uint8_t` or `float`. However understanding the implementation is definitely not necessary to understand how to use it. Also, as a side note, Cinder supports a 3rd less common [`Surface`] type named [`Surface16u`][`Surface`], but not all of Cinder’s image manipulation code supports it - it’s there primarily as an intermediate representation (handy for things like the depth information of the Microsoft Kinect).
+
+[`Surface.h`]: https://github.com/cinder/Cinder/blob/master/include/cinder/Surface.h
+
+<br>
+<br>
+<br>
 
 ### Copying Images
 
@@ -88,7 +108,7 @@ This function creates a new [`Surface`] with the same dimensions and layout, an
 newSurface = oldSurface;
 ```
 
-This gives us a very different result. While `clone()` allocated a new block of memory and then duplicated the pixels of _oldSurface_, the assigment statement above causes _newSurface_ to point to the exact same pixels in memory that _oldSurface_ does. Without delving too deep into the topic, this feature is what makes it safe and fast for you to do things like return a [`Surface`] as the result of a function, or to create an STL`vector<Surface>`, for example. In the example above, _oldSurface_ and _newSurface_ are able to safely sort out memory managment between themselves automatically. So if _oldSurface_ goes away, it won’t take the image data that _newSurface_ is now pointing to with it. However if both_oldSurface_ and _newSurface_ go away, the memory they were sharing is freed for you automatically. Last one out turns off the lights. You’ll find this design technique used throughout Cinder. If you’re into the Design Pattern literature, you might know this techique as the _handle-body idiom_. Or if you are familiar with `shared_ptr` or other reference-counted pointers, you can think of [`Surface`], [gl::`Texture`] and many other classes in Cinder as transparent `shared_ptr`‘s.
+This gives us a very different result. While `clone()` allocated a new block of memory and then duplicated the pixels of _oldSurface_, the assigment statement above causes _newSurface_ to point to the exact same pixels in memory that _oldSurface_ does. Without delving too deep into the topic, this feature is what makes it safe and fast for you to do things like return a [`Surface`] as the result of a function, or to create an STL`vector<Surface>`, for example. In the example above, oldSurface and newSurface are able to safely sort out memory managment between themselves automatically. So if oldSurface goes away, it won’t take the image data that newSurface is now pointing to with it. However if both oldSurface and newSurface go away, the memory they were sharing is freed for you automatically. Last one out turns off the lights. You’ll find this design technique used throughout Cinder. If you’re into the Design Pattern literature, you might know this techique as the handle-body idiom. Or if you are familiar with `shared_ptr` or other reference-counted pointers, you can think of [`Surface`], [`gl::Texture`] and many other classes in Cinder as transparent `shared_ptr`‘s.
 
 We can also copy just a section of a [`Surface`] using `copyFrom()`. This code copies the left half of _oldSurface:_
 
@@ -383,3 +403,4 @@ _Joshua Noble is a writer, designer, and programmer based in Portland, Oregon an
 [`Surface32f`]: cinder/Surface.md
 [`Texture`]: cinder/gl/Texture.md
 [`Channel`]: cinder/Channel.md
+[`SurfaceChannelOrder::BGRA`]: cinder/SurfaceChannelOrder.md
