@@ -113,34 +113,43 @@ This gives us a very different result. While `clone()` allocated a new block of
 We can also copy just a section of a [`Surface`] using `copyFrom()`. This code copies the left half of _oldSurface:_
 
 ```cpp
-Surface newSurface( oldSurface.getWidth() / 2, oldSurface.getHeight(), false );
-newSurface.copyFrom( oldSurface, newSurface.getBounds() );
+auto width = oldSurface.getWidth();
+auto height = oldSurface.getHeight();
+Surface newSurface(width / 2, height, false);
+newSurface.copyFrom(oldSurface, newSurface.getBounds());
 ```
 
 That second parameter is an [`Area`], Cinder’s class for representing discrete rectangles, and it specifies the region to copy the pixels from.
 
-You can also load [`Surface`] from files, using `loadImage()`, or construct them from a [`gl::Texture`]:
+[`Area`]: cinder/Area.md
+
+You can also load [`Surface`] from files, using [`loadImage()`], or construct them from a [`gl::Texture`]..
 
 ```cpp
-Surface myPicture = loadImage( "myPicture.png" );
+Surface myPicture = loadImage(loadAsset("myPicture.png"));
 
 gl::Texture myTexture; // initialized elsewhere
-Surface fromTex( myTexture );
+Surface fromTex(myTexture);
 ```
 
-both of which are discussed in greater detail in the I/O section. These methods are appropriate when you’re copying big blocks of data. But what if you want to manipulate a single pixel, or even more surgically, a single channel value within a pixel?
+..both of which are discussed in greater detail in the I/O section. These methods are appropriate when you’re copying big blocks of data. But what if you want to manipulate a single pixel, or even more surgically, a single channel value within a pixel?
+
+<br>
+<br>
+<br>
 
 ### Manipulating Surfaces
 
 Something that you might want to do with a [`Surface`] is walk the pixels, that is, iterate over each RGB value to perform an operation on it. For the sake of a simple example we’ll invert all the pixels in a [`Surface`]:
 
 ```cpp
-Surface bitmap( loadImage( "image.jpg" ) );
-Area area( 0, 0, 500, 500 );
+auto image = loadImage("image.jpg");
+Surface bitmap(image);
+Area area(0, 0, 500, 500);
 
-Surface::Iter iter = surface->getIter( area );
-while( iter.line() ) {
-    while( iter.pixel() ) {
+Surface::Iter iter = surface->getIter(area);
+while (iter.line()) {
+    while (iter.pixel()) {
         iter.r() = 255 - iter.r();
         iter.g() = 255 - iter.g();
         iter.b() = 255 - iter.b();
@@ -148,7 +157,7 @@ while( iter.line() ) {
 }
 ```
 
-Here we construct an instance of a helpful class, [Surface::`Iter`], which is used to iterate the pixels of an [`Area`] of a [`Surface`]. It is designed to be used in a nested while-loop; the outer loop makes use of the [`Iter`]‘s `line()` routine, while the inner loop uses the `pixel()` routine. By using these loops, we can access the red, green, blue and alpha values of each pixel in succession. Another thing you might want to do is manipulate those pixels using the values of other pixels in the bitmap. The iterator helps you with a little syntactic sugar to allow you to access the pixels around the pixel that you’re currently iterating over. The same way that you can access the red, green, blue or alpha value of the pixel that you want to set using `r()`, `g()`, `b()`, or `a()`, you can also get the pixel values with a relative x and y offset using overloaded versions of those same methods.
+Here we construct an instance of a helpful class, [`Surface::Iter`][`Surface`], which is used to iterate the pixels of an [`Area`] of a [`Surface`]. It is designed to be used in a nested while-loop; the outer loop makes use of the [`Iter`][`Surface`]'s `line()` routine, while the inner loop uses the `pixel()` routine. By using these loops, we can access the red, green, blue and alpha values of each pixel in succession. Another thing you might want to do is manipulate those pixels using the values of other pixels in the bitmap. The iterator helps you with a little syntactic sugar to allow you to access the pixels around the pixel that you’re currently iterating over. The same way that you can access the red, green, blue or alpha value of the pixel that you want to set using `r()`, `g()`, `b()`, or `a()`, you can also get the pixel values with a relative x and y offset using overloaded versions of those same methods.
 
 For instance, in the image below, if the Iter is currently pointing at the pixel labeled **A** in the image, then `r(0,-1)` will access the red value of the pixel labeled **B**, and `r(1,1)`, will access the red value of the pixel labeled **C** in the image.
 
