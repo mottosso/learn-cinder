@@ -12,12 +12,12 @@
            * [Settings](book/cinder/app/AppBase/Settings.md)
        * AppMsw
        * AppLinux
+       * AppMac
        * console()
        * [MouseEvent](book/cinder/app/MouseEvent.md)
        * [loadAsset()](book/cinder/app/loadAsset.md)
        * loadImage()
        * loadResource()
-       * AppMac
    * [gl](book/cinder/gl.md)
        * [Batch](book/cinder/gl/Batch.md)
        * [Context](book/cinder/gl/Context.md)
