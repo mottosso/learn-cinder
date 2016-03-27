@@ -53,6 +53,7 @@
    * [TriMesh](book/cinder/TriMesh.md)
    * [VboMesh](book/cinder/VboMesh.md)
        * Layout.md
+       * VertexIter
    * [Surface](book/cinder/Surface.md)
    * Area
    * SurfaceChannelOrder
