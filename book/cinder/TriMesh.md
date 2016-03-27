@@ -91,6 +91,8 @@ Finally, optimize your shader to run as fast as possible. And try to do as much 
 
 **Basic**
 
+The shortest possible example.
+
 ![image](https://cloud.githubusercontent.com/assets/2152766/14067563/ff660762-f45e-11e5-9d72-9fd2b975ede1.png)
 
 ```cpp
@@ -141,7 +143,13 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
 })
 ```
 
+<br>
+<br>
+<br>
+
 **With camera**
+
+The above example assumed a default camera, which only renderes triangles at `z=0`. To render vertices in depth, you will need to establish a point of view.
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14067766/370cc3d6-f464-11e5-945c-a9e24f4ba0ef.png)
 
@@ -205,9 +213,15 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
 
 ```
 
+<br>
+<br>
+<br>
+
 **Sierpinski Triangle**
 
 > Source: [TriMesh HelloWorld](https://forum.libcinder.org/topic/trimesh-helloworld)
+
+A more interesting example involving time.
 
 ![untitled](https://cloud.githubusercontent.com/assets/2152766/14067723/3bdcfe4a-f463-11e5-9a0b-cfbc0686c47b.gif)
 
@@ -284,4 +298,110 @@ int sierpinski(TriMesh& mesh, const vec3& centre, float size, int tri_mesh_index
         return tri_mesh_index + 3;
     }
 }
+```
+
+<br>
+<br>
+<br>
+
+**3d**
+
+This is how you can draw triangles with depth.
+
+![image](https://cloud.githubusercontent.com/assets/2152766/14067777/ab7154e4-f464-11e5-91d3-e66634442543.png)
+
+```cpp
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
+using namespace ci;
+using namespace ci::app;
+using namespace std;
+
+
+class MyApp : public App {
+  public:
+    void setup();
+    void draw();
+
+    CameraPersp mCam;
+    TriMesh mMesh;
+};
+
+void MyApp::setup()
+{
+    gl::enableDepthWrite();
+    gl::enableDepthRead();
+
+    mCam.lookAt(vec3(250, 200, 500), vec3(0));
+}
+
+void MyApp::draw()
+{
+    gl::clear(Color::white());
+
+    mMesh = TriMesh(
+        TriMesh::Format()
+            .positions()
+            .colors(3)
+    );
+
+    // Create the points of our cube
+    vec3 v0 { -100, -100, -100 };
+    vec3 v1 {  100, -100, -100 };
+    vec3 v2 {  100,  100, -100 };
+    vec3 v3 { -100,  100, -100 };
+    vec3 v4 { -100, -100,  100 };
+    vec3 v5 {  100, -100,  100 };
+    vec3 v6 {  100,  100,  100 };
+    vec3 v7 { -100,  100,  100 };
+
+    // Create the colors for each vertex
+    Color c0 { 0, 0, 0 };
+    Color c1 { 1, 0, 0 };
+    Color c2 { 1, 1, 0 };
+    Color c3 { 0, 1, 0 };
+    Color c4 { 0, 0, 1 };
+    Color c5 { 1, 0, 1 };
+    Color c6 { 1, 1, 1 };
+    Color c7 { 0, 1, 1 };
+
+    vec3 faces[6][4] = { /* Vertices for the 6 faces of a cube. */
+        {v0, v1, v2, v3}, {v3, v2, v6, v7}, {v7, v6, v5, v4},
+        {v4, v5, v1, v0}, {v5, v6, v2, v1}, {v7, v4, v0, v3}
+    };
+
+    Color colors[6][4] = { /* colors for each vertex of the cube. */
+        {c0, c1, c2, c3}, {c3, c2, c6, c7}, {c7, c6, c5, c4},
+        {c4, c5, c1, c0}, {c5, c6, c2, c1}, {c7, c4, c0, c3}
+    };
+
+    for (int i = 0; i < 6; i++)
+    {
+        mMesh.appendPosition(faces[i][0]);
+        mMesh.appendColorRgb(colors[i][0]);
+        mMesh.appendPosition(faces[i][1]);
+        mMesh.appendColorRgb(colors[i][1]);
+        mMesh.appendPosition(faces[i][2]);
+        mMesh.appendColorRgb(colors[i][2]);
+        mMesh.appendPosition(faces[i][3]);
+        mMesh.appendColorRgb(colors[i][3]);
+
+        int numberVertices = mMesh.getNumVertices();
+
+        mMesh.appendTriangle(numberVertices - 4, numberVertices - 3, numberVertices - 2);
+        mMesh.appendTriangle(numberVertices - 4, numberVertices - 2, numberVertices - 1);
+    }
+
+    gl::setMatrices(mCam);
+    gl::pushModelView();
+    gl::draw(mMesh);
+    gl::popModelView();
+}
+
+
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(360, 240);
+})
 ```
