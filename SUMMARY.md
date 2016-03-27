@@ -52,5 +52,5 @@
    * [Surface](book/cinder/Surface.md)
    * Area
    * SurfaceChannelOrder
-   * ImageSource
+   * [ImageSource](book/cinder/ImageSource.md)
 
