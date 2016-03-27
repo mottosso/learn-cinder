@@ -10,7 +10,7 @@
 
 This article is going to cover two things in great detail: **vertices** and **meshes** and how they are handled in Cinder.
 
-There are a few different names for things that may be new to you in this tutorial which I’ll lay out for you right at the beginning: vertices, mesh, TriMesh, VboMesh, and VBOs. If any of those are already familiar to you and you simply want implementation details on how they work, feel free to skip ahead or around, I won’t be offended. For those of you who want more background, we’ll proceed in an orderly fashion.
+There are a few different names for things that may be new to you in this tutorial which I’ll lay out for you right at the beginning: vertices, mesh, [`TriMesh`], [`VboMesh`], and VBOs. If any of those are already familiar to you and you simply want implementation details on how they work, feel free to skip ahead or around, I won’t be offended. For those of you who want more background, we’ll proceed in an orderly fashion.
 
 So, let’s begin at the beginning: the vertex.
 
@@ -34,7 +34,7 @@ Saying it in code, and more specficially in Cinder code, looks like this:
 
 ```cpp
 glBegin(GL_QUAD_STRIP);       // start drawing
-gl::vertex(Vec3f(20, 20, 0)); // repeated a lot of times with different positions
+gl::vertex(vec3(20, 20, 0)); // repeated a lot of times with different positions
 glEnd();                      // stop drawing
 ```
 
@@ -141,7 +141,7 @@ for (int i = 0; i < 6; i++)
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066077/bd0c73a4-f438-11e5-8b2a-d5b5d324abfe.png)
 
-Accessing the vertices in the TriMesh is a little different than you might imagine it at first, because you can’t directly access the vertices of the mesh and then alter them. Instead, you make a copy of the vertices using getVertices(), which returns a Vector of the vertices contained by the TriMesh as Vec3f objects and then modifying the values in that vector. To update the vertices in the mesh itself you then need to clear the mesh and append all the vertices again. The same goes for any modifications to the RGB color array as well. Look at the following:
+Accessing the vertices in the TriMesh is a little different than you might imagine it at first, because you can’t directly access the vertices of the mesh and then alter them. Instead, you make a copy of the vertices using getVertices(), which returns a Vector of the vertices contained by the TriMesh as vec3 objects and then modifying the values in that vector. To update the vertices in the mesh itself you then need to clear the mesh and append all the vertices again. The same goes for any modifications to the RGB color array as well. Look at the following:
 
 ```cpp
 void TriMeshSampleApp::update()
@@ -458,7 +458,7 @@ void VboTutorialApp::update()
 	gl::VboMesh::VertexIter iter = mesh.mapVertexBuffer();
 	for (int idx = 0; idx < numberOfVertices; ++idx)
 	{
-		iter.setPosition( Vec3f( xVal, yVal, zVal) );
+		iter.setPosition(vec3( xVal, yVal, zVal));
 		++iter;
 	}
 }
@@ -602,8 +602,13 @@ for (int x = 0; x < VERTICES_X; ++x)
 
 Hopefully you're feeling a little more comfortable not only with creating and manipulating meshes in Cinder, but also with underestanding what some of the underlying mechanics of a mesh and OpenGL geometry are as well. This guide has barely scratched the surface, but it should be enough to get you started. For more information you can check the excellent references at [songho](http://songho.ca/opengl/gl_vbo.html) or to the reference for the [`TriMesh`] and [`VboMesh`].
 
-Have fun, and make something beautiful.
+Have fun and make something beautiful.
 
-—
+[`TriMesh`]: cinder/TriMesh.md
+[`VboMesh`]: cinder/VboMesh.md
+[`gl::VboMesh::Layout`]: cinder/gl/VboMesh/Layout.md
+[`gl::Texture`]: cinder/gl/Texture.md
+[`ObjLoader`]: cinder/ObjLoader.md
+[`TriMesh::writeObject()`]: cinder/TriMesh.md
+[`VertexIter`]: cinder/VboMesh/VertexIter.md
 
-_Joshua Noble is a writer, designer, and programmer based in Portland, Oregon and New York City. He’s the author of, most recently,_ [_Programming Interactivity_](http://www.amazon.com/Programming-Interactivity-Designers-Processing-Openframeworks/dp/0596154143) _and the forthcoming book Research for Living._
