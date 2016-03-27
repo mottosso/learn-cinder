@@ -25,6 +25,25 @@ When performance is important, always use [`gl::Batch`].
 <br>
 <br>
 
+### VboMesh versus FboMesh
+
+> Source: [VboMesh vs FboMesh](https://forum.libcinder.org/topic/vbomesh-vs-trimesh)
+
+The difference between `TriMesh` and [`gl::VboMesh`] is similar to the difference between [`Surface`] and [`gl::Texture`]. The `TriMesh` is designed to be an in-memory representation for software, and [`gl::VboMesh`] is an OpenGL-specific hardware representation. The [`VboMesh`] is the fastest option, particularly if you are not modifying your geometry.
+
+It can be a bit tricky to get it right however - check out the **VboMesh** sample.
+
+- [samples/VboMesh][VboMesh]
+
+[VboMesh]: https://github.com/cinder/Cinder/tree/master/samples/_opengl/VboMesh
+
+[`gl::VboMesh`]: gl/VboMesh.md
+[`gl::Texture`]: gl/Texture.md
+
+<br>
+<br>
+<br>
+
 ### Optimisation
 
 > Source: [Are Vbo binds expensive?](https://forum.libcinder.org/topic/are-vbo-binds-expensive)
