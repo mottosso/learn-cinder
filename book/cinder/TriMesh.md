@@ -53,6 +53,7 @@ Finally, optimize your shader to run as fast as possible. And try to do as much 
 |---------------:|-----------------
 | void           | appendPosition (const vec3 &position)
 | void           | appendPositions (const vec3 *positions, size_t num)
+| void           | appendColorRgb (const Color &color)
 | void           | appendColors (const Color *rgbs, size_t num)
 | const VECDIM< DIM, float >::TYPE * | getPositions () const
 | std::vector< vec3 > & | getNormals ()
