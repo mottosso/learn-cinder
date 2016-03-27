@@ -18,8 +18,9 @@ Use the `TriMesh` when explicitly defining each position and color, but take car
 
 When performance is important, always use [`gl::Batch`].
 
-[`VboMesh`]: Vbo~~~~Mesh.md
+[`VboMesh`]: VboMesh.md
 [`gl::Batch`]: gl/Batch.md
+[`Surface`]: Surface.md
 
 <br>
 <br>
