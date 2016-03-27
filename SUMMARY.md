@@ -16,6 +16,7 @@
        * loadResource()
        * console()
        * AppMsw
+       * AppLinux
    * [gl](book/cinder/gl.md)
        * [Batch](book/cinder/gl/Batch.md)
        * [Context](book/cinder/gl/Context.md)
