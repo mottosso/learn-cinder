@@ -1,33 +1,31 @@
 html
-  font-size: 55%
+    font-size: 55%
 
 .book .book-body .page-wrapper .page-inner section.normal
-  table
-    // Shrink tables to their actual sizes
-    width: auto
-  ol, ul
-    margin-bottom: .85em
+    table
+        // Shrink tables to their actual sizes
+        width: auto
+    ol, ul
+        margin-bottom: .85em
 
 a 
-  outline: none
+    outline: none
 
 code
-  color: #c7254e
+    color: #c7254e
 
 pre
-  border: 1px solid #EFEFEF
-  line-height: 1.1
-  code
-    color: rgb(51, 51, 51)
+    border: 1px solid #EFEFEF
+    line-height: 1.1
 
-// Make sidebar more like GitHub
+    code
+        color: rgb(51, 51, 51)
+
 nav
-  min-width: 250px
+    // Make sidebar more like GitHub
+    min-width: 250px
 
-// Make main body and sidebar the full length
-// of the page; 1 scrollbar
 .book
-    // Use inactive elements as categories
     .book-summary
         width: 250px
         border: none
@@ -37,11 +35,18 @@ nav
             position: static
             padding: 20px 0px
 
+            a.custom-link {
+                // Top-most link to Dashboard
+                text-transform: uppercase
+                font-size: 1.2em
+                font-weight: bold
+                padding: 0
+
             li
                 padding-left: 20px
                 
                 ul
-                  padding-left: 0px;
+                    padding-left: 0px;
 
                 a
                     padding: 4px 10px
@@ -58,14 +63,13 @@ nav
                     display: none
                 
                 &.active > a
-                  color: #3794E0
-                  font-weight: bold
-                  letter-spacing: 1px
-                  background: #ECF5FF
-   
-        // First level, we're using these
-        // for top-level category names.
+                    color: #3794E0
+                    font-weight: bold
+                    letter-spacing: 1px
+                    background: #ECF5FF
+     
         ul.summary > li > span
+            // Use inactive elements as categories
             font-size: 1.2em
             font-weight: bold
             padding: 20px 0px
@@ -77,9 +81,10 @@ nav
         left: 0
         overflow-y: visible
         right: 0
-        
-        // Default navigation is wrecked due to sidebar layout
+
         .navigation
+            // Default navigation is wrecked
+            // due to sidebar layout.
             position: fixed
             top: 50%
             transform: translate(0, -50%)
@@ -100,7 +105,7 @@ nav
             margin-bottom: 0.85em
             
             p
-              margin-bottom: 5px
+                margin-bottom: 5px
 
     .body-inner
         position: absolute
@@ -114,11 +119,11 @@ nav
     bottom: auto;
 
 .modified-date
-  color: #ddd
-  text-align: right
-  padding-top: 50px
-  font-size: 0.8em
+    color: #ddd
+    text-align: right
+    padding-top: 50px
+    font-size: 0.8em
 
-// Hide numbering
 .summary .chapter b
-  display: none
+    // Hide numbering
+    display: none
