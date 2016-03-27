@@ -20,7 +20,7 @@ Shaders can either be created via convenience functions [`gl::getStockShader()`]
 - [Tutorial](https://libcinder.org/docs/branch/master/guides/opengl/part5.html)
 
 [`gl::getStockShader()`]: getStockShader.md
-[`gl::GlslProg::Format`]: Format.md
+[`gl::GlslProg::Format`]: GlslProg/Format.md
 [`loadAsset()`]: ../app/getAsset.md
 
 <br>
