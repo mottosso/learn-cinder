@@ -34,7 +34,7 @@ Saying it in code, and more specficially in Cinder code, looks like this:
 
 ```cpp
 glBegin(GL_QUAD_STRIP);       // start drawing
-gl::vertex(vec3(20, 20, 0)); // repeated a lot of times with different positions
+gl::vertex(vec3(20, 20, 0));  // repeated a lot of times with different positions
 glEnd();                      // stop drawing
 ```
 
@@ -63,25 +63,23 @@ Drawing a shape requires that you keep track of which drawing mode is being used
 The TriMesh represents a series of vertices connected with the same connection algorithm as the `GL_TRIANGLE_STRIP`. It’s a convienent way to keep track of multiple complex objects, draw and scale them easily, and manage which vertices create which faces of a model. Let’s get the simplest example out the way first, drawing a square consisting of two triangles. This requires, as you’d imagine, four vertices that represent the vertices of each triangle.
 
 ```cpp
-// Position and Color for the four corners
-mesh.appendVertex(vec3(10, 10, 0));
-mesh.appendColorRGB(Color(1, 0, 0));
-mesh.appendVertex(vec3(10, 300, 0));
-mesh.appendColorRGB(Color(0, 1, 0));
-mesh.appendVertex(vec3(300, 300, 0));
-mesh.appendColorRGB(Color(0, 0, 1));
-mesh.appendVertex(vec3(300, 10, 0));
-mesh.appendColorRGB(Color(0, 0, 0));
+mesh = TriMesh(
+    TriMesh::Format()
+        .positions()
+        .colors(3)
+);
 
-// Indices for each of the four corners
-int vIdx0 = mesh.getNumVertices() - 4;
-int vIdx1 = mesh.getNumVertices() - 3;
-int vIdx2 = mesh.getNumVertices() - 2;
-int vIdx3 = mesh.getNumVertices() - 1;
+mesh.appendPosition(vec3(10, 100, 0));
+mesh.appendColorRgb(Color(0, 0, 0));
+mesh.appendPosition(vec3(100, 100, 0));
+mesh.appendColorRgb(Color(1, 0, 0));
+mesh.appendPosition(vec3(100, 10, 0));
+mesh.appendColorRgb(Color(1, 1, 0));
+mesh.appendPosition(vec3(10, 10, 0));
+mesh.appendColorRgb(Color(0, 1, 0));
 
-// Two triangles to create our square
-mesh.appendTriangle(vIdx0, vIdx1, vIdx2);
-mesh.appendTriangle(vIdx0, vIdx2, vIdx3);
+mesh.appendTriangle(0, 1, 2);
+mesh.appendTriangle(0, 2, 3);
 ```
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066071/accbc24c-f438-11e5-8cea-11bfd200beb5.png)
