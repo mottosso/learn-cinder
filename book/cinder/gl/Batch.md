@@ -1,4 +1,4 @@
-### `Batch`
+### Batch
 
 Geometry and GLSL program combined.
 
