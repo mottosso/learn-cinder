@@ -744,15 +744,9 @@ And here it is with some random colors applied to it:
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066085/d430fb86-f438-11e5-8cfa-250f54bc59fd.png)
 
-You can even manipulate it and export it using the [`TriMesh::writeObject()`][`TriMesh`] method:
-
-```cpp
-mesh.write( writeFileStream(meshFileName, true); );
-```
-
 Now, if you thought that was all there was to working with meshes in Cinder you would be wrong.
 
-As I mentioned earlier, the way that geometry is drawn on the graphics card is by sending points and telling the card how to connect those points. This might remind you a little of how the Textures work in OpenGL: load some data up there, draw it by referring to it using its TextureId.
+As mentioned earlier, the way that geometry is drawn on the graphics card is by sending points and telling the card how to connect those points. This might remind you a little of how the Textures work in OpenGL - load some data up there, draw it by referring to it using its TextureId.
 
 So then, naturally you might wonder, what if we just stored the points on the card? Introducing the Vertex Buffer Object, aka VBO.
 
@@ -764,15 +758,20 @@ So then, naturally you might wonder, what if we just stored the points on the ca
 
 A VBO is a way of storing all of the data of vertex data on the graphics card.
 
-You’ve perhaps heard of Vertex Arrays and Display Lists and the VBO is similiar to both of these, but with a few advantages that we’ll go over very quickly. Vertex Arrays just let you store all the vertex data in an array on the client side, that is, on the CPU side and then send it to the graphics card when you’re ready to draw it. The downside of that is that you’re still storing the data on the client side and sending it over to the graphics card. 
+You’ve perhaps heard of [Vertex Array] and [Display List]. The VBO is similiar to both of these, but with a few advantages that we’ll go over very quickly.
+
+[Display List]: https://en.wikipedia.org/wiki/Display_list
+[Vertex Array]: https://www.opengl.org/wiki/Vertex_Specification#Vertex_Array_Object
+
+A [Vertex Array] just let you store all the vertex data in an array on the client side, that is, on the CPU side and then send it to the graphics card when you’re ready to draw it. The downside of that is that you’re still storing the data on the client side and sending it over to the graphics card. 
 
 So, instead of making all of our vertex data in what’s called “immediate mode”, which means between a glBegin() and glEnd() pair, you can just store vertex data in an arrays and you can draw geometric primitives by dereferencing the array elements with array indices.
 
-The Display List is a similar technique, using an array to store the created geometry, with the crucial difference that a Display List lives solely on the graphics card. This means that once you’ve created the vertex data for geometry, you can send it the graphics card and draw it simply by referencing the id of the stored data.
+The [Display List] is a similar technique, using an array to store the created geometry, with the crucial difference that a [Display List] lives solely on the graphics card. This means that once you’ve created the vertex data for geometry, you can send it the graphics card and draw it simply by referencing the id of the stored data.
 
 The downside is that display lists can’t be modified. Once they’ve been sent to the card, you need to load them from the card, modify them, and then resend them to the card to see your changes applied.
 
-One of the conveniences of moving things to the graphics card is reducing the amount of traffic between the graphics card and the rest of your system. The VBO operates quite similarly to the Display List, with the advantage of allowing you to modify the geometry data on the graphics card without downloading all of it at once.
+One of the conveniences of moving things to the graphics card is reducing the amount of traffic between the graphics card and the rest of your system. The VBO operates quite similarly to the [Display List], with the advantage of allowing you to modify the geometry data on the graphics card without downloading all of it at once.
 
 <br>
 <br>
