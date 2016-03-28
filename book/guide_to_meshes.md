@@ -429,6 +429,7 @@ Now, to apply a [`gl::Texture`] to this [`TriMesh`], call [`gl::Texture`] bind()
 using namespace ci;
 using namespace ci::app;
 
+
 class MyApp : public App {
   public:
     void setup();
@@ -457,7 +458,6 @@ void MyApp::draw()
     mMesh = TriMesh(
         TriMesh::Format()
             .positions()
-            .colors(3)
             .texCoords(2)
     );
 
@@ -492,24 +492,15 @@ void MyApp::draw()
         {v4, v5, v1, v0}, {v5, v6, v2, v1}, {v7, v4, v0, v3}
     };
 
-    Color colors[6][4] = { /* Colors for each vertex of the cube. */
-        {c0, c1, c2, c3}, {c3, c2, c6, c7}, {c7, c6, c5, c4},
-        {c4, c5, c1, c0}, {c5, c6, c2, c1}, {c7, c4, c0, c3}
-    };
-
     for (int i = 0; i < 6; i++)
     {
         mMesh.appendPosition(faces[i][0]);
-        mMesh.appendColorRgb(colors[i][0]);
         mMesh.appendTexCoord(t0);
         mMesh.appendPosition(faces[i][1]);
-        mMesh.appendColorRgb(colors[i][1]);
         mMesh.appendTexCoord(t1);
         mMesh.appendPosition(faces[i][2]);
-        mMesh.appendColorRgb(colors[i][2]);
         mMesh.appendTexCoord(t2);
         mMesh.appendPosition(faces[i][3]);
-        mMesh.appendColorRgb(colors[i][3]);
         mMesh.appendTexCoord(t3);
 
         int numberVertices = mMesh.getNumVertices();
@@ -539,17 +530,140 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
 })
 ```
 
-> Note the additional call to `.texCoords(2)`
+> Note the additional parameter `.texCoords(2)`
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14077815/aa9d5f26-f4e7-11e5-9010-45b11c2631dc.png)
 
 You can even animate the positions of the texture coordinates by copying, modifying, and then re-appending them in the same way that the vertices and RGB coordinates were updated.
 
-But there’s more to the TriMesh than just a nice way to store all the vertices that you create because, let’s face it, lining up vertices is a drag and there are better and more fun ways to make vertices. For instance, using a 3d modeling program. To that end, you can import and export OBJ files.
+<br>
+<br>
+<br>
 
-So, in my favorite 3d modeling program (the opensource and free one) Blender, I’ll create a classic platonic solid, the isodecahedron, and then export it as an .obj file:  
+### The Outside World
+
+But there’s more to the [`TriMesh`] than just a nice way to store all the vertices that you create because, let’s face it, lining up vertices is a drag and there are better and more fun ways to make vertices. For instance, using a 3d modeling program. To that end, you can import and export OBJ files.
+
+So, in my favorite 3d modeling program Blender, I’ll create a classic platonic solid, the isodecahedron, and then export it as an `.obj` file:  
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066082/cedd9d74-f438-11e5-94f0-bb7cd7a77ce1.png)
+
+For completeness, here is the file in ASCII format.
+
+**icosahedron.obj**
+
+```text
+# This file uses centimeters as units for non-parametric coordinates.
+
+v 0.850651 0.000000 -0.525731
+v 0.850651 -0.000000 0.525731
+v -0.850651 -0.000000 0.525731
+v -0.850651 0.000000 -0.525731
+v 0.000000 -0.525731 0.850651
+v 0.000000 0.525731 0.850651
+v 0.000000 0.525731 -0.850651
+v 0.000000 -0.525731 -0.850651
+v -0.525731 -0.850651 -0.000000
+v 0.525731 -0.850651 -0.000000
+v 0.525731 0.850651 0.000000
+v -0.525731 0.850651 0.000000
+vt 0.181818 0.250000
+vt 0.363636 0.250000
+vt 0.545455 0.250000
+vt 0.727273 0.250000
+vt 0.909091 0.250000
+vt 0.090909 0.416667
+vt 0.272727 0.416667
+vt 0.454545 0.416667
+vt 0.636364 0.416667
+vt 0.818182 0.416667
+vt 1.000000 0.416667
+vt 0.000000 0.583333
+vt 0.181818 0.583333
+vt 0.363636 0.583333
+vt 0.545455 0.583333
+vt 0.727273 0.583333
+vt 0.909091 0.583333
+vt 0.090909 0.750000
+vt 0.272727 0.750000
+vt 0.454545 0.750000
+vt 0.636364 0.750000
+vt 0.818182 0.750000
+f 2/17 10/22 1/16
+f 1/16 11/10 2/17
+f 1/16 8/15 7/9
+f 1/16 7/9 11/10
+f 1/16 10/21 8/15
+f 5/13 2/12 6/6
+f 10/18 2/12 5/13
+f 2/17 11/10 6/11
+f 4/8 9/14 3/7
+f 3/7 12/2 4/8
+f 5/13 6/6 3/7
+f 3/7 9/14 5/13
+f 6/6 12/1 3/7
+f 7/9 8/15 4/8
+f 4/8 12/3 7/9
+f 4/8 8/15 9/14
+f 5/13 9/14 10/19
+f 6/11 11/10 12/5
+f 7/9 12/4 11/10
+f 8/15 10/20 9/14
+v 0.850651 0.000000 -0.525731
+v 0.850651 -0.000000 0.525731
+v -0.850651 -0.000000 0.525731
+v -0.850651 0.000000 -0.525731
+v 0.000000 -0.525731 0.850651
+v 0.000000 0.525731 0.850651
+v 0.000000 0.525731 -0.850651
+v 0.000000 -0.525731 -0.850651
+v -0.525731 -0.850651 -0.000000
+v 0.525731 -0.850651 -0.000000
+v 0.525731 0.850651 0.000000
+v -0.525731 0.850651 0.000000
+vt 0.181818 0.250000
+vt 0.363636 0.250000
+vt 0.545455 0.250000
+vt 0.727273 0.250000
+vt 0.909091 0.250000
+vt 0.090909 0.416667
+vt 0.272727 0.416667
+vt 0.454545 0.416667
+vt 0.636364 0.416667
+vt 0.818182 0.416667
+vt 1.000000 0.416667
+vt 0.000000 0.583333
+vt 0.181818 0.583333
+vt 0.363636 0.583333
+vt 0.545455 0.583333
+vt 0.727273 0.583333
+vt 0.909091 0.583333
+vt 0.090909 0.750000
+vt 0.272727 0.750000
+vt 0.454545 0.750000
+vt 0.636364 0.750000
+vt 0.818182 0.750000
+f 14/39 22/44 13/38
+f 13/38 23/32 14/39
+f 13/38 20/37 19/31
+f 13/38 19/31 23/32
+f 13/38 22/43 20/37
+f 17/35 14/34 18/28
+f 22/40 14/34 17/35
+f 14/39 23/32 18/33
+f 16/30 21/36 15/29
+f 15/29 24/24 16/30
+f 17/35 18/28 15/29
+f 15/29 21/36 17/35
+f 18/28 24/23 15/29
+f 19/31 20/37 16/30
+f 16/30 24/25 19/31
+f 16/30 20/37 21/36
+f 17/35 21/36 22/41
+f 18/33 23/32 24/27
+f 19/31 24/26 23/32
+f 20/37 22/42 21/36
+```
 
 Now I can import it using an instance of the [`ObjLoader`] class like so..
 
