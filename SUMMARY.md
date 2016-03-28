@@ -62,4 +62,5 @@
    * Rect
    * [ObjLoader](book/cinder/ObjLoader.md)
    * [VECDIM](book/cinder/VECDIM.md)
+   * loadFile()
 
