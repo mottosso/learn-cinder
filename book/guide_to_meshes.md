@@ -220,7 +220,11 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066077/bd0c73a4-f438-11e5-8b2a-d5b5d324abfe.png)
 
-Accessing the vertices in the TriMesh is a little different than you might imagine it at first, because you can’t directly access the vertices of the mesh and then alter them. Instead, you make a copy of the vertices using getVertices(), which returns a Vector of the vertices contained by the TriMesh as vec3 objects and then modifying the values in that vector. To update the vertices in the mesh itself you then need to clear the mesh and append all the vertices again. The same goes for any modifications to the RGB color array as well. Look at the following:
+Accessing the vertices in the TriMesh is a little different than you might imagine it at first, because you can’t directly access the vertices of the mesh and then alter them. Instead, you make a copy of the vertices using `getVertices()`, which returns a Vector of the vertices contained by the [`TriMesh`] as `vec3` objects and then modifying the values in that vector.
+
+To update the vertices in the mesh itself you then need to clear the mesh and append all the vertices again. The same goes for any modifications to the RGB color array as well. 
+
+Look at the following:
 
 ```cpp
 void TriMeshSampleApp::update()
