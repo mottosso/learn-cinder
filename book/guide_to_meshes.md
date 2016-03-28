@@ -666,7 +666,7 @@ ObjLoader loader { loadAsset("icosahedron.obj") };
 mMesh = TriMesh::create(loader);
 ```
 
-..and draw it to the screen by passing it to gl::Batch():
+..and draw it to the screen by passing it to [`gl::Batch()`]:
 
 ```cpp
 auto lambert = gl::ShaderDef().lambert();
@@ -675,7 +675,9 @@ mBatch = gl::Batch::create(*mMesh, mGlsl);
 mBatch->draw();
 ```
 
-Here is a full example.
+![image](https://cloud.githubusercontent.com/assets/2152766/14080090/af8689d2-f4fa-11e5-9904-a8a32f0739e2.png)
+
+Here is the full example.
 
 ```cpp
 #include "cinder/app/App.h"
@@ -738,9 +740,7 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
 })
 ```
 
-![image](https://cloud.githubusercontent.com/assets/2152766/14080090/af8689d2-f4fa-11e5-9904-a8a32f0739e2.png)
-
-Here it is with some random colors applied to it:  
+And here it is with some random colors applied to it:  
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066085/d430fb86-f438-11e5-8cfa-250f54bc59fd.png)
 
