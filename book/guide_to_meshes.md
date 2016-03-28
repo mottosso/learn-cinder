@@ -227,69 +227,176 @@ To update the vertices in the mesh itself you then need to clear the mesh and ap
 Look at the following:
 
 ```cpp
-void TriMeshSampleApp::update()
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
+using namespace ci;
+using namespace ci::app;
+using namespace std;
+
+
+class MyApp : public App {
+  public:
+    void setup();
+    void draw();
+    void update();
+
+    CameraPersp mCam;
+    TriMesh mMesh;
+};
+
+void MyApp::setup()
 {
-	if (mMesh.getNumVertices() == 0) return;
+    gl::enableDepthWrite();
+    gl::enableDepthRead();
 
-	// store all the mesh information
-
-	std::vector col = mMesh.getColorsRGB();
-	std::vector vec = mMesh.getVertices();
-
-	int i, j;
-	i = mMesh.getNumVertices();
-	j = 0;
-
-	mMesh.clear();
-
-	// something to add a little movement
-	float inc = sin(getElapsedSeconds());
-
-	while(j < i)
-	{
-		// alter the positions array to get a little dynamism
-		vec.at(j).x -= inc;
-		vec.at(j+1).x += inc;
-		vec.at(j+2).x += inc*2.0f;
-		vec.at(j+3).x -= inc*2.0f;
-
-		// now replace it in the mesh
-		mMesh.appendVertex(vec.at(j));
-		mMesh.appendColorRGB(col.at(j));
-		mMesh.appendVertex(vec.at(j+1));
-		mMesh.appendColorRGB(col.at(j+1));
-		mMesh.appendVertex(vec.at(j+2));
-		mMesh.appendColorRGB(col.at(j+2));
-		mMesh.appendVertex(vec.at(j+3));
-		mMesh.appendColorRGB(col.at(j+3));
-
-		int vIdx0 = mMesh.getNumVertices() - 4;
-		int vIdx1 = mMesh.getNumVertices() - 3;
-		int vIdx2 = mMesh.getNumVertices() - 2;
-		int vIdx3 = mMesh.getNumVertices() - 1;
-
-		mMesh.appendTriangle(vIdx0, vIdx1, vIdx2);
-		mMesh.appendTriangle(vIdx0, vIdx2, vIdx3);
-
-		// go to the next triangle pair
-		j += 4;
-	}
+    mCam.lookAt(vec3(250, 200, 500), vec3(0));
 }
+
+void MyApp::update()
+{
+    if (mMesh.getNumVertices() == 0)
+    {
+        return;   
+    }
+
+    // Store all the mesh information
+    Color* col = mMesh.getColors<3>();
+    vec3* vec = mMesh.getPositions<3>();
+
+    int i, j;
+    i = mMesh.getNumVertices();
+    j = 0;
+
+    mMesh.clear();
+
+    // Something to add a little movement
+    float sinInc = sin(getElapsedSeconds());
+    float cosInc = cos(getElapsedSeconds());
+    
+    while(j < i)
+    {
+        // Alter the positions array to get a little dynamism
+        int mult = 30;
+        vec[j].x -= sinInc;
+        vec[j+1].x += sinInc;
+        vec[j+2].x += sinInc * mult;
+        vec[j+3].x -= sinInc * mult;
+        vec[j].y -= cosInc;
+        vec[j+1].y += cosInc;
+        vec[j+2].y += cosInc * mult;
+        vec[j+3].y -= cosInc * mult;
+
+        // Now replace it in the mesh
+        mMesh.appendPosition(vec[j]);
+        mMesh.appendColorRgb(col[j]);
+        mMesh.appendPosition(vec[j + 1]);
+        mMesh.appendColorRgb(col[j + 1]);
+        mMesh.appendPosition(vec[j + 2]);
+        mMesh.appendColorRgb(col[j + 2]);
+        mMesh.appendPosition(vec[j + 3]);
+        mMesh.appendColorRgb(col[j + 3]);
+
+        int vIdx0 = mMesh.getNumVertices() - 4;
+        int vIdx1 = mMesh.getNumVertices() - 3;
+        int vIdx2 = mMesh.getNumVertices() - 2;
+        int vIdx3 = mMesh.getNumVertices() - 1;
+
+        mMesh.appendTriangle(vIdx0, vIdx1, vIdx2);
+        mMesh.appendTriangle(vIdx0, vIdx2, vIdx3);
+
+        // go to the next triangle pair
+        j += 4;
+    }
+}
+
+void MyApp::draw()
+{
+    gl::clear(Color::white());
+
+    mMesh = TriMesh(
+        TriMesh::Format()
+            .positions()
+            .colors(3)
+    );
+
+    // Create the points of our cube
+    vec3 v0 { -100, -100, -100 };
+    vec3 v1 {  100, -100, -100 };
+    vec3 v2 {  100,  100, -100 };
+    vec3 v3 { -100,  100, -100 };
+    vec3 v4 { -100, -100,  100 };
+    vec3 v5 {  100, -100,  100 };
+    vec3 v6 {  100,  100,  100 };
+    vec3 v7 { -100,  100,  100 };
+
+    // Create the colors for each vertex
+    Color c0 { 0, 0, 0 };
+    Color c1 { 1, 0, 0 };
+    Color c2 { 1, 1, 0 };
+    Color c3 { 0, 1, 0 };
+    Color c4 { 0, 0, 1 };
+    Color c5 { 1, 0, 1 };
+    Color c6 { 1, 1, 1 };
+    Color c7 { 0, 1, 1 };
+
+    vec3 faces[6][4] = { /* Vertices for the 6 faces of a cube. */
+        {v0, v1, v2, v3}, {v3, v2, v6, v7}, {v7, v6, v5, v4},
+        {v4, v5, v1, v0}, {v5, v6, v2, v1}, {v7, v4, v0, v3}
+    };
+
+    Color colors[6][4] = { /* Colors for each vertex of the cube. */
+        {c0, c1, c2, c3}, {c3, c2, c6, c7}, {c7, c6, c5, c4},
+        {c4, c5, c1, c0}, {c5, c6, c2, c1}, {c7, c4, c0, c3}
+    };
+
+    for (int i = 0; i < 6; i++)
+    {
+        mMesh.appendPosition(faces[i][0]);
+        mMesh.appendColorRgb(colors[i][0]);
+        mMesh.appendPosition(faces[i][1]);
+        mMesh.appendColorRgb(colors[i][1]);
+        mMesh.appendPosition(faces[i][2]);
+        mMesh.appendColorRgb(colors[i][2]);
+        mMesh.appendPosition(faces[i][3]);
+        mMesh.appendColorRgb(colors[i][3]);
+
+        int numberVertices = mMesh.getNumVertices();
+
+        mMesh.appendTriangle(numberVertices - 4,
+                             numberVertices - 3,
+                             numberVertices - 2);
+
+        mMesh.appendTriangle(numberVertices - 4,
+                             numberVertices - 2,
+                             numberVertices - 1);
+    }
+
+    update();
+
+    gl::setMatrices(mCam);
+    gl::pushModelView();
+    gl::draw(mMesh);
+    gl::popModelView();
+
+}
+
+
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(640, 480);
+})
 ```
-
-> FAQ: `getPositions()` return value, what is[`VECDIM`]?
-
-[`VECDIM`]: VECDIM.md
 
 The result?  
 
-![image](https://cloud.githubusercontent.com/assets/2152766/14066079/c1db2556-f438-11e5-9a62-7fff8cc628a5.png)
+![image](https://cloud.githubusercontent.com/assets/2152766/14076646/8efa864c-f4db-11e5-97ac-778ee7e69d52.png)
 
-Want to use a [`gl::Texture`] to texture the cube? Not so difficult. First, you need to set the texture co-ordinates of each vertex in the [`TriMesh`].
+Want to use a [`gl::Texture`] to texture the cube? Not so difficult. First, you need to set the texture coordinates of each vertex in the [`TriMesh`].
 
-This requires that you use texture coordinates, not space coordinates or pixel co-ordinates. So, you may think your image is 500 pixels high and 500 pixels wide, but texture co-ordinates say that your texture is 1×1 with what you think of as upper-left corner (0, 0), still being (0, 0), but the bottom-right corner being (1,1).
+This requires that you use texture coordinates, not space coordinates or pixel coordinates. So, you may think your image is 500 pixels high and 500 pixels wide, but texture coordinates say that your texture is 1×1 with what you think of as upper-left corner (0, 0), still being (0, 0), but the bottom-right corner being (1, 1).
 
-All the values between the 0, 0 and 1,1 points are scalar, meaning that 0.5 will be the midpoint of the image. So if you assign the texture co-ordinate 0.5, 0.5 to a vertex, the middle of the image will appear at that point. The picture below will hopefully help clarify this:  
+All the values between the 0, 0 and 1,1 points are scalar, meaning that 0.5 will be the midpoint of the image. So if you assign the texture coordinate 0.5, 0.5 to a vertex, the middle of the image will appear at that point. The picture below will hopefully help clarify this:  
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066080/c87bcba4-f438-11e5-9706-9dad491ecf26.png)
 
@@ -315,7 +422,16 @@ mesh.appendTexCoord(vec2f(0, 1));
 Now, to apply a [`gl::Texture`] to this [`TriMesh`], call [`gl::Texture`] bind(), draw your [`TriMesh`] and then call [`gl::Texture`] unbind().
 
 ```cpp
-tex.enableAndBind();
+// Note the additional parameter "texCoords"
+mMesh = TriMesh(
+    TriMesh::Format()
+        .positions()
+        .colors(3)
+        .texCoords(2)
+);
+
+// Then we can bind and draw
+tex.bind();
 gl::draw(mesh);
 tex.unbind();
 ```
