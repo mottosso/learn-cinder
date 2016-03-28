@@ -50,6 +50,7 @@
    * Channel
    * [DataSource](book/cinder/DataSource.md)
    * [loadUrl()](book/cinder/loadUrl.md)
+   * loadFile()
    * loadImage()
    * [TriMesh](book/cinder/TriMesh.md)
    * [VboMesh](book/cinder/VboMesh.md)
@@ -62,5 +63,4 @@
    * Rect
    * [ObjLoader](book/cinder/ObjLoader.md)
    * [VECDIM](book/cinder/VECDIM.md)
-   * loadFile()
 
