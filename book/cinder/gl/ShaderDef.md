@@ -2,7 +2,7 @@
 
 | Namespace |
 |-----------|
-| [`cinder::gl::ShaderDef`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base.html)
+| [`ci::gl::ShaderDef`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_app_base.html)
 
 Generate common [`gl::GlslProg`](GlslProg.md)'s.
 

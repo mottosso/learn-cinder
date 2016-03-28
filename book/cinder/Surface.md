@@ -4,7 +4,7 @@ An in-memory representation of an image. Implicitly shared object.
 
 | Namespace         | Include
 |-------------------|------------
-| `cinder::Surface` | `#include "cinder/Surface.h"`
+| `ci::Surface` | `#include "cinder/Surface.h"`
 
 
 <br

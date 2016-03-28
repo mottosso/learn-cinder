@@ -4,9 +4,9 @@ Geometry and GLSL program combined.
 
 | Namespace                | Include   
 |--------------------------|-----------
-| [`cinder::gl::Batch`]    | [`#include "cinder/gl/gl.h"`]
+| [`ci::gl::Batch`]    | [`#include "cinder/gl/gl.h"`]
 
-[`cinder::gl::Batch`]: https://libcinder.org/docs/branch/master/classcinder_1_1gl_1_1_batch.html
+[`ci::gl::Batch`]: https://libcinder.org/docs/branch/master/classcinder_1_1gl_1_1_batch.html
 [`#include "cinder/gl/gl.h"`]: https://github.com/cinder/Cinder/blob/master/include/cinder/gl/Batch.h
 
 <br>

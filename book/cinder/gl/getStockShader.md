@@ -4,7 +4,7 @@ Generate generic shader.
 
 | Namespace              | Include
 |:-----------------------|:----------------
-| [`gl::getStockShader()`] | [`#include "cinder/gl/gl.h"`]
+| [`ci::gl::getStockShader()`] | [`#include "cinder/gl/gl.h"`]
 
 [`gl::getStockShader()`]: https://libcinder.org/docs/branch/master/namespacecinder_1_1gl.html
 [`#include "cinder/gl/gl.h"`]: https://github.com/cinder/Cinder/blob/master/include/cinder/gl/gl.h

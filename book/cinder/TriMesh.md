@@ -4,7 +4,7 @@ Construct a triangle mesh from `vec3` and `Color` objects.
 
 | Namespace      | Include
 |----------------|----------------
-| `cinder::TriMesh` | `#include "cinder/gl/gl.h"`
+| `ci::TriMesh` | `#include "cinder/gl/gl.h"`
 
 <br>
 <br>

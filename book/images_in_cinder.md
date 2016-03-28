@@ -380,7 +380,7 @@ The value of a Channel at any position can be retrieved using the `v()` (_v_ fo
 gl::Texture createEdgeTexture(const Channel &src)
 {
     Channel temp{src.getWidth(), src.getHeight()};
-    cinder::ip::edgeDetectSobel(src, &temp);
+    ci::ip::edgeDetectSobel(src, &temp);
     return gl::Texture(temp);
 }
 ```

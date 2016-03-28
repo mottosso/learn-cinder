@@ -4,9 +4,9 @@ Represents an OpenGL Framebuffer Object.
 
 | Namespace                | Include   
 |--------------------------|-----------
-| [`cinder::gl::Fbo`]    | [`#include "cinder/gl/gl.h"`]
+| [`ci::gl::Fbo`]    | [`#include "cinder/gl/gl.h"`]
 
-[`cinder::gl::Fbo`]: https://libcinder.org/docs/branch/master/classcinder_1_1gl_1_1_fbo.html
+[`ci::gl::Fbo`]: https://libcinder.org/docs/branch/master/classcinder_1_1gl_1_1_fbo.html
 [`#include "cinder/gl/gl.h"`]: https://github.com/cinder/Cinder/blob/master/include/cinder/gl/gl.h
 
 <br>

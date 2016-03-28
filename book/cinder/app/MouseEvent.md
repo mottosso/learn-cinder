@@ -4,7 +4,7 @@ Represents a mouse event.
 
 | Namespace |
 |-----------|
-| [`cinder::app::MouseEvent`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_mouse_event.html)
+| [`ci::app::MouseEvent`](https://libcinder.org/docs/branch/master/classcinder_1_1app_1_1_mouse_event.html)
 
 <br>
 <br>
@@ -26,27 +26,27 @@ Passed to window events involving the mouse.
 |--------------:|:------------------------------------------------------------|
 | 				| MouseEvent ()
 | 				| MouseEvent (const WindowRef &win, int initiator, int x, int y, unsigned int modifiers, float wheelIncrement, uint32_t nativeModifiers)
-| int           | [getX](cinder__app__MouseEvent.getX.md) () const
-| int           | [getY](cinder__app__MouseEvent.getY.md) () const
-| const ivec2 & | [getPos](cinder__app__MouseEvent.getPos.md) () const
-| void          | [setPos](cinder__app__MouseEvent.setPos.md) (const ivec2 &pos)
-| bool          | [isLeft](cinder__app__MouseEvent.isLeft.md) () const
-| bool          | [isRight](cinder__app__MouseEvent.isRight.md) () const
-| bool          | [isMiddle](cinder__app__MouseEvent.isMiddle.md) () const
-| bool          | [isLeftDown](cinder__app__MouseEvent.isLeftDown.md) () const
-| bool          | [isRightDown](cinder__app__MouseEvent.isRightDown.md) () const
-| bool          | [isMiddleDown](cinder__app__MouseEvent.isMiddleDown.md) () const
-| bool          | [isShiftDown](cinder__app__MouseEvent.isShiftDown.md) () const
-| bool          | [isAltDown](cinder__app__MouseEvent.isAltDown.md) () const
-| bool          | [isControlDown](cinder__app__MouseEvent.isControlDown.md) () const
-| bool          | [isMetaDown](cinder__app__MouseEvent.isMetaDown.md) () const
-| bool          | [isAccelDown](cinder__app__MouseEvent.isAccelDown.md) () const
-| float         | [getWheelIncrement](cinder__app__MouseEvent.getWheelIncrement.md) () const
-| uint32_t      | [getNativeModifiers](cinder__app__MouseEvent.getNativeModifiers.md) () const
-| bool          | [isHandled](cinder__app__MouseEvent.isHandled.md) () const
-| void          | [setHandled](cinder__app__MouseEvent.setHandled.md) (bool handled=true)
-| WindowRef     | [getWindow](cinder__app__MouseEvent.getWindow.md) () const
-| void          | [setWindow](cinder__app__MouseEvent.setWindow.md) (const WindowRef &window)
+| int           | [getX]() () const
+| int           | [getY]() () const
+| const ivec2 & | [getPos]() () const
+| void          | [setPos]() (const ivec2 &pos)
+| bool          | [isLeft]() () const
+| bool          | [isRight]() () const
+| bool          | [isMiddle]() () const
+| bool          | [isLeftDown]() () const
+| bool          | [isRightDown]() () const
+| bool          | [isMiddleDown]() () const
+| bool          | [isShiftDown]() () const
+| bool          | [isAltDown]() () const
+| bool          | [isControlDown]() () const
+| bool          | [isMetaDown]() () const
+| bool          | [isAccelDown]() () const
+| float         | [getWheelIncrement]() () const
+| uint32_t      | [getNativeModifiers]() () const
+| bool          | [isHandled]() () const
+| void          | [setHandled]() (bool handled=true)
+| WindowRef     | [getWindow]() () const
+| void          | [setWindow]() (const WindowRef &window)
 
 <br>
 <br>
