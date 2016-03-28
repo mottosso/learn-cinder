@@ -13,11 +13,12 @@ Personal notes and examples for getting started with [libcinder](https://libcind
 With this project, I aim to..
 
 1. Simplify [existing documentation].
-2. Provide description and examples for relevant classes and functions.
-2. Conform coding style with the [CppCoreGuidelines].
+1. Update and store guides and examples scattered across the interwebs.
+1. Provide description and examples for classes and functions.
+1. Conform coding style with the [CppCoreGuidelines].
+1. Provide [permalinks] to pages and parts of pages to simplify sharing.
 
-I use the word "relevant" meaning "relevant to me", as an artist working in feature film visual effects interested in computer graphics and software development.
-
+[permalinks]: https://en.wikipedia.org/wiki/Permalink
 [CppCoreGuidelines]: https://github.com/isocpp/CppCoreGuidelines
 [existing documentation]: https://libcinder.org/docs/branch/master/
 
