@@ -539,7 +539,7 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
 })
 ```
 
-> Note the additional call to .texCoords(2)
+> Note the additional call to `.texCoords(2)`
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14077815/aa9d5f26-f4e7-11e5-9010-45b11c2631dc.png)
 
