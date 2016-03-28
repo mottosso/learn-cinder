@@ -431,3 +431,120 @@ CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
     settings->setWindowSize(360, 240);
 })
 ```
+
+<br>
+<br>
+<br>
+
+#### Textures
+
+![](https://cloud.githubusercontent.com/assets/2152766/14077815/aa9d5f26-f4e7-11e5-9010-45b11c2631dc.png)
+
+```cpp
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
+using namespace ci;
+using namespace ci::app;
+
+
+class MyApp : public App {
+  public:
+    void setup();
+    void draw();
+
+    CameraPersp mCam;
+    TriMesh mMesh;
+    gl::Texture2dRef mTex;
+    gl::GlslProgRef mGlsl;
+};
+
+void MyApp::setup()
+{
+    gl::enableDepthWrite();
+    gl::enableDepthRead();
+
+    auto image = loadImage(loadUrl("https://www.cs.cmu.edu/~chuck/lennapg/len_std.jpg"));
+    mTex = gl::Texture2d::create(image);
+    mCam.lookAt(vec3(250, 200, 500), vec3(0));
+}
+
+void MyApp::draw()
+{
+    gl::clear();
+
+    mMesh = TriMesh(
+        TriMesh::Format()
+            .positions()
+            .texCoords(2)
+    );
+
+    // Create the points of our cube
+    vec3 v0 { -100, -100, -100 };
+    vec3 v1 {  100, -100, -100 };
+    vec3 v2 {  100,  100, -100 };
+    vec3 v3 { -100,  100, -100 };
+    vec3 v4 { -100, -100,  100 };
+    vec3 v5 {  100, -100,  100 };
+    vec3 v6 {  100,  100,  100 };
+    vec3 v7 { -100,  100,  100 };
+
+    // Create the colors for each vertex
+    Color c0 { 0, 0, 0 };
+    Color c1 { 1, 0, 0 };
+    Color c2 { 1, 1, 0 };
+    Color c3 { 0, 1, 0 };
+    Color c4 { 0, 0, 1 };
+    Color c5 { 1, 0, 1 };
+    Color c6 { 1, 1, 1 };
+    Color c7 { 0, 1, 1 };
+
+    // Create the texture coordinates for each vertex
+    vec2 t0 { 0, 0 };
+    vec2 t1 { 1, 0 };
+    vec2 t2 { 1, 1 };
+    vec2 t3 { 0, 1 };
+
+    vec3 faces[6][4] = { /* Vertices for the 6 faces of a cube. */
+        {v0, v1, v2, v3}, {v3, v2, v6, v7}, {v7, v6, v5, v4},
+        {v4, v5, v1, v0}, {v5, v6, v2, v1}, {v7, v4, v0, v3}
+    };
+
+    for (int i = 0; i < 6; i++)
+    {
+        mMesh.appendPosition(faces[i][0]);
+        mMesh.appendTexCoord(t0);
+        mMesh.appendPosition(faces[i][1]);
+        mMesh.appendTexCoord(t1);
+        mMesh.appendPosition(faces[i][2]);
+        mMesh.appendTexCoord(t2);
+        mMesh.appendPosition(faces[i][3]);
+        mMesh.appendTexCoord(t3);
+
+        int numberVertices = mMesh.getNumVertices();
+
+        mMesh.appendTriangle(numberVertices - 4,
+                             numberVertices - 3,
+                             numberVertices - 2);
+
+        mMesh.appendTriangle(numberVertices - 4,
+                             numberVertices - 2,
+                             numberVertices - 1);
+    }
+
+    gl::setMatrices(mCam);
+
+    // Apply shader and texture
+    gl::ScopedGlslProg glslScope { gl::getStockShader(gl::ShaderDef().texture()) };
+    gl::ScopedTextureBind texScope { mTex };
+
+    gl::draw(mMesh);
+
+}
+
+
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(640, 480);
+})
+```
