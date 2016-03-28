@@ -402,21 +402,17 @@ All the values between the 0, 0 and 1,1 points are scalar, meaning that 0.5 will
 
 So, now, how to put our [`TriMesh`] and [`gl::Texture`] together?
 
-When creating the vertices using the `appendVertex()` and `appendColorRGB()` methods, use the `appendTexCoord()` method to create a texture co-ordinate. This indicates the location in the texture that you want to appear at that location in space:
+When creating the vertices using the `appendPosition()` and `appendColorRgb()` methods, use the `appendTexCoord()` method to create a texture coordinate. This indicates the location in the texture that you want to appear at that location in space.
+
+For example..
 
 ```cpp
-mesh.appendVertex(v0);
-mesh.appendColorRGB(Color(1, 0, 0));
-mesh.appendTexCoord(vec2(0, 0));
-mesh.appendVertex(v1);
-mesh.appendColorRGB(Color(0, 0, 1));
-mesh.appendTexCoord(vec2f(1, 0));
-mesh.appendVertex(v2);
-mesh.appendColorRGB(Color(1, 0, 0 );
-mesh.appendTexCoord(vec2(1, 1));
-mesh.appendVertex(v3);
-mesh.appendColorRGB(Color(0, 1, 0));
-mesh.appendTexCoord(vec2f(0, 1));
+mMesh.appendPosition(vec3(1, 0, 0));
+mMesh.appendTexCoord(vec2(1, 0));
+mMesh.appendPosition(vec3(0, 1, 0));
+mMesh.appendTexCoord(vec2(1, 1));
+mMesh.appendPosition(vec3(0, 0, 1));
+mMesh.appendTexCoord(vec2(0, 1));
 ```
 
 Now, to apply a [`gl::Texture`] to this [`TriMesh`], call [`gl::Texture`] bind(), draw your [`TriMesh`] and then call [`gl::Texture`] unbind().
@@ -544,11 +540,9 @@ You can even animate the positions of the texture coordinates by copying, modify
 
 But there’s more to the [`TriMesh`] than just a nice way to store all the vertices that you create because, let’s face it, lining up vertices is a drag and there are better and more fun ways to make vertices. For instance, using a 3d modeling program. To that end, you can import and export OBJ files.
 
-So, in my favorite 3d modeling program Blender, I’ll create a classic platonic solid, the isodecahedron, and then export it as an `.obj` file:  
-
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066082/cedd9d74-f438-11e5-94f0-bb7cd7a77ce1.png)
 
-For completeness, here is the file in ASCII format.
+For completeness, here is an OBJ file in ASCII format.
 
 **icosahedron.obj**
 
@@ -668,15 +662,83 @@ f 20/37 22/42 21/36
 Now I can import it using an instance of the [`ObjLoader`] class like so..
 
 ```cpp
-ObjLoader loader(loadResource(SOLID));
-loader.load(*mesh);
+ObjLoader loader { loadAsset("icosahedron.obj") };
+mMesh = TriMesh::create(loader);
 ```
 
-..and draw it to the screen by passing it to gl::draw():
+..and draw it to the screen by passing it to gl::Batch():
 
 ```cpp
-gl::draw(mesh);
+auto lambert = gl::ShaderDef().lambert();
+mGlsl = gl::getStockShader(lambert);
+mBatch = gl::Batch::create(*mMesh, mGlsl);
+mBatch->draw();
 ```
+
+Here is a full example.
+
+```cpp
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+#include "cinder/TriMesh.h"
+#include "cinder/ObjLoader.h"
+
+using namespace ci;
+using namespace ci::app;
+
+
+class MyApp : public App {
+  public:
+    void setup();
+    void draw();
+
+    CameraPersp mCam;
+    TriMeshRef mMesh;
+    gl::BatchRef mBatch;
+    gl::GlslProgRef mGlsl;
+};
+
+void MyApp::setup()
+{
+    gl::enableDepthWrite();
+    gl::enableDepthRead();
+
+    mCam.lookAt(vec3(2.5, 2.0, 3.0), vec3(0));
+}
+
+void MyApp::draw()
+{
+    gl::clear(Color::gray(0.2f));
+
+    ObjLoader loader { loadAsset("icosahedron.obj") };
+    mMesh = TriMesh::create(loader);
+
+    // If mesh doesn't have pre-defined normals, it's important
+    // to recompute them. Otherwise you won't get any shading.
+    if (!loader.getAvailableAttribs().count(geom::NORMAL))
+        mMesh->recalculateNormals();
+
+    // Associate a generic shader and stuff it in a Batch
+    auto lambert = gl::ShaderDef().lambert();
+    mGlsl = gl::getStockShader(lambert);
+    mBatch = gl::Batch::create(*mMesh, mGlsl);
+
+    gl::setMatrices(mCam);
+
+    // Add spinning motion
+    gl::rotate(angleAxis(getElapsedFrames() * 0.01f, vec3(0, 1, 0)));
+
+    mBatch->draw();
+}
+
+
+CINDER_APP(MyApp, RendererGl, [](App::Settings *settings) {
+    settings->setWindowSize(640, 480);
+})
+```
+
+![image](https://cloud.githubusercontent.com/assets/2152766/14080090/af8689d2-f4fa-11e5-9904-a8a32f0739e2.png)
 
 Here it is with some random colors applied to it:  
 
