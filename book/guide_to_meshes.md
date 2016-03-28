@@ -277,7 +277,7 @@ void TriMeshSampleApp::update()
 }
 ```
 
-> [`VECDIM`] reference
+> FAQ: `getPositions()` return value, what is[`VECDIM`]?
 
 [`VECDIM`]: VECDIM.md
 
