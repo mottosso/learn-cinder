@@ -277,6 +277,10 @@ void TriMeshSampleApp::update()
 }
 ```
 
+> [`VECDIM`] reference
+
+[`VECDIM`]: VECDIM.md
+
 The result?  
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066079/c1db2556-f438-11e5-9a62-7fff8cc628a5.png)
