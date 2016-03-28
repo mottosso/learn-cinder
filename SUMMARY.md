@@ -60,6 +60,6 @@
    * SurfaceChannelOrder
    * [ImageSource](book/cinder/ImageSource.md)
    * Rect
-   * ObjLoader
+   * [ObjLoader](book/cinder/ObjLoader.md)
    * [VECDIM](book/cinder/VECDIM.md)
 
