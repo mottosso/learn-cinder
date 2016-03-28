@@ -61,5 +61,5 @@
    * [ImageSource](book/cinder/ImageSource.md)
    * Rect
    * ObjLoader
-   * VECDIM
+   * [VECDIM](book/cinder/VECDIM.md)
 
