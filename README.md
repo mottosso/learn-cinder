@@ -45,3 +45,23 @@ A timestamp is important, because some, if not most parts seem out of date and m
 And, unexpectedly, visiting any page freezes my browser for about 2-3 seconds, and it's important to me that looking up information on a particular piece of code is as seamless as possible.
 
 With this project, I aim to rectify these things for my current and future self.
+
+<br>
+<br>
+<br>
+
+### Markdown versus Doxygen
+
+The [original documentation][docs] is generated with [Doxygen](http://www.stack.nl/~dimitri/doxygen/); a documentation generator from C++ sources.
+
+With it, human consumable documentation is coupled with source code in an effort to both remove the added step of writing and maintaining a separate set of documentation and to aid in keeping both up-to-date.
+
+[Markdown] on the other hand favours readability and the hand-crafting of text. It does not make a good fit for automated generation.
+
+However, Cinder has a large user base, most of which are hungry to improve and push the boundaries of the framework. Holding them back today is the barrier-to-entry when it comes to understanding and using an automated documentation generator.
+
+I think that if documentation were made more easily editable, we would see more contributions and a more up to date and lively documentation.
+
+[docs]: https://libcinder.org/docs/branch/master/namespacecinder.html
+
+[Markdown]: https://daringfireball.net/projects/markdown/
