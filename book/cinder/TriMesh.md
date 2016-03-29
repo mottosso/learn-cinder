@@ -12,7 +12,7 @@ Construct a triangle mesh from `vec3` and `Color` objects.
 
 ### Description
 
-> This object is pre-Cinder 0.9. Prefer [`gl::Batch`].
+> Superseded by [`gl::Batch`].
 
 Use the `TriMesh` when explicitly defining each position and color, but take care about performance; the `TriMesh` is implicitly converted to a [`VboMesh`] which in turn converts to a [`gl::Batch`].
 
