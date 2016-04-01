@@ -756,12 +756,9 @@ So then, naturally you might wonder, what if we just stored the points on the ca
 
 ### VBO
 
-A VBO is a way of storing all of the data of vertex data on the graphics card.
+A [VBO] is a way of storing all of the data of vertex data on the graphics card.
 
-You’ve perhaps heard of [Vertex Array] and [Display List]. The VBO is similiar to both of these, but with a few advantages that we’ll go over very quickly.
-
-[Display List]: https://en.wikipedia.org/wiki/Display_list
-[Vertex Array]: https://www.opengl.org/wiki/Vertex_Specification#Vertex_Array_Object
+You’ve perhaps heard of [Vertex Array] and [Display List]. The [VBO] is similiar to both of these, but with a few advantages that we’ll go over very quickly.
 
 A [Vertex Array] just let you store all the vertex data in an array on the client side, that is, on the CPU side and then send it to the graphics card when you’re ready to draw it. The downside of that is that you’re still storing the data on the client side and sending it over to the graphics card. 
 
@@ -771,7 +768,11 @@ The [Display List] is a similar technique, using an array to store the created g
 
 The downside is that display lists can’t be modified. Once they’ve been sent to the card, you need to load them from the card, modify them, and then resend them to the card to see your changes applied.
 
-One of the conveniences of moving things to the graphics card is reducing the amount of traffic between the graphics card and the rest of your system. The VBO operates quite similarly to the [Display List], with the advantage of allowing you to modify the geometry data on the graphics card without downloading all of it at once.
+One of the conveniences of moving things to the graphics card is reducing the amount of traffic between the graphics card and the rest of your system. The [VBO] operates quite similarly to the [Display List], with the advantage of allowing you to modify the geometry data on the graphics card without downloading all of it at once.
+
+[Display List]: https://en.wikipedia.org/wiki/Display_list
+[Vertex Array]: https://www.opengl.org/wiki/Vertex_Specification#Vertex_Array_Object
+[VBO]: https://www.opengl.org/wiki/Vertex_Specification#Vertex_Buffer_Object
 
 <br>
 <br>
@@ -783,15 +784,23 @@ Now, since we’re focusing on Cinder, we’ll be focusing on the [`VboMesh`] cl
 
 When you create a [`VboMesh`], much like in the [`TriMesh`], you need to decide whether the mesh is going to contain color information and/or texture coordinate information. But, there is another element to the VboMesh: whether the data is *dynamic*.
 
-Thus is particularly important because it determines whether you're able to manipulate vertices in the mesh after creating it and it matters because using dynamic data means that the [`VboMesh`] will generate two copies of the data: one on the graphics card and one in the memory of your application.
+This is particularly important because it determines whether you're able to manipulate vertices in the mesh after creating it and it matters because using dynamic data means that the [`VboMesh`] will generate two copies of the data: one on the graphics card and one in the memory of your application.
 
-If you don’t need to update the data after it’s been loaded then you you don’t need to do anything special and if you do want to create dynamic data, you’ll need to create a [`gl::VboMesh::Layout`] object and pass it to the [`VboMesh`].
+If you don’t need to update the data after it’s been loaded then you don’t need to do anything special. If on the other hand you do want to create dynamic data, you’ll need to create a [`gl::VboMesh::Layout`] object and pass it to the [`VboMesh`].
 
 For instance, if you want static positions and static colors you would create a [`gl::VboMesh::Layout`] object with those properties set on it, declare a [`VboMesh`] and then assign it to the result of a call to the [`VboMesh`] constructor.
 
-This is because the [`VboMesh`], like so many other things in Cinder, is a shared pointer, which means that it has to be created before you can use it. You can return it from a method without problems, and also that you don’t have to worry about deallocating the VboMesh once you’ve created it.  
+```cpp
+gl::VboMesh mesh;
+gl::VboMesh::Layout layout;
+layout.setStaticPositions();
+layout.setStaticColorsRGBA();
+mesh = gl::VboMesh(24, 20, layout, GL_QUADS);
+```
 
-Here's one of the constructors for the VboMesh:
+This is because the [`VboMesh`], like so many other things in Cinder, is a shared pointer, which means that it has to be created before you can use it. You can return it from a method without problems, and also that you don’t have to worry about deallocating the [`VboMesh`] once you’ve created it. 
+
+Here's one of the constructors for the [`VboMesh`]:
 
 ```cpp
 VboMesh(
@@ -802,23 +811,13 @@ VboMesh(
 );
 ```
 
-So that would be used like this:
-
-```cpp
-gl::VboMesh mesh;
-gl::VboMesh::Layout layout;
-layout.setStaticPositions();
-layout.setStaticColorsRGBA();
-mesh = gl::VboMesh(24, 20, layout, GL_QUADS);
-```
-
 Now, the `numVertices` and `numIndices` need a little explanantion.
 
 You’ll recall from the [`TriMesh`] that the number of indices and the number of vertices aren’t directly correlated. You’ll almost always need to create more indices than vertices because there are more indices than discrete locations required for most geometry, but that depends on what kind of geometry you’re creating.
 
-This brings us to one of the more confusing elements of working with `[gl::VboMesh::Layout`], which is the idea of indices; dynamic indices in particular.
+This brings us to one of the more confusing elements of working with [`gl::VboMesh::Layout`], which is the idea of indices; dynamic indices in particular.
 
-The indices set the location of a `vec3` in the order of drawing elements. Remember how in the first example before introducing the [`TriMesh`], you saw how the order that the vertices were created in affected how they were connected the other vertices?
+The indices set the location of a `vec3` in the order of drawing elements. Remember how in the first example before introducing the [`TriMesh`], you saw how the order that the vertices were created in the order they were connected?
 
 Well, the index for a vertex in the [`VboMesh`] works much the same way, indicating where the vertex is in relation to the other vertices and how it should be connected to them. 
 
@@ -826,9 +825,11 @@ In the graphic below the ways to draw a square using `GL_QUADS` is shown at the 
 
 ![image](https://cloud.githubusercontent.com/assets/2152766/14066089/e089c6e2-f438-11e5-93eb-67512f213eb3.png)
 
-Cinder always requires that you create the indices for a mesh before you create the positions for that mesh, because conceptually a vertice without a index can’t be properly integrated into the mesh and vice versa.
+Cinder always requires that you create the indices for a mesh before you create the positions for that mesh, because conceptually a vertice without a index can't be properly integrated into the mesh and vice versa.
 
-The two modes of storing positions means that the process for working with VboMeshes that dynamic positions versus those that have static positions is slightly different. We’ll do the static first:
+The two modes of storing positions means that the process for working with a [`VboMesh`] with dynamic positions versus one that have static positions is slightly different. 
+
+We’ll do the static first:
 
 ```cpp
 gl::VboMesh::Layout layout;
@@ -841,7 +842,9 @@ int quadCount = 6;
 mesh = gl::VboMesh(vertCount, quadCount * 4, layout, GL_QUADS);
 ```
 
-When you're using static positions you can simply assign positions using a vector of vec3` objects and calling `VboMesh::bufferPositions()`. So, our [`VboMesh`] creation pre looks like this, note the indices being assigned before the positions:
+When you're using static positions you can simply assign positions using a vector of `vec3` objects and calling `VboMesh::bufferPositions()`. So our [`VboMesh`] creation code looks like this.
+
+> Note the indices being assigned before the positions.
 
 ```cpp
 vector indices;
