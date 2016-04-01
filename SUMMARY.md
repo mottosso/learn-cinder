@@ -63,4 +63,5 @@
    * Rect
    * [ObjLoader](book/cinder/ObjLoader.md)
    * [VECDIM](book/cinder/VECDIM.md)
+   * [Timer](book/cinder/Timer.md)
 

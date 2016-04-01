@@ -791,11 +791,19 @@ If you don’t need to update the data after it’s been loaded then you don’t
 For instance, if you want static positions and static colors you would create a [`gl::VboMesh::Layout`] object with those properties set on it, declare a [`VboMesh`] and then assign it to the result of a call to the [`VboMesh`] constructor.
 
 ```cpp
-gl::VboMesh mesh;
-gl::VboMesh::Layout layout;
-layout.setStaticPositions();
-layout.setStaticColorsRGBA();
-mesh = gl::VboMesh(24, 20, layout, GL_QUADS);
+auto vboMesh = gl::VboMesh::create(
+    positions.size(),
+    GL_TRIANGLE_STRIP,
+    {
+        gl::VboMesh::Layout()
+            .usage(GL_STATIC_DRAW)
+            .attrib(geom::POSITION, 3)
+            .attrib(geom::TEX_COORD_0, 2)
+            .attrib(geom::NORMAL, 3)
+    },
+    indices.size(),
+    GL_UNSIGNED_SHORT
+);
 ```
 
 This is because the [`VboMesh`], like so many other things in Cinder, is a shared pointer, which means that it has to be created before you can use it. You can return it from a method without problems, and also that you don’t have to worry about deallocating the [`VboMesh`] once you’ve created it. 
@@ -851,7 +859,7 @@ vector indices;
 int i = 0;
 while (i < 24)
 {
-  indices.push_back(i);
+  i
   i++;
 }
 
