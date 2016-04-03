@@ -28,6 +28,11 @@
        * [ScopedModelMatrix](book/cinder/gl/ScopedModelMatrix.md)
        * [ScopedColor](book/cinder/gl/ScopedColor.md)
        * [ScopedTextureBind](book/cinder/gl/ScopedTextureBind.md)
+       * [Texture](book/cinder/gl/Texture.md)
+           * Format
+       * [VboMesh](book/cinder/VboMesh.md)
+           * Layout.md
+           * VertexIter
        * [bindStockShader()](book/cinder/gl/bindStockShader.md)
        * [popModelMatrix()](book/cinder/gl/popModelMatrix.md)
        * [pushModelMatrix()](book/cinder/gl/pushModelMatrix.md)
@@ -36,10 +41,8 @@
        * [translate()](book/cinder/gl/translate.md)
        * [rotate()](book/cinder/gl/rotate.md)
        * [scale()](book/cinder/gl/scale.md)
-       * [CI_GLSL](book/cinder/gl/CI_GLSL.md)
        * [color()](book/cinder/gl/color.md)
-       * [Texture](book/cinder/gl/Texture.md)
-           * Format
+       * [CI_GLSL](book/cinder/gl/CI_GLSL.md)
    * [geom](book/cinder/geom.md)
        * [Circle](book/cinder/geom/Circle.md)
        * [Source](book/cinder/geom/Source.md)
@@ -53,9 +56,6 @@
    * loadFile()
    * loadImage()
    * [TriMesh](book/cinder/TriMesh.md)
-   * [VboMesh](book/cinder/VboMesh.md)
-       * Layout.md
-       * VertexIter
    * [Surface](book/cinder/Surface.md)
    * Area
    * SurfaceChannelOrder

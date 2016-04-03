@@ -811,6 +811,7 @@ This is because the [`VboMesh`], like so many other things in Cinder, is a share
 Here's one of the constructors for the [`VboMesh`]:
 
 ```cpp
+// FIXME - This isn't true
 VboMesh(
   size_t numVertices,
   size_t numIndices,
