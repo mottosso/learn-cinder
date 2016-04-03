@@ -62,6 +62,7 @@
    * [ImageSource](book/cinder/ImageSource.md)
    * Rect
    * [ObjLoader](book/cinder/ObjLoader.md)
-   * [VECDIM](book/cinder/VECDIM.md)
    * [Timer](book/cinder/Timer.md)
+   * [VECDIM](book/cinder/VECDIM.md)
+   * [CINDER_APP](book/CINDER_APP.md)
 
