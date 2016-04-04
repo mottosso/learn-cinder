@@ -32,6 +32,8 @@ The decision about which macro to use is located in [`App.h`]
 
 ### Examples
 
+Macro is at the bottom.
+
 ```cpp
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
