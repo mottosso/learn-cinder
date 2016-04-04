@@ -64,5 +64,5 @@
    * [ObjLoader](book/cinder/ObjLoader.md)
    * [Timer](book/cinder/Timer.md)
    * [VECDIM](book/cinder/VECDIM.md)
-   * [CINDER_APP](book/CINDER_APP.md)
+   * [CINDER_APP](book/cinder/CINDER_APP.md)
 
