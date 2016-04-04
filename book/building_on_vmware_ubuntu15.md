@@ -1,6 +1,6 @@
 ### VMWare Workstation 12.0
 
-This document walks you through setting up Cinder in a Ubuntu guest running under VMWare Workstation 12.0.
+This document walks you through setting up Cinder in a Ubuntu 15.10 guest running under VMWare Workstation 12.0.
 
 <br>
 <br>
