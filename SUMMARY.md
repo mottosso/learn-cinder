@@ -30,7 +30,7 @@
        * [ScopedTextureBind](book/cinder/gl/ScopedTextureBind.md)
        * [Texture](book/cinder/gl/Texture.md)
            * Format
-       * [VboMesh](book/cinder/VboMesh.md)
+       * [VboMesh](book/cinder/gl/VboMesh.md)
            * Layout.md
            * VertexIter
        * [bindStockShader()](book/cinder/gl/bindStockShader.md)
