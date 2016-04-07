@@ -22,7 +22,20 @@
 					[
 						"./cibuild",
 						"-j",
-						"8",
+						"1",
+						"-b",
+						"Debug",
+						"-v",
+						"-r"
+					],
+					"name": "Rebuild"
+				},
+				{
+					"cmd":
+					[
+						"./cibuild",
+						"-j",
+						"1",
 						"-b",
 						"Debug",
 						"-v"
@@ -32,7 +45,7 @@
 				{
 					"cmd":
 					[
-						"cibuild",
+						"./cibuild",
 						"clean"
 					],
 					"name": "Clean"
@@ -46,5 +59,11 @@
 		{
 			"path": "."
 		},
+		{
+			"path": "/home/marcus/cinder/include/cinder"
+		},
+		{
+			"path": "/home/marcus/cinder/samples"
+		}
 	]
 }
