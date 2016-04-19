@@ -45,6 +45,200 @@ It can be a bit tricky to get it right however - check out the **VboMesh** sampl
 <br>
 <br>
 
+### Comparing TriMesh and VboMesh
+
+> Source: [VboMesh vs TriMesh](https://drewish.com/2014/08/16/comparing-the-trimesh-and-vbomesh-in-cinder/)
+
+> This section is not yet compatible with Cinder 0.9.x
+
+Comparing the TriMesh and VboMesh in Cinder   16 August 2014
+I’ve been playing around with Cinder trying to make a simple app for drawing isometric images with triangles. I’m still learning my way around OpenGL and the wrapper classes Cinder offers but I like what I’ve seen so far. It’s been a lot of fun doing C++ again after a long time with Ruby and JavaScript.
+
+I kept running into a random segfault when trying to draw anything using the VboMesh so I went looking for some super basic sample code. The closest thing I found was this slightly broken example. So I spent a little time cleaning it up, then got it drawing equilateral triangles:
+
+![]()
+
+I started wondering if I should be using the TriMesh instead, so I decided to try implementing the drawing that way so I could compare the code. It ended up a little cleaner, but since my goal is to have colors change when you touch a triangle, I’ll probably stick with the VboMesh so I can use dynamic colors.
+
+Here’s the code in case it’s helpful for anyone else:
+
+```cpp
+// Simple demo to compare drawing 2D triangles with Cinder's VBO and TriMesh wrappers.
+// https://drewish.com/2014/08/16/comparing-the-trimesh-and-vbomesh-in-cinder/
+
+#include "cinder/app/AppBasic.h"
+#include "cinder/gl/gl.h"
+#include "cinder/gl/Vbo.h"
+#include "cinder/Trimesh.h"
+#include "cinder/params/Params.h"
+
+using namespace ci;
+using namespace ci::app;
+using namespace std;
+
+// sqrt(3) / 2
+#define M_SQRT_3_2 0.8660254037844386
+
+class MeshTestApp : public AppBasic {
+public:
+    void prepareSettings( Settings *settings ) override;
+    void setup();
+    void recalculate();
+    void buildVBOMesh();
+    void buildTriMesh();
+    void draw();
+
+    gl::VboMesh mMesh;
+    TriMesh mTriangles;
+    params::InterfaceGl mParams;
+
+    int  mCols = 10;
+    int  mRows = 10;
+    int  mScale = 30;
+    bool mWireframe = false;
+    bool useTriMesh = false;
+};
+
+void MeshTestApp::prepareSettings( Settings *settings )
+{
+    settings->enableHighDensityDisplay();
+    settings->enableMultiTouch( false );
+}
+
+void MeshTestApp::setup()
+{
+    mParams = params::InterfaceGl( "Parameters", Vec2i( 220, 170 ) );
+    mParams.addParam( "Scale", &mScale )
+        .keyIncr( "s" ).keyDecr( "S" )
+        .min( 1 ).max( 100 ).step( 1 )
+        .updateFn( [this] { recalculate(); } );
+    mParams.addParam( "Columns", &mCols )
+        .keyIncr( "d" ).keyDecr( "D" )
+        .min( 1 ).max( 100 ).step( 1 )
+        .updateFn( [this] { recalculate(); } );
+    mParams.addParam( "Rows", &mRows )
+        .keyIncr( "f" ).keyDecr( "F" )
+        .min( 1 ).max( 100 ).step( 1 )
+        .updateFn( [this] { recalculate(); } );
+
+    mParams.addParam( "Wireframe", &mWireframe )
+        .key( "w" );
+    mParams.addParam( "TriMesh/VBO", &useTriMesh )
+        .updateFn( [this] { recalculate(); } )
+        .key( "t" );
+
+    recalculate();
+}
+
+void MeshTestApp::recalculate()
+{
+    if (useTriMesh) buildTriMesh();
+    else buildVBOMesh();
+}
+
+void MeshTestApp::buildVBOMesh()
+{
+    gl::VboMesh::Layout layout;
+    layout.setStaticIndices();
+    layout.setStaticPositions();
+    layout.setStaticColorsRGB();
+
+    mMesh = gl::VboMesh(mCols * mRows * 3, mCols * mRows * 3, layout, GL_TRIANGLES);
+    vector<uint32_t> indices;
+    vector<Vec3f> positions;
+    vector<Color> colors;
+
+    float w = M_SQRT_3_2 * mScale;
+    float h = 1.0 * mScale;
+    int index = -1;
+    Color8u color;
+
+    for (int col = 0; col < mCols; col++) {
+        float x = col * 2 * w;
+        int direction = (col % 2) ? 1 : -1;
+        for (int row = 0; row < mRows; row++) {
+            direction *= -1;
+            float y = row * h;
+
+            positions.push_back( Vec3f( x - w * direction, y - h, 0 ) );
+            positions.push_back( Vec3f( x + w * direction, y + 0, 0 ) );
+            positions.push_back( Vec3f( x - w * direction, y + h, 0 ) );
+
+            // #69D2E7 and #A7DBD8
+            color = (direction > 0) ? Color8u( 105,210,231 ) : Color8u( 224,228,204 );
+            colors.push_back( color );
+            colors.push_back( color );
+            colors.push_back( color );
+
+            index += 3;
+            indices.push_back( index - 2 );
+            indices.push_back( index - 1 );
+            indices.push_back( index );
+        }
+    }
+    mMesh.bufferIndices( indices );
+    mMesh.bufferPositions( positions );
+    mMesh.bufferColorsRGB( colors );
+}
+
+void MeshTestApp::buildTriMesh()
+{
+    float w = M_SQRT_3_2 * mScale;
+    float h = 1.0 * mScale;
+    int index = -1;
+    Color color;
+
+    mTriangles.clear();
+
+    for (int col = 0; col < mCols; col++) {
+        float x = col * 2 * w;
+        int direction = (col % 2) ? 1 : -1;
+        for (int row = 0; row < mRows; row++) {
+            direction *= -1;
+            float y = row * h;
+
+            mTriangles.appendVertex( Vec3f( x - w * direction, y - h, 0 ) );
+            mTriangles.appendVertex( Vec3f( x + w * direction, y + 0, 0 ) );
+            mTriangles.appendVertex( Vec3f( x - w * direction, y + h, 0 ) );
+
+            // #69D2E7 and #A7DBD8
+            color = (direction > 0) ? Color8u( 250,105,0 ) : Color8u( 105,210,231 );
+            mTriangles.appendColorRgb( color );
+            mTriangles.appendColorRgb( color );
+            mTriangles.appendColorRgb( color );
+
+            index += 3;
+            mTriangles.appendTriangle( index - 2, index - 1, index );
+        }
+    }
+}
+
+void MeshTestApp::draw()
+{
+    gl::pushModelView();
+    gl::clear( Color::white() );
+
+    if (mWireframe) gl::enableWireframe();
+
+    if (useTriMesh)
+        gl::draw( mTriangles );
+    else
+        gl::draw( mMesh );
+
+    if (mWireframe) gl::disableWireframe();
+
+    gl::popModelView();
+
+    mParams.draw();
+}
+
+CINDER_APP_BASIC( MeshTestApp, RendererGl )
+```
+
+<br>
+<br>
+<br>
+
 ### Optimisation
 
 > Source: [Are Vbo binds expensive?](https://forum.libcinder.org/topic/are-vbo-binds-expensive)
